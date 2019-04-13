@@ -66,6 +66,7 @@ class MainScreenState extends State<MainScreen> {
     print("Flutter Pedometer Error: $error");
   }
 
+  //set remainStepCount and lvl
   getLevel() {
     if (_stepCountValue < 1000){ 
       setState(() => _lvl = 0);
