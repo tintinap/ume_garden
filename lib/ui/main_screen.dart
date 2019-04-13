@@ -42,6 +42,10 @@ class MainScreenState extends State<MainScreen> {
       print('_step Count value = $_stepCountValue');
     });
 
+    setState(() {
+      _km = (stepCountValue/2000).toStringAsFixed(1);
+    });
+
   }
 
   //Reset StepCountValue 
@@ -58,6 +62,7 @@ class MainScreenState extends State<MainScreen> {
   void _onError(error) {
     print("Flutter Pedometer Error: $error");
   }
+
 
 
   @override
