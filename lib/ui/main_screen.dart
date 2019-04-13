@@ -47,6 +47,8 @@ class MainScreenState extends State<MainScreen> {
       _km = (stepCountValue/2000).toStringAsFixed(1);
     });
 
+    getLevel();
+
   }
 
   //Reset StepCountValue 
