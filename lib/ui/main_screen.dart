@@ -15,8 +15,9 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   String _km = "0.0"; //distance
-  String _stepCountValue = '0'; //all Foot step record
-  int  _remainStepCount = 0; //step that will be showed on screen 
+  int _stepCountValue = 0; //all Foot step record
+  int  _remainStepCount = 0; //step that will be showed on screen
+  int plants = 0;
   StreamSubscription<int> _subscription; // for pedometer package
   int _lvl = 0;
 
@@ -38,7 +39,7 @@ class MainScreenState extends State<MainScreen> {
   void _onData(int stepCountValue) async {
     print('step Count value = $stepCountValue');
     setState(() {
-      _stepCountValue = "$stepCountValue";
+      _stepCountValue = stepCountValue;
       print('_step Count value = $_stepCountValue');
     });
 
@@ -53,7 +54,7 @@ class MainScreenState extends State<MainScreen> {
     setState(() {
       int stepCountValue = 0;
       stepCountValue = 0;
-      _stepCountValue = "$stepCountValue";
+      _stepCountValue = stepCountValue;
     });
   }
 
@@ -61,6 +62,28 @@ class MainScreenState extends State<MainScreen> {
 
   void _onError(error) {
     print("Flutter Pedometer Error: $error");
+  }
+
+  getLevel() {
+    if (_stepCountValue < 1000){ 
+      setState(() => _lvl = 0);
+      setState(() => _remainStepCount = _stepCountValue);
+    } else if (_stepCountValue < 5000) { 
+      setState(() => _lvl = 1);
+      setState(() => _remainStepCount = _stepCountValue-1000);
+    } else if (_stepCountValue < 10000) { 
+      setState(() => _lvl = 2); 
+      setState(() => _remainStepCount = _stepCountValue-5000);
+    } else if (_stepCountValue < 50000) { 
+      setState(() => _lvl = 3);
+      setState(() => _remainStepCount = _stepCountValue-10000);
+    } else if (_stepCountValue < 100000) { 
+      setState(() => _lvl = 4);
+      setState(() => _remainStepCount = _stepCountValue-50000);
+    } else { 
+      setState(() => _lvl = 0);
+      setState(() => _remainStepCount = 0);
+    }
   }
 
 
@@ -74,7 +97,7 @@ class MainScreenState extends State<MainScreen> {
       ),
       body: Center(
           child: 
-              Text("$_stepCountValue step $_km km RemainStep: $_remainStepCount", textAlign: TextAlign.center,),
+              Text("$_stepCountValue step $_km km RemainStep: $_remainStepCount Lvl: $_lvl", textAlign: TextAlign.center,),
         ),
     );
   }
