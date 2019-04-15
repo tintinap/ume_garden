@@ -16,6 +16,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="ume_garden"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDesaSN3yfjzA98ZncrC-24q1QpGdPPhL0"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
