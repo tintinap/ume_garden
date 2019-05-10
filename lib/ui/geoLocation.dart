@@ -7,28 +7,34 @@ class LocationScreen extends StatefulWidget {
 }
 
 class LocationState extends State<LocationScreen> {
+  String latitude;
+  String longtitude;
 
-  void getCurrentLocation() {
-    var currentLocation = LocationData;
+  // void getCurrentLocation() {
+  //   var currentLocation = LocationData;
 
-    var location = new Location();
+  //   var location = new Location();
 
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      currentLocation = await location.getLocation();
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        print('Permission denied');
-      } 
-      currentLocation = null;
-    }
-  }
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     currentLocation = await location.getLocation();
+  //   } on PlatformException catch (e) {
+  //     if (e.code == 'PERMISSION_DENIED') {
+  //       print('Permission denied');
+  //     } 
+  //     currentLocation = null;
+  //   }
+  // }
   
-  void showLocation() {
+  void getLocation() {
     var location = new Location();
     location.onLocationChanged().listen((LocationData currentLocation) {
-      print(currentLocation.latitude);
-      print(currentLocation.longitude);
+      setState(() {
+        latitude = currentLocation.latitude.toString();
+        longtitude = currentLocation.longitude.toString();
+      });
+      print(latitude);
+      print(longtitude);
     });
   }
 
@@ -38,13 +44,15 @@ class LocationState extends State<LocationScreen> {
       appBar: AppBar(
         title: Text('Location'),
       ),
-      body: ListView(
+      body: new ListView(
         padding: EdgeInsets.all(50.0),
         children: <Widget>[
+          new Text(latitude.toString()),
+          new Text(longtitude.toString()),
           RaisedButton(
             child: Text('Get CurrentLocation'),
             onPressed: () {
-              showLocation();
+              getLocation();
             },
           )
         ],
