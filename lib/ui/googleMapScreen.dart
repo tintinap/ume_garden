@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -10,17 +11,35 @@ class MapScreen extends StatefulWidget {
 
 class _MyMapState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
+  double _latitude;
+  double _longitude;
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580644, -122.085749655962),
-    zoom: 14.4746,
+  CameraPosition _kGooglePlex = 
+  CameraPosition(
+    target: LatLng(13.7167, 100.7833),
+    zoom: 15.0,
   );
 
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  void _getLocation() async {
+    final GoogleMapController controller = await _controller.future;
+    var location = new Location();
+    location.onLocationChanged().listen((LocationData currentLocation) {
+      setState(() {
+        _latitude = currentLocation.latitude;
+        _longitude = currentLocation.longitude;
+      });
+      print(_latitude);
+      print(_longitude);
+    });
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        bearing: 0,
+        target: LatLng(_latitude, _longitude),
+        zoom: 17.0,
+      ),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +49,25 @@ class _MyMapState extends State<MapScreen> {
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
+          Polyline(
+            polylineId: null,
+            width: 10,
+            points: <LatLng>[
+                LatLng(_latitude, _longitude),
+            ],
+            endCap: Cap.roundCap,
+            startCap: Cap.buttCap,
+            color: Colors.orange,
+            visible: true
+          );
         },
+        myLocationEnabled: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('To the lake!'),
-        icon: Icon(Icons.directions_boat),
+        onPressed: _getLocation,
+        label: Text('To my location!'),
+        icon: Icon(Icons.location_on),
       ),
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
