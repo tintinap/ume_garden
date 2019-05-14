@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './ui/main_screen.dart';
+import './ui/main.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,12 +12,12 @@ class MyApp extends StatelessWidget {
       title: 'UME_Garden',
       showSemanticsDebugger: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       
       initialRoute: '/',
       routes: {
-        "/" : (context) => MainScreen(),
+        "/" : (context) => HomePage(),
       }
     );
   }
