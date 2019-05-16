@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 
-class HomePage extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  HomePageState createState() {
-    return HomePageState();
+  HomeState createState() {
+    return HomeState();
   }
 
 }
 
 
-class HomePageState extends State<HomePage> {
+class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +37,16 @@ class HomePageState extends State<HomePage> {
             ListTile(
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
             ),
             ListTile(
               title: Text("Setting"),
               trailing: Icon(Icons.settings),
+              onTap: () {
+                Navigator.pushNamed(context, '/setting');
+              },
             ),
             ListTile(
               title: Text("Logout"),
@@ -49,5 +55,6 @@ class HomePageState extends State<HomePage> {
           ],
         ),
       ),//this will just add the Navigation Drawer Icon
-    ),
+    );
   }
+}

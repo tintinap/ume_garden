@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import './ui/main_screen.dart';
-import './ui/main.dart';
+import './ui/home.dart';
+import './ui/profile.dart';
+import './ui/editProfile.dart';
+import './ui/setting.dart';
+import './ui/plantProfile.dart';
+import './ui/register.dart';
+import './ui/login.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,7 +23,13 @@ class MyApp extends StatelessWidget {
       
       initialRoute: '/',
       routes: {
-        "/" : (context) => HomePage(),
+        "/" : (context) => Home(),
+        "/profile" : (context) => Profile(),
+        "/setting" : (context) => Setting(),
+        "/editProfile" : (context) => EditProfile(),
+        "/plant" : (context) => PlantProfile(),
+        "/register" : (context) => Register(),
+        "/login" : (context) => Login(),
       }
     );
   }

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 
-class Login extends StatefulWidget {
+class Setting extends StatefulWidget {
   @override
-  LoginState createState() {
-    return LoginState();
+  SettingState createState() {
+    return SettingState();
   }
 
 }
 
 
-class LoginState extends State<Login> {
+class SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Settings"),
         centerTitle: true,
       ),
     );
