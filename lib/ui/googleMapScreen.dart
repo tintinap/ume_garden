@@ -11,12 +11,16 @@ class MapScreen extends StatefulWidget {
 
 class _MyMapState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
+  var location = new Location();
   List<LatLng> _polyline = [];
+  Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
+  int _polylineIdCounter = 1;
+  PolylineId selectedPolyline;
 
   CameraPosition _kGooglePlex = 
-  CameraPosition(
-    target: LatLng(13.7167, 100.7833),
-    zoom: 15.0,
+    CameraPosition(
+      target: LatLng(13.7167, 100.7833),
+      zoom: 15.0,
   );
 
   void _onEnabled() {
@@ -25,43 +29,53 @@ class _MyMapState extends State<MapScreen> {
 
   void _getLocation() async {
     _onEnabled();
+    print("Cleared Location List");
 
     final GoogleMapController controller = await _controller.future;
-    var location = new Location();
     location.onLocationChanged().listen((LocationData currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
-      _onMotionChange(currentLocation.latitude, currentLocation.longitude);
+      _addLocations(currentLocation.latitude, currentLocation.longitude);
       _addPolylines();
       controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-          bearing: 0,
           target: LatLng(currentLocation.latitude, currentLocation.longitude),
-          zoom: 17.0,
+          zoom: 15.0,
         ),
       ));
     });
   }
 
-  void _onMotionChange(double _latitude, double _longitude) async {
+  void _addLocations(double _latitude, double _longitude) async {
     LatLng latlong = new LatLng(_latitude, _longitude);
     _polyline.add(latlong);
+    print('added latlong into list.');
   }
 
-  Polyline _addPolylines() {
-    return new Polyline(
-      points: _polyline,
+  void _addPolylines() async {
+    final int polylineCount = polylines.length;
+    final String polylineIdVal = 'polyline_id_$_polylineIdCounter';
+    _polylineIdCounter++;
+    final PolylineId polylineId = PolylineId(polylineIdVal);
+
+    final Polyline polyline = Polyline(
+      polylineId: polylineId,
+      consumeTapEvents: false,
       color: Colors.red,
-      width: 1000,
-      polylineId: null
+      width: 15,
+      points: _polyline,
     );
+    setState(() {
+      polylines[polylineId] = polyline;
+    });
+    print("added polyline.");
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Polyline'),
+        title: Text('MapApi'),
       ),
       body: GoogleMap(
         mapType: MapType.normal,
@@ -70,6 +84,7 @@ class _MyMapState extends State<MapScreen> {
           _controller.complete(controller);
         },
         myLocationEnabled: true,
+        polylines: Set<Polyline>.of(polylines.values),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _getLocation,
