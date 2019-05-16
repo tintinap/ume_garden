@@ -11,8 +11,7 @@ class MapScreen extends StatefulWidget {
 
 class _MyMapState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
-  double _latitude;
-  double _longitude;
+  List<LatLng> _polyline = [];
 
   CameraPosition _kGooglePlex = 
   CameraPosition(
@@ -20,52 +19,61 @@ class _MyMapState extends State<MapScreen> {
     zoom: 15.0,
   );
 
+  void _onEnabled() {
+    _polyline.clear();
+  }
+
   void _getLocation() async {
+    _onEnabled();
+
     final GoogleMapController controller = await _controller.future;
     var location = new Location();
     location.onLocationChanged().listen((LocationData currentLocation) {
-      setState(() {
-        _latitude = currentLocation.latitude;
-        _longitude = currentLocation.longitude;
-      });
-      print(_latitude);
-      print(_longitude);
+      print(currentLocation.latitude);
+      print(currentLocation.longitude);
+      _onMotionChange(currentLocation.latitude, currentLocation.longitude);
+      _addPolylines();
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          bearing: 0,
+          target: LatLng(currentLocation.latitude, currentLocation.longitude),
+          zoom: 17.0,
+        ),
+      ));
     });
+  }
 
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        bearing: 0,
-        target: LatLng(_latitude, _longitude),
-        zoom: 17.0,
-      ),
-    ));
+  void _onMotionChange(double _latitude, double _longitude) async {
+    LatLng latlong = new LatLng(_latitude, _longitude);
+    _polyline.add(latlong);
+  }
+
+  Polyline _addPolylines() {
+    return new Polyline(
+      points: _polyline,
+      color: Colors.red,
+      width: 1000,
+      polylineId: null
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: AppBar(
+        title: Text('Polyline'),
+      ),
       body: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-          Polyline(
-            polylineId: null,
-            width: 10,
-            points: <LatLng>[
-                LatLng(_latitude, _longitude),
-            ],
-            endCap: Cap.roundCap,
-            startCap: Cap.buttCap,
-            color: Colors.orange,
-            visible: true
-          );
         },
         myLocationEnabled: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _getLocation,
-        label: Text('To my location!'),
+        label: Text('Create Polyline!'),
         icon: Icon(Icons.location_on),
       ),
     );
