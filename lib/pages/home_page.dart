@@ -44,6 +44,10 @@ class _HomePageState extends State<HomePage> {
     documentReference.setData(data).whenComplete(() {
     }).catchError((e) => print(e));
   }
+
+  // ฟังก์ชันออกจากระบบ
+
+
   _signOut() async {
       try {
         await widget.auth.signOut();
@@ -70,6 +74,7 @@ class _HomePageState extends State<HomePage> {
    );
  }
 
+ // เอาค่าข้อมูลจากฐานข้อมูลและตรวจเช็คว่า user อะไร และ Return ข้อมูลของ user นั้น
  Widget _buildBody(BuildContext context) {
  return StreamBuilder<QuerySnapshot>(
    stream: Firestore.instance.collection('register').where('name',isEqualTo: widget.user).snapshots(),
@@ -80,6 +85,8 @@ class _HomePageState extends State<HomePage> {
    },
  );
 }
+
+
 
  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
    return ListView(
@@ -100,14 +107,15 @@ class _HomePageState extends State<HomePage> {
        ),
        child: ListTile(
          title: Text(record.name),
-         trailing: Text(record.votes.toString()+"  -Km:  "+record.km.toString()),
-         onTap: () => record.reference.updateData({'votes': record.votes + 1}),
+         trailing: Text(record.votes.toString()+"  -Km:  "+record.km.toString()), 
+         onTap: () => record.reference.updateData({'votes': record.votes + 1}), // กดแทบเพื่อทำการเพิ่มค่าไปยัง database
        ),
      ),
    );
  }
 }
 
+// คลาสที่สร้าง attribute เพื่อเก็บค่าที่มีอยู่ใน databse และมีฟังก์ชัน Retrun ค่าออกมาเพื่อไปใช้ในการแสดงผล
 class Record {
  final String name;
  final String test;
@@ -137,7 +145,7 @@ class Record {
 // }
  Record.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);
-
+// ฟังก์ชันสำหรับ Reteun ค่า
  @override
  String toString() => "Record<$name:$votes$km$tree>";
 }

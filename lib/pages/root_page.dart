@@ -1,3 +1,4 @@
+// เช็คว่า user ได้ทำการ login ไว้รึเปล่า
 import 'package:flutter/material.dart';
 import 'package:flutter_login_demo/pages/login_signup_page.dart';
 import 'package:flutter_login_demo/services/authentication.dart';
@@ -8,11 +9,14 @@ class RootPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _RootPageState();
 }
+// ค่าสถานะต่างๆ ของ login 
 enum AuthStatus {
   NOT_DETERMINED,
   NOT_LOGGED_IN,
   LOGGED_IN,
 }
+
+
 
 class _RootPageState extends State<RootPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
@@ -33,6 +37,7 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
+//5hk login อยู่ให้ทำการ set ค่า user id ที่ login ตอนนั้น
   void _onLoggedIn() {
     widget.auth.getCurrentUser().then((user){
       setState(() {
@@ -45,13 +50,15 @@ class _RootPageState extends State<RootPage> {
       
     });
   }
-
+// ถ้า logout ให้ set authStatus เป็น NOT_LOGGED_IN เเละ ให้ _userId เป็นว่าง
   void _onSignedOut() {
     setState(() {
       authStatus = AuthStatus.NOT_LOGGED_IN;
       _userId = "";
     });
   }
+
+
 
   Widget _buildWaitingScreen() {
     return Scaffold(
@@ -62,6 +69,9 @@ class _RootPageState extends State<RootPage> {
     );
   }
 
+
+
+// เช็ค case ว่า login อยู่เปล่า ถ้า login อยู่ให้ไปหน้า Homepage Return ว่าจะออกไปหน้าไหน
   @override
   Widget build(BuildContext context) {
     switch (authStatus) {

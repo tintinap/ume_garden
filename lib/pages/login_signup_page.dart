@@ -20,11 +20,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   String _email;
   String _password;
   String _errorMessage;
-  // String _tree;
-  // String _km;
-  // String _picture;
-  // String _step;
-  // String _username;
+  
 
 
   // Initial form is login form
@@ -62,6 +58,8 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           userId = await widget.auth.signUp(_email, _password);
           widget.auth.sendEmailVerification();
 
+
+          // การสร้างตารางใน firebasee
           Map<String, dynamic> data = <String, dynamic>{
             "name": _email,
             "id": 1,
@@ -74,8 +72,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           documentReference.setData(data).whenComplete(() {
           print("Document Added");
           }).catchError((e) => print(e));
-
-
           _showVerifyEmailSentDialog();
           print('Signed up user: $userId');
         }
@@ -83,9 +79,13 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           _isLoading = false;
         });
 
+        // เป็นการ back กลับไปหน้า root_page แล้วทำการเข้าระบบ 
         if (userId.length > 0 && userId != null && _formMode == FormMode.LOGIN) {
           widget.onSignedIn();
         }
+
+
+
 
       } catch (e) {
         print('Error: $e');
@@ -255,7 +255,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       ),
     );
   }
-
+  // Show ปุ่มว่าจะเป็น create account หรือ Have an account? Sign in
   Widget _showSecondaryButton() {
     return new FlatButton(
       child: _formMode == FormMode.LOGIN

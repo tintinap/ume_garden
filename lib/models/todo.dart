@@ -14,12 +14,12 @@ class Todo {
     subject = snapshot.value["subject"],
     completed = snapshot.value["completed"];
 
-  toJson() {
-    return {
-      "userId": userId,
-      "subject": subject,
-      "completed": completed,
-    };
-  }
+  // toJson() {
+  //   return {
+  //     "userId": userId,
+  //     "subject": subject,
+  //     "completed": completed,
+  //   };
+  // }
   
 }

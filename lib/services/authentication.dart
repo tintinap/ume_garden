@@ -17,19 +17,20 @@ abstract class BaseAuth {
 
 class Auth implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
+  // Return userId ตัวอย่าง asdasd2aee1a2r3 ถูกเข้ารหัสไม่รู้เรื่องแน่นอน
   Future<String> signIn(String email, String password) async {
     FirebaseUser user = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
+        print("UID : ------------------"+user.uid+"------------------------------");
     return user.uid;
   }
-
+// Return userId ตัวอย่าง asdasd2aee1a2r3 ถูกเข้ารหัสไม่รู้เรื่องแน่นอน
   Future<String> signUp(String email, String password) async {
     FirebaseUser user = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     return user.uid;
   }
-
+// Return user ข้อมูล user ปัจจุบัน
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user;
