@@ -230,6 +230,7 @@ Widget _distanceandstep(km, stepcount) {
           ),
         ],
       )
+    )  
   );
 }
 
