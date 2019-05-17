@@ -47,7 +47,7 @@ class MainScreenState extends State<MainScreen> {
       _km = (stepCountValue/2000).toStringAsFixed(1);
     });
 
-    getLevel();
+    _getLevel();
 
   }
 
@@ -67,7 +67,7 @@ class MainScreenState extends State<MainScreen> {
   }
 
   //set remainStepCount and lvl
-  getLevel() {
+  void _getLevel() {
     if (_stepCountValue < 1000){ 
       setState(() => _lvl = 0);
       setState(() => _remainStepCount = _stepCountValue);
