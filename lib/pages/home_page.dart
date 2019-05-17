@@ -107,8 +107,8 @@ class _HomePageState extends State<HomePage> {
        ),
        child: ListTile(
          title: Text(record.name),
-         trailing: Text(record.votes.toString()+"  -Km:  "+record.km.toString()), 
-         onTap: () => record.reference.updateData({'votes': record.votes + 1}), // กดแทบเพื่อทำการเพิ่มค่าไปยัง database
+         trailing: Text(record.step.toString()+"  -Km:  "+record.step.toString()), 
+         onTap: () => record.reference.updateData({'step': record.step + 1}), // กดแทบเพื่อทำการเพิ่มค่าไปยัง database
        ),
      ),
    );
@@ -123,29 +123,27 @@ class Record {
  final int km;
  final int id;
  final int tree;
+ final int step;
  final DocumentReference reference;
 
  Record.fromMap(Map<String, dynamic> map, {this.reference})
-     : assert(map['name'] != null ),
-       assert(map['id'] != null||map['id'] == null),
+     : /*assert(map['name'] != null ),
+       assert(map['id'] != null),
        assert(map['name'] == null || map['name'] != null ),
        assert(map['km'] == null || map['km'] != null ),
        assert(map['tree'] == null || map['tree'] != null ),
+       assert(map['step'] == null || map['step'] != null ),*/
        name = map['name'],
        votes = map['votes'],
        test = map['name'],
        km = map['km'],
        tree = map['tree'],
-       id = map['votes'];
+       id = map['votes'],
+       step = map['step'];
        
-// void maia1(){
-//   if (name == 'test'){
-//     return 0
-//   }
-// }
  Record.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);
 // ฟังก์ชันสำหรับ Reteun ค่า
  @override
- String toString() => "Record<$name:$votes$km$tree>";
+ String toString() => "Record<$name:$votes$km$tree$step>";
 }

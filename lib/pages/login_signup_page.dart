@@ -61,13 +61,17 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
 
           // การสร้างตารางใน firebasee
           Map<String, dynamic> data = <String, dynamic>{
-            "name": _email,
-            "id": 1,
+            "email": _email,
+            // "id": 1,
             "username": "",
             "votes": 0,
-            "tree": 2,
-            "step": 0,
-            "picture" : ""
+            "picture" : "",
+            "tree": 0, // amount of lv5 plants of user
+            "step": 0, //
+            "km": "0.0", // current distance 
+            "totalKm": "0.0", // total distance
+            "lvl": 0, // current lvl of present tree
+            "remainStep": 0, // screen display step
           };
           documentReference.setData(data).whenComplete(() {
           print("Document Added");
