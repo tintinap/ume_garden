@@ -13,6 +13,8 @@ class _MyMapState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
   var location = new Location();
   List<LatLng> _polyline = [];
+  double latitude = 0;
+  double longitude = 0;
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
   int _polylineIdCounter = 1;
   PolylineId selectedPolyline;
@@ -38,14 +40,27 @@ class _MyMapState extends State<MapScreen> {
     location.onLocationChanged().listen((LocationData currentLocation) {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
-      _addLocations(currentLocation.latitude, currentLocation.longitude);
-      _addPolylines();
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(currentLocation.latitude, currentLocation.longitude),
-          zoom: 15.0,
-        ),
-      ));
+      if (latitude == 0 && longitude == 0){
+        _addLocations(currentLocation.latitude, currentLocation.longitude);
+        _addPolylines();
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(currentLocation.latitude, currentLocation.longitude),
+            zoom: 15.0,
+          ),
+        ));
+      } else {
+        if (currentLocation.latitude != latitude && currentLocation.longitude != longitude) {
+          _addLocations(currentLocation.latitude, currentLocation.longitude);
+          _addPolylines();
+          controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(currentLocation.latitude, currentLocation.longitude),
+              zoom: 15.0,
+            ),
+          ));
+        }
+      }
     });
   }
 
@@ -53,6 +68,10 @@ class _MyMapState extends State<MapScreen> {
   void _addLocations(double _latitude, double _longitude) async {
     LatLng latlong = new LatLng(_latitude, _longitude);
     _polyline.add(latlong);
+    setState(() {
+      latitude = _latitude;
+      longitude = _longitude;
+    });
     print('added latlong into list.');
   }
 
