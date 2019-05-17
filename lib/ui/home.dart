@@ -131,7 +131,7 @@ class HomeState extends State<Home> {
             _barnum(_remainStepCount, _fullPerLvl),
             _bar(_remainStepCount, _fullPerLvl),
             _bartxt('การเจริญเติบโต'),
-            _distance(_km),
+            _distanceandstep(_km, _stepCountValue),
           ],
         ),
       ),
@@ -212,12 +212,22 @@ class HomeState extends State<Home> {
 //=================================pedometer part==================================  
 }
 
-Widget _distance(km) {
+
+Widget _distanceandstep(km, stepcount) {
   return Container(
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(0.0, 35.0, 0, 0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('ระยะทางรวม\n\n$km Km', textAlign: TextAlign.center),
-          Text('จำนวนก้าว\n\nXXX ก้าว', textAlign: TextAlign.center),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
+            child: (Text('ระยะทางรวม\n\n$km\n\nกิโลเมตร', textAlign: TextAlign.center)),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(35, 0, 0, 0),
+            child: (Text('จำนวนก้าว\n\n$stepcount\n\nก้าว', textAlign: TextAlign.center)),
+          ),
         ],
       )
   );
