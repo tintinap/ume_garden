@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_demo/pages/login_signup_page.dart';
 import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:flutter_login_demo/pages/home_page.dart';
+import '../ui/home.dart';
+
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
   final BaseAuth auth;
@@ -84,7 +86,7 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new HomePage(
+          return new Home(
             userId: _userId,
             auth: widget.auth,
             onSignedOut: _onSignedOut,

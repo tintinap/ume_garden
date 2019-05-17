@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_login_demo/services/authentication.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_login_demo/models/todo.dart';
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
+  Home(
+    {
+      Key key, this.auth, this.userId, this.onSignedOut,this.user,
+    }
+  )
+    : super(key: key);
+
+  final BaseAuth auth;
+  final VoidCallback onSignedOut;
+  final String userId;
+  final String user;
+  
   @override
   HomeState createState() {
     return HomeState();
