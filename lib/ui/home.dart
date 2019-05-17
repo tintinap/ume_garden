@@ -50,8 +50,6 @@ class HomeState extends State<Home> {
     setUpPedometer();
   }
 
-
-
   _signOut() async {
       try {
         await widget.auth.signOut();

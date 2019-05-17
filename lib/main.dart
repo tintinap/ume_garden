@@ -7,6 +7,7 @@ import './ui/setting.dart';
 import './ui/plantProfile.dart';
 import './services/authentication.dart';
 import './pages/root_page.dart';
+import './ui/guest.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'UME_Garden',
+      title: 'YUME GARDEN',
       debugShowCheckedModeBanner: false,
       showSemanticsDebugger: false,
       theme: ThemeData(
@@ -23,8 +24,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-      	"/" : (context) => RootPage(auth: new Auth()),
-        // "/" : (context) => MainScreen(),
+      	"/" : (context) => Guest(),
+      	"/auth" : (context) => RootPage(auth: new Auth()),
         "/home" : (context) => Home(),
         "/profile" : (context) => Profile(),
         "/setting" : (context) => Setting(),
