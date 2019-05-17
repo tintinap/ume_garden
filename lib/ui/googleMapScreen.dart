@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -11,30 +13,29 @@ class MapScreen extends StatefulWidget {
 
 class _MyMapState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
+  Firestore _store = Firestore.instance;
+  String date = new DateFormat.yMMMd().format(new DateTime.now());
+
   var location = new Location();
+  var currentLocation = LocationData;
+
   List<LatLng> _polyline = [];
+  List position = [];
   double latitude = 0;
   double longitude = 0;
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
   int _polylineIdCounter = 1;
   PolylineId selectedPolyline;
 
-  // มุมมองกล้องเริ่มต้น
-  CameraPosition _kGooglePlex = 
-    CameraPosition(
-      target: LatLng(13.7167, 100.7833),
-      zoom: 15.0,
-  );
-
   // ลบค่าใน list polyline
-  void _onEnabled() {
+  void _onEnabled() async {
     _polyline.clear();
+    print("Cleared Location List");
   }
 
   // จัดการ location และมุมมองกล้อง
   void _getLocation() async {
-    _onEnabled();
-    print("Cleared Location List");
+    location.changeSettings(distanceFilter: 10);
 
     final GoogleMapController controller = await _controller.future;
     location.onLocationChanged().listen((LocationData currentLocation) {
@@ -50,7 +51,7 @@ class _MyMapState extends State<MapScreen> {
           ),
         ));
       } else {
-        if (currentLocation.latitude != latitude && currentLocation.longitude != longitude) {
+        if (currentLocation.latitude != latitude || currentLocation.longitude != longitude) {
           _addLocations(currentLocation.latitude, currentLocation.longitude);
           _addPolylines();
           controller.animateCamera(CameraUpdate.newCameraPosition(
@@ -68,6 +69,8 @@ class _MyMapState extends State<MapScreen> {
   void _addLocations(double _latitude, double _longitude) async {
     LatLng latlong = new LatLng(_latitude, _longitude);
     _polyline.add(latlong);
+    position.add(_latitude);
+    position.add(_longitude);
     setState(() {
       latitude = _latitude;
       longitude = _longitude;
@@ -96,25 +99,37 @@ class _MyMapState extends State<MapScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return new Scaffold(
       appBar: AppBar(
         title: Text('MapApi'),
       ),
       body: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
+        initialCameraPosition: CameraPosition(target: LatLng(13.73, 100.78), zoom: 14),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
         myLocationEnabled: true,
         polylines: Set<Polyline>.of(polylines.values),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _getLocation,
-        label: Text('Create Polyline!'),
-        icon: Icon(Icons.location_on),
-      ),
+      persistentFooterButtons: <Widget>[
+        FloatingActionButton.extended(
+          onPressed: _getLocation,
+          label: Text('Create Polyline!'),
+          icon: Icon(Icons.location_on),
+        ),
+        FloatingActionButton.extended(
+          onPressed: () async {
+            await _store.collection('location').document(date).setData({
+              'position': position,
+            });
+            _onEnabled();
+          },
+          label: Text('Clear Lines!'),
+          icon: Icon(Icons.delete),
+        )
+      ],
     );
   }
 }

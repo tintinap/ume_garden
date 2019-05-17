@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ume_garden/ui/statDistances.dart';
 import './ui/googleMapScreen.dart';
 
 void main() => runApp(MyApp());
@@ -14,9 +15,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       
-      initialRoute: '/',
+      initialRoute: '/stat',
       routes: {
         "/" : (context) => MapScreen(),
+        "/stat": (context) => StatScreen()
       }
     );
   }

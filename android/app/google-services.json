@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "526339694873",
+    "firebase_url": "https://umegarden-beeba.firebaseio.com",
+    "project_id": "umegarden-beeba",
+    "storage_bucket": "umegarden-beeba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526339694873:android:6f72243d68496138",
+        "android_client_info": {
+          "package_name": "com.example.umegarden"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "526339694873-8to3ho0k1bv3soeofrgre27k7n9if3au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnrEemSSwek_Z3zQOhDo7ZT91HynsgwVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526339694873-8to3ho0k1bv3soeofrgre27k7n9if3au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
