@@ -5,8 +5,6 @@ import './ui/profile.dart';
 import './ui/editProfile.dart';
 import './ui/setting.dart';
 import './ui/plantProfile.dart';
-import './ui/register.dart';
-import './ui/login.dart';
 import './services/authentication.dart';
 import './pages/root_page.dart';
 
@@ -32,8 +30,6 @@ class MyApp extends StatelessWidget {
         "/setting" : (context) => Setting(),
         "/editProfile" : (context) => EditProfile(),
         "/plant" : (context) => PlantProfile(),
-        "/register" : (context) => Register(),
-        "/login" : (context) => Login(),
       }
     );
   }
