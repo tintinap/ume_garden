@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_login_demo/services/authentication.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_login_demo/models/todo.dart';
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 
 class Home extends StatefulWidget {
+  Home(
+    {
+      Key key, this.auth, this.userId, this.onSignedOut,this.user,
+    }
+  )
+    : super(key: key);
+
+  final BaseAuth auth;
+  final VoidCallback onSignedOut;
+  final String userId;
+  final String user;
+  
   @override
   HomeState createState() {
     return HomeState();
@@ -21,6 +39,7 @@ class HomeState extends State<Home> {
   String _km = "0.0"; //distance
   String _totalKm = "0.0"; // Total distance
   int _stepCountValue = 0; //all Foot step record
+  int _totalStep = 0; // Total footstep
   int  _remainStepCount = 0; //step that will be showed on screen
   int _plants = 0; //all lvl 5 plants of user
   StreamSubscription<int> _subscription; // for pedometer package
@@ -39,6 +58,15 @@ class HomeState extends State<Home> {
         onError: _onError, onDone: _onDone, cancelOnError: true);
   }
 //=================================pedometer part==================================
+
+  _signOut() async {
+      try {
+        await widget.auth.signOut();
+        widget.onSignedOut();
+      } catch (e) {
+        print(e);
+      }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +118,7 @@ class HomeState extends State<Home> {
             ListTile(
               title: Text("Logout"),
               trailing: Icon(Icons.power_settings_new),
+              onTap: _signOut,
             ),
           ],
         ),
@@ -136,9 +165,14 @@ class HomeState extends State<Home> {
     setState(() {
       int stepCountValue = 0;
       double totalKm = 0;
-
-      totalKm += _stepCountValue/2000;
-      _totalKm = totalKm.toStringAsFixed(1);
+      if (_plants > 1) {
+        totalKm += _stepCountValue/2000;
+        _totalKm = totalKm.toStringAsFixed(1);
+        _totalStep += _stepCountValue;
+      } else {
+        _totalKm = _km;
+        _totalStep = _stepCountValue;
+      }
       stepCountValue = 0;
       _stepCountValue = stepCountValue;
       _km = "0.0";
@@ -180,13 +214,12 @@ class HomeState extends State<Home> {
 
 Widget _distance(km) {
   return Container(
-    child: Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 25.0, 0, 0),
-      child: Text(
-        'ระยะทางรวม\n\n$km Km',
-        textAlign: TextAlign.center
-      ),
-    ),
+      child: Row(
+        children: <Widget>[
+          Text('ระยะทางรวม\n\n$km Km', textAlign: TextAlign.center),
+          Text('จำนวนก้าว\n\nXXX ก้าว', textAlign: TextAlign.center),
+        ],
+      )
   );
 }
 
