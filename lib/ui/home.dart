@@ -75,20 +75,12 @@ class HomeState extends State<Home> {
             
 
             ListTile(
-              title: Text("Login"),
+              title: Text("Login&Register"),
               trailing: Icon(Icons.landscape),
               onTap: () {
-                Navigator.pushNamed(context, '/login');
+                Navigator.pushNamed(context, '/');
               },
             ),
-            ListTile(
-              title: Text("Register"),
-              trailing: Icon(Icons.laptop_mac),
-              onTap: () {
-                Navigator.pushNamed(context, '/register');
-              },
-            ),
-
 
             ListTile(
               title: Text("Logout"),

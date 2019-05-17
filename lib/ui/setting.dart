@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:slider/slider.dart';
 
 class Setting extends StatefulWidget {
   @override
@@ -11,36 +11,19 @@ class Setting extends StatefulWidget {
 
 class SettingState extends State<Setting> {
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
         centerTitle: true,
       ),
-      /*
-      body: Container(
-        //color: Colors.amber,
-        padding: EdgeInsets.all(30.0),
-        margin: EdgeInsets.all(16.0),
-        width: 500.0,
-        height: 1000.0,
-        child: Container(
-          //color: Colors.teal,
-          child: Text(
-            'Background music\n\n\nSFX Music\n\n\n! Notification\n\n! About',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 17.0,
-            ),
-          ),
-        ),
-      ),
-      */
       body: Container(
         child: ListView(
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
             _bgmusic(),
+            _slider(),
             _sfxmusic(),
             _notifications(),
             _about(context)
@@ -105,5 +88,19 @@ Widget _about(BuildContext context) {
         Navigator.pushNamed(context, '/home');
       },
     ),
+  );
+}
+
+Widget _slider(){
+  return Padding(
+    padding: EdgeInsets.all(0),
+    child: Slider(
+      min: 0,
+      max: 15,
+      value: 7,
+      divisions: 5,
+      activeColor: Colors.teal,
+      inactiveColor: Colors.blueGrey,
+    )
   );
 }

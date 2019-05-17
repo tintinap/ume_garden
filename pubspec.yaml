@@ -14,6 +14,7 @@ dependencies:
   firebase_auth: ^0.6.2+1
   cloud_firestore: ^0.8.2+3
   percent_indicator: ^1.0.16
+  slider: ^0.0.1
 
   
 dev_dependencies:
