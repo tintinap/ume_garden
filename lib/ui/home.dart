@@ -148,7 +148,18 @@ class HomeState extends State<Home> {
 
     setState(() {
       _km = (stepCountValue/2000).toStringAsFixed(1);
+      print("_km = $_km");
     });
+    double totalKm = 0;
+      if (_plants > 0) {
+        totalKm += _stepCountValue/2000;
+        _totalKm = totalKm.toStringAsFixed(1);
+        _totalStep += _stepCountValue;
+      } else {
+        _totalKm = _km;
+        _totalStep = _stepCountValue;
+      }
+    print("totalKm = $_totalKm, totalStepCount = $_totalStep");
 
     _getLevel();
 
@@ -164,15 +175,6 @@ class HomeState extends State<Home> {
   void setUpNewPlant() {
     setState(() {
       int stepCountValue = 0;
-      double totalKm = 0;
-      if (_plants > 1) {
-        totalKm += _stepCountValue/2000;
-        _totalKm = totalKm.toStringAsFixed(1);
-        _totalStep += _stepCountValue;
-      } else {
-        _totalKm = _km;
-        _totalStep = _stepCountValue;
-      }
       stepCountValue = 0;
       _stepCountValue = stepCountValue;
       _km = "0.0";
