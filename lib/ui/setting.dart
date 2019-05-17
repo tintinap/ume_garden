@@ -36,16 +36,20 @@ class SettingState extends State<Setting> {
         ),
       ),
       */
-      body: new Row(
-        children: <Widget>[
-          new IconButton(icon: Icon(Icons.add)),
-          new Text('\n\nBackground music\n\n', textAlign: TextAlign.center),
-        ],
-        Container(
-          new IconButton(icon: Icon(Icons.music_note)),
-          new Text('\n\nSFX music\n\n', textAlign: TextAlign.center),
+      body: Container(
+        width: 400,
+        height: 400,
+        margin: EdgeInsets.all(20.0),
+        color: Colors.green,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Text('Background music'),
+            Text('ระยะทางของต้นไม้'),
+            Text('xxx'),
+          ],
         ),
-      ),
+      )
     );
   }
 }
