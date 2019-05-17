@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import 'package:pedometer/pedometer.dart';
+import 'dart:async';
+
 class Home extends StatefulWidget {
   @override
   HomeState createState() {
@@ -11,6 +14,7 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
+  String _plantImage = "assets/LV0.png";
   
 //=================================pedometer part==================================
   String _km = "0.0"; //distance
@@ -93,7 +97,7 @@ class HomeState extends State<Home> {
         child: ListView(
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
-            _tree(),
+            _tree(_plantImage),
             _barnum(),
             _bar(),
             _bartxt(),
