@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import './ui/main_screen.dart';
-//import './ui/home.dart';
+import './ui/home.dart';
 import './ui/profile.dart';
 import './ui/editProfile.dart';
 import './ui/setting.dart';
@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-      	"/" : (context) => RootPage(auth: new Auth()),
+      	//"/" : (context) => RootPage(auth: new Auth()),
         // "/" : (context) => MainScreen(),
-        // "/" : (context) => Home(),
+        "/" : (context) => Home(),
         "/profile" : (context) => Profile(),
         "/setting" : (context) => Setting(),
         "/editProfile" : (context) => EditProfile(),

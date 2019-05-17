@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:percent_indicator/percent_indicator.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -73,55 +73,63 @@ class HomeState extends State<Home> {
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(30.0),
-        child: Center(
-          child: (
-            Row(
-              children: <Widget>[
-                //ระยะทางรวม
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Text(
-                          'ระยะทางรวม',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Text(
-                        'xx.xx km',
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-                //แคลอรี่
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Text(
-                          'แคลอรี่',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Text(
-                        'xx.xx cal',
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ),
+      body: Container(
+        child: ListView(
+          padding: EdgeInsets.all(30.0),
+          children: <Widget>[
+            _tree(),
+            _bar(),
+            _bartxt(),
+            _distance(),
+          ],
         ),
       ),
     );
   }
+}
+
+Widget _distance() {
+  return Container(
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(0.0, 25.0, 0, 0),
+      child: Text(
+        'ระยะทางรวม\n\nXXX Km',
+        textAlign: TextAlign.center
+      ),
+    ),
+  );
+}
+
+Widget _bar() {
+  return Padding(
+    padding: EdgeInsets.fromLTRB(60.0, 0, 0, 0),
+    child: LinearPercentIndicator(
+      width: 140.0,
+      lineHeight: 14.0,
+      percent: 0.5,
+      backgroundColor: Colors.grey,
+      progressColor: Colors.teal,
+    ),
+  );
+}
+
+Widget _bartxt(){
+  return Text(
+      'การเจริญเติบโต',
+      textAlign: TextAlign.center,
+      style: TextStyle(color: Colors.grey, fontSize: 10.0)
+  );
+}
+
+Widget _tree() {
+  return new Container(
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: 120,
+        child: Image.asset('assets/LV5.png'),
+      ),
+    ),
+  );
 }
