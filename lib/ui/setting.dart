@@ -10,6 +10,9 @@ class Setting extends StatefulWidget {
 }
 
 class SettingState extends State<Setting> {
+  double _sliderValueBG = 10.0;
+  double _sliderValueVFX = 10.0;
+  bool _noti = false;
   @override
 
   Widget build(BuildContext context) {
@@ -20,12 +23,55 @@ class SettingState extends State<Setting> {
       ),
       body: Container(
         child: ListView(
-          padding: EdgeInsets.all(30.0),
+          padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
           children: <Widget>[
             _bgmusic(),
-            _slider(),
+            Padding(
+              padding: EdgeInsets.all(0),
+              child: Slider(
+                min: 0,
+                max: 15,
+                onChanged: (newRating) {
+                  setState(() => _sliderValueBG = newRating);
+                },
+                value: _sliderValueBG,
+                divisions: 5,
+                activeColor: Colors.teal,
+                inactiveColor: Colors.blueGrey,
+              )
+            ),
             _sfxmusic(),
-            _notifications(),
+            Padding(
+              padding: EdgeInsets.all(0),
+              child: Slider(
+                min: 0,
+                max: 15,
+                onChanged: (newRating) {
+                  setState(() => _sliderValueVFX = newRating);
+                },
+                value: _sliderValueVFX,
+                divisions: 5,
+                activeColor: Colors.teal,
+                inactiveColor: Colors.blueGrey,
+              )
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Checkbox(
+                      value: _noti,
+                      onChanged: (bool value) {
+                          setState(() {
+                              _noti = value;
+                          });
+                      },
+                  ),
+                  Text('Notifications'),
+                ],
+              ),
+            ),
             _about(context)
           ],
         ),
@@ -66,7 +112,6 @@ Widget _notifications() {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Icon(Icons.add_box),
         Text('Notifications'),
       ],
     ),
@@ -78,9 +123,9 @@ Widget _about(BuildContext context) {
     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
     child: FlatButton(
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Icon(Icons.cloud_circle),
+          Icon(Icons.info),
           Text('About', textAlign: TextAlign.left),
         ]
       ),
@@ -91,13 +136,16 @@ Widget _about(BuildContext context) {
   );
 }
 
-Widget _slider(){
+Widget _slider(target){
   return Padding(
     padding: EdgeInsets.all(0),
     child: Slider(
       min: 0,
       max: 15,
-      value: 7,
+      onChanged: (newRating) {
+        target = newRating;
+      },
+      value: target,
       divisions: 5,
       activeColor: Colors.teal,
       inactiveColor: Colors.blueGrey,
