@@ -7,6 +7,9 @@ import 'package:flutter_login_demo/models/todo.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:pedometer/pedometer.dart';
+import 'dart:async';
+
 class Home extends StatefulWidget {
   Home(
     {
@@ -29,6 +32,7 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
+  String _plantImage = "assets/LV0.png";
   
 //=================================pedometer part==================================
   String _km = "0.0"; //distance
@@ -111,7 +115,7 @@ class HomeState extends State<Home> {
         child: ListView(
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
-            _tree(),
+            _tree(_plantImage),
             _barnum(),
             _bar(),
             _bartxt(),
