@@ -33,13 +33,15 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   String _plantImage = "assets/LV0.png";
+  int _fullPerLvl = 1000;
   
 //=================================pedometer part==================================
   String _km = "0.0"; //distance
   String _totalKm = "0.0"; // Total distance
   int _stepCountValue = 0; //all Foot step record
+  int _totalStep = 0; // Total footstep
   int  _remainStepCount = 0; //step that will be showed on screen
-  int plants = 0; //all lvl 5 plants of user
+  int _plants = 0; //all lvl 5 plants of user
   StreamSubscription<int> _subscription; // for pedometer package
   int _lvl = 0;
 
@@ -50,6 +52,13 @@ class HomeState extends State<Home> {
     setUpPedometer();
   }
 
+  void setUpPedometer() {
+    Pedometer pedometer = new Pedometer();
+    this._subscription = pedometer.stepCountStream.listen(_onData,
+        onError: _onError, onDone: _onDone, cancelOnError: true);
+  }
+//=================================pedometer part==================================
+
   _signOut() async {
       try {
         await widget.auth.signOut();
@@ -58,14 +67,6 @@ class HomeState extends State<Home> {
         print(e);
       }
     }
-
-    
-  void setUpPedometer() {
-    Pedometer pedometer = new Pedometer();
-    this._subscription = pedometer.stepCountStream.listen(_onData,
-        onError: _onError, onDone: _onDone, cancelOnError: true);
-  }
-//=================================pedometer part==================================
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +128,10 @@ class HomeState extends State<Home> {
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
             _tree(_plantImage),
-            _barnum(),
-            _bar(),
-            _bartxt(),
-            _distanceandstep(),
+            _barnum(_remainStepCount, _fullPerLvl),
+            _bar(_remainStepCount, _fullPerLvl),
+            _bartxt('การเจริญเติบโต'),
+            _distanceandstep(_km, _stepCountValue),
           ],
         ),
       ),
@@ -147,7 +148,18 @@ class HomeState extends State<Home> {
 
     setState(() {
       _km = (stepCountValue/2000).toStringAsFixed(1);
+      print("_km = $_km");
     });
+    double totalKm = 0;
+      if (_plants > 0) {
+        totalKm += _stepCountValue/2000;
+        _totalKm = totalKm.toStringAsFixed(1);
+        _totalStep += _stepCountValue;
+      } else {
+        _totalKm = _km;
+        _totalStep = _stepCountValue;
+      }
+    print("totalKm = $_totalKm, totalStepCount = $_totalStep");
 
     _getLevel();
 
@@ -163,13 +175,11 @@ class HomeState extends State<Home> {
   void setUpNewPlant() {
     setState(() {
       int stepCountValue = 0;
-      double totalKm = 0;
-
-      totalKm += _stepCountValue/2000;
-      _totalKm = totalKm.toStringAsFixed(1);
       stepCountValue = 0;
       _stepCountValue = stepCountValue;
       _km = "0.0";
+      _plants += 1;
+      _fullPerLvl = 1000;
     });
   }
   
@@ -178,27 +188,34 @@ class HomeState extends State<Home> {
     if (_stepCountValue < 1000){ 
       setState(() => _lvl = 0);
       setState(() => _remainStepCount = _stepCountValue);
+      setState(() => _fullPerLvl = 1000);
     } else if (_stepCountValue < 5000) { 
       setState(() => _lvl = 1);
       setState(() => _remainStepCount = _stepCountValue-1000);
+      setState(() => _fullPerLvl = 5000);
     } else if (_stepCountValue < 10000) { 
       setState(() => _lvl = 2); 
       setState(() => _remainStepCount = _stepCountValue-5000);
+      setState(() => _fullPerLvl = 10000);
     } else if (_stepCountValue < 50000) { 
       setState(() => _lvl = 3);
       setState(() => _remainStepCount = _stepCountValue-10000);
-    } else if (_stepCountValue < 100000) { 
+      setState(() => _fullPerLvl = 50000);
+    } else if (_stepCountValue < 100000) {
       setState(() => _lvl = 4);
       setState(() => _remainStepCount = _stepCountValue-50000);
+      setState(() => _fullPerLvl = 100000);
     } else { 
       setState(() => _lvl = 5);
       setState(() => _remainStepCount = _stepCountValue-100000);
     }
+    this._plantImage = "assets/LV$_lvl.png";
   }
 //=================================pedometer part==================================  
 }
 
-Widget _distanceandstep() {
+
+Widget _distanceandstep(km, stepcount) {
   return Container(
     child: Padding(
       padding: EdgeInsets.fromLTRB(0.0, 35.0, 0, 0),
@@ -207,42 +224,43 @@ Widget _distanceandstep() {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
-            child: (Text('ระยะทางรวม\n\nXXX\n\nกิโลเมตร', textAlign: TextAlign.center)),
+            child: (Text('ระยะทางรวม\n\n$km\n\nกิโลเมตร', textAlign: TextAlign.center)),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(35, 0, 0, 0),
-            child: (Text('จำนวนก้าว\n\nXXX\n\nก้าว', textAlign: TextAlign.center)),
+            child: (Text('จำนวนก้าว\n\n$stepcount\n\nก้าว', textAlign: TextAlign.center)),
           ),
         ],
       )
-    ),
+    )  
   );
 }
 
-Widget _barnum(){
+Widget _barnum(int remainStep, int fullPerLvl){
   return Text(
-      '500/500',
+      '$remainStep /$fullPerLvl',
       textAlign: TextAlign.center,
       style: TextStyle(color: Colors.black, fontSize: 14.0)
   );
 }
 
-Widget _bar() {
+Widget _bar(int remainStep, int fullPerLvl) {
+  double percentNum = remainStep/fullPerLvl;
   return Padding(
     padding: EdgeInsets.fromLTRB(80.0, 0, 0, 0),
     child: LinearPercentIndicator(
       width: 140.0,
       lineHeight: 14.0,
-      percent: 0.5,
+      percent: percentNum,
       backgroundColor: Colors.grey,
       progressColor: Colors.teal,
     ),
   );
 }
 
-Widget _bartxt(){
+Widget _bartxt(String txt){
   return Text(
-      'การเจริญเติบโต',
+      txt,
       textAlign: TextAlign.center,
       style: TextStyle(color: Colors.grey, fontSize: 10.0)
   );
