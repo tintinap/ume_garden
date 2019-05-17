@@ -74,8 +74,8 @@ class MainScreenState extends State<MainScreen> {
     print("Flutter Pedometer Error: $error");
   }
 
-  //Reset StepCountValue 
-  void reset() {
+  //setup for new plant after done the previous one 
+  void setUpNewPlant() {
     setState(() {
       int stepCountValue = 0;
       double totalKm = 0;
@@ -111,3 +111,13 @@ class MainScreenState extends State<MainScreen> {
     }
   }
 }
+
+
+/*
+Things to insert to db
+-totalKm
+-stepCountValue
+-plants
+-lvl
+-remainStepCount
+*/
