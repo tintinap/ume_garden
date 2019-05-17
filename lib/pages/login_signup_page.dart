@@ -88,9 +88,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           widget.onSignedIn();
         }
 
-
-
-
       } catch (e) {
         print('Error: $e');
         setState(() {
@@ -103,7 +100,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       }
     }
   }
-
 
   @override
   void initState() {
@@ -132,15 +128,17 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   Widget build(BuildContext context) {
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Login'),
-        ),
-        body: Stack(
-          children: <Widget>[
-            _showBody(),
-            _showCircularProgress(),
-          ],
-        ));
+      appBar: new AppBar(
+        title: new Text('MEMBER'),
+        centerTitle: true,
+      ),
+      body: Stack(
+        children: <Widget>[
+          _showBody(),
+          _showCircularProgress(),
+        ],
+      )
+    );
   }
 
   Widget _showCircularProgress(){
@@ -180,7 +178,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-              // _showLogo(),
+              _showLogo(),
               _showEmailInput(),
               _showPasswordInput(),
               _showPrimaryButton(),
@@ -208,23 +206,23 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     }
   }
 
-  // Widget _showLogo() {
-  //   return new Hero(
-  //     tag: 'hero',
-  //     child: Padding(
-  //       padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
-  //       child: CircleAvatar(
-  //         backgroundColor: Colors.transparent,
-  //         radius: 48.0,
-  //         child: Image.asset('assets/flutter-icon.png'),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _showLogo() {
+    return new Hero(
+      tag: 'hero',
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 80,
+          child: Image.asset('assets/Logo.png'),
+        ),
+      ),
+    );
+  }
 
   Widget _showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
@@ -243,7 +241,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
 
   Widget _showPasswordInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         obscureText: true,
@@ -276,18 +274,18 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
 
   Widget _showPrimaryButton() {
     return new Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 0.0),
         child: SizedBox(
           height: 40.0,
           child: new RaisedButton(
             elevation: 5.0,
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.blue,
+            color: Colors.teal,
             child: _formMode == FormMode.LOGIN
                 ? new Text('Login',
-                    style: new TextStyle(fontSize: 20.0, color: Colors.white))
+                    style: new TextStyle( color: Colors.white))
                 : new Text('Create account',
-                    style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                    style: new TextStyle( color: Colors.white)),
             onPressed: _validateAndSubmit,
           ),
         ));
