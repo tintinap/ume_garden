@@ -130,7 +130,7 @@ class HomeState extends State<Home> {
             _barnum(),
             _bar(),
             _bartxt(),
-            _distance(),
+            _distanceandstep(),
           ],
         ),
       ),
@@ -198,14 +198,21 @@ class HomeState extends State<Home> {
 //=================================pedometer part==================================  
 }
 
-Widget _distance() {
+Widget _distanceandstep() {
   return Container(
     child: Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 25.0, 0, 0),
+      padding: EdgeInsets.fromLTRB(0.0, 35.0, 0, 0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('ระยะทางรวม\n\nXXX Km', textAlign: TextAlign.center),
-          Text('จำนวนก้าว\n\nXXX ก้าว', textAlign: TextAlign.center),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
+            child: (Text('ระยะทางรวม\n\nXXX\n\nกิโลเมตร', textAlign: TextAlign.center)),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(35, 0, 0, 0),
+            child: (Text('จำนวนก้าว\n\nXXX\n\nก้าว', textAlign: TextAlign.center)),
+          ),
         ],
       )
     ),
