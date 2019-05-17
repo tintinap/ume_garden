@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import './ui/main_screen.dart';
 import './ui/home.dart';
 import './ui/profile.dart';
@@ -9,6 +10,10 @@ import './ui/register.dart';
 import './ui/login.dart';
 import './services/authentication.dart';
 import './pages/root_page.dart';
+=======
+import 'package:flutter_login_demo/firebase/authentication.dart';
+import 'package:flutter_login_demo/firebase/root_page.dart';
+>>>>>>> f6dc72313c2bbc767005a8b3687f9794665fd71e
 
 void main() => runApp(MyApp());
 

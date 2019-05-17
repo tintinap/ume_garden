@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_demo/services/authentication.dart';
+import 'package:flutter_login_demo/firebase/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 FirebaseAuth a;
@@ -129,22 +129,22 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text('Login'),
+          title: new Text('Flutter login demo'),
         ),
         body: Stack(
           children: <Widget>[
             _showBody(),
-            _showCircularProgress(),
+            // _showCircularProgress(),
           ],
         ));
   }
 
-  Widget _showCircularProgress(){
-    if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
-    } return Container(height: 0.0, width: 0.0,);
+  // Widget _showCircularProgress(){
+  //   if (_isLoading) {
+  //     return Center(child: CircularProgressIndicator());
+  //   } return Container(height: 0.0, width: 0.0,);
 
-  }
+  // }
 
   void _showVerifyEmailSentDialog() {
     showDialog(
