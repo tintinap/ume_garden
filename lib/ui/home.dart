@@ -202,10 +202,12 @@ Widget _distance() {
   return Container(
     child: Padding(
       padding: EdgeInsets.fromLTRB(0.0, 25.0, 0, 0),
-      child: Text(
-        'ระยะทางรวม\n\nXXX Km',
-        textAlign: TextAlign.center
-      ),
+      child: Row(
+        children: <Widget>[
+          Text('ระยะทางรวม\n\nXXX Km', textAlign: TextAlign.center),
+          Text('จำนวนก้าว\n\nXXX ก้าว', textAlign: TextAlign.center),
+        ],
+      )
     ),
   );
 }
