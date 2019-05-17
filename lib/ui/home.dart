@@ -70,6 +70,7 @@ class HomeState extends State<Home> {
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
             _tree(),
+            _barnum(),
             _bar(),
             _bartxt(),
             _distance(),
@@ -92,9 +93,17 @@ Widget _distance() {
   );
 }
 
+Widget _barnum(){
+  return Text(
+      '500/500',
+      textAlign: TextAlign.center,
+      style: TextStyle(color: Colors.black, fontSize: 14.0)
+  );
+}
+
 Widget _bar() {
   return Padding(
-    padding: EdgeInsets.fromLTRB(60.0, 0, 0, 0),
+    padding: EdgeInsets.fromLTRB(80.0, 0, 0, 0),
     child: LinearPercentIndicator(
       width: 140.0,
       lineHeight: 14.0,
@@ -116,7 +125,7 @@ Widget _bartxt(){
 Widget _tree() {
   return new Container(
     child: Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 25.0),
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 120,
