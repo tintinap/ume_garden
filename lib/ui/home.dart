@@ -50,6 +50,16 @@ class HomeState extends State<Home> {
     setUpPedometer();
   }
 
+  _signOut() async {
+      try {
+        await widget.auth.signOut();
+        widget.onSignedOut();
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    
   void setUpPedometer() {
     Pedometer pedometer = new Pedometer();
     this._subscription = pedometer.stepCountStream.listen(_onData,
@@ -107,6 +117,7 @@ class HomeState extends State<Home> {
             ListTile(
               title: Text("Logout"),
               trailing: Icon(Icons.power_settings_new),
+              onTap: _signOut,
             ),
           ],
         ),
