@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\flutter_project\\5-09-2019 project\\1\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-as\\values-as.xml",
+            "outputFile": "D:\\JackZ\\Github\\ume_garden\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-as\\values-as.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-16.0.1.aar\\f34437245526b7ed2527771739e9e706\\res\\values-as\\values.xml",
+                    "source": "C:\\Users\\SciYuuTO\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-16.0.1.aar\\abd0b16b0bf199e1088e85d52624000f\\res\\values-as\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-16.0.1.aar\\93c60cab3844627daf9bc31b868cdba5\\res\\values-as\\values.xml",
+                    "source": "C:\\Users\\SciYuuTO\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-16.0.1.aar\\3aa12cf668d251001a7def15b421ef80\\res\\values-as\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",

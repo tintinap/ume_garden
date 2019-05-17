@@ -1,27 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\flutter_project\\5-09-2019 project\\1\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sk\\values-sk.xml",
+            "outputFile": "D:\\JackZ\\Github\\ume_garden\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sk\\values-sk.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\621688550af63a3ea9042e1a23eb39bf\\res\\values-sk\\values-sk.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "20",
-                        "startColumns": "4",
-                        "startOffsets": "2861",
-                        "endColumns": "100",
-                        "endOffsets": "2957"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-16.0.1.aar\\f34437245526b7ed2527771739e9e706\\res\\values-sk\\values.xml",
+                    "source": "C:\\Users\\SciYuuTO\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-16.0.1.aar\\abd0b16b0bf199e1088e85d52624000f\\res\\values-sk\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-16.0.1.aar\\93c60cab3844627daf9bc31b868cdba5\\res\\values-sk\\values.xml",
+                    "source": "C:\\Users\\SciYuuTO\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-16.0.1.aar\\3aa12cf668d251001a7def15b421ef80\\res\\values-sk\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -52,6 +35,23 @@
                         "startOffsets": "1262",
                         "endColumns": "197",
                         "endOffsets": "1455"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\SciYuuTO\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\80cab7b3ad98077a206c6ad49ef8415b\\res\\values-sk\\values-sk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "2861",
+                        "endColumns": "100",
+                        "endOffsets": "2957"
                     }
                 }
             ]

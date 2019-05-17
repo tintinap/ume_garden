@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\flutter_project\\5-09-2019 project\\1\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
+            "outputFile": "D:\\JackZ\\Github\\ume_garden\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\c83256bfdc08e4ac0919669d90c944dc\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\SciYuuTO\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\a50706b5e59741b226b390f365991957\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
