@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
  // เอาค่าข้อมูลจากฐานข้อมูลและตรวจเช็คว่า user อะไร และ Return ข้อมูลของ user นั้น
  Widget _buildBody(BuildContext context) {
  return StreamBuilder<QuerySnapshot>(
-   stream: Firestore.instance.collection('register').where('name',isEqualTo: widget.user).snapshots(),
+   stream: Firestore.instance.collection('register2').where('name',isEqualTo: widget.user).snapshots(),
    builder: (context, snapshot) {
      if (!snapshot.hasData) return LinearProgressIndicator();
 
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
  final record = Record.fromSnapshot(data);
    return Padding(
-     key: ValueKey(record.name),
+     key: ValueKey(record.email),
      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
      child: Container(
        decoration: BoxDecoration(
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
          borderRadius: BorderRadius.circular(5.0),
        ),
        child: ListTile(
-         title: Text(record.name),
+          // title: Text(record.email),
          trailing: Text(record.step.toString()+"  -Km:  "+record.step.toString()), 
          onTap: () => record.reference.updateData({'step': record.step + 1}), // กดแทบเพื่อทำการเพิ่มค่าไปยัง database
        ),
@@ -117,33 +117,37 @@ class _HomePageState extends State<HomePage> {
 
 // คลาสที่สร้าง attribute เพื่อเก็บค่าที่มีอยู่ใน databse และมีฟังก์ชัน Retrun ค่าออกมาเพื่อไปใช้ในการแสดงผล
 class Record {
- final String name;
- final String test;
- final int votes;
- final int km;
- final int id;
- final int tree;
- final int step;
- final DocumentReference reference;
+  final String email;
+  final String km;
+  final int lvl;
+  final String picture;
+  final int remainStep;
+  final int step;
+  final String totalKm;
+  final int tree;
+  final String username;
+  final DocumentReference reference;
 
  Record.fromMap(Map<String, dynamic> map, {this.reference})
-     : /*assert(map['name'] != null ),
-       assert(map['id'] != null),
-       assert(map['name'] == null || map['name'] != null ),
-       assert(map['km'] == null || map['km'] != null ),
-       assert(map['tree'] == null || map['tree'] != null ),
-       assert(map['step'] == null || map['step'] != null ),*/
-       name = map['name'],
-       votes = map['votes'],
-       test = map['name'],
-       km = map['km'],
-       tree = map['tree'],
-       id = map['votes'],
-       step = map['step'];
+     :
+      //  assert(map['id'] != null),
+      //  assert(map['name'] == null || map['name'] != null ),
+      //  assert(map['km'] == null || map['km'] != null ),
+      //  assert(map['tree'] == null || map['tree'] != null ),
+      //  assert(map['step'] == null || map['step'] != null ),
+      email = map['email'],
+      km = map['km'],
+      lvl = map['lvl'],
+      picture = map['picture'],
+      remainStep = map['remainStep'],
+      step = map['step'],
+      totalKm = map['totalKm'],
+      tree = map['tree'],
+      username = map['username'];
        
  Record.fromSnapshot(DocumentSnapshot snapshot)
      : this.fromMap(snapshot.data, reference: snapshot.reference);
 // ฟังก์ชันสำหรับ Reteun ค่า
  @override
- String toString() => "Record<$name:$votes$km$tree$step>";
+ String toString() => "Record<$step>";
 }
