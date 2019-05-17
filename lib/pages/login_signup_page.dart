@@ -50,7 +50,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     });
     if (_validateAndSave()) {
       String userId = "";
-      final DocumentReference documentReference = Firestore.instance.document("register/"+_email);
+      final DocumentReference documentReference = Firestore.instance.document("register2/"+_email);
       try {
         if (_formMode == FormMode.LOGIN) {
           userId = await widget.auth.signIn(_email, _password);
@@ -63,12 +63,16 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           // การสร้างตารางใน firebasee
           Map<String, dynamic> data = <String, dynamic>{
             "name": _email,
-            "id": 1,
+            // "id": 1,
             "username": "",
-            "votes": 0,
-            "tree": 2,
-            "step": 0,
-            "picture" : ""
+            // "votes": 0,
+            "picture" : "",
+            "tree": 0, // amount of lv5 plants of user
+            "step": 0, //
+            "km": "0.0", // current distanRce 
+            "totalKm": "0.0", // total distance
+            "lvl": 0, // current lvl of present tree
+            "remainStep": 0, // screen display step
           };
           documentReference.setData(data).whenComplete(() {
           print("Document Added");
@@ -155,7 +159,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           content: new Text("Link to verify account has been sent to your email"),
           actions: <Widget>[
             new FlatButton(
-              child: new Text("Dismiss"),
+              child: new Text("Close"),
               onPressed: () {
                 _changeFormToLogin();
                 Navigator.of(context).pop();
