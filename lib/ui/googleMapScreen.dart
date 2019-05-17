@@ -17,16 +17,19 @@ class _MyMapState extends State<MapScreen> {
   int _polylineIdCounter = 1;
   PolylineId selectedPolyline;
 
+  // มุมมองกล้องเริ่มต้น
   CameraPosition _kGooglePlex = 
     CameraPosition(
       target: LatLng(13.7167, 100.7833),
       zoom: 15.0,
   );
 
+  // ลบค่าใน list polyline
   void _onEnabled() {
     _polyline.clear();
   }
 
+  // จัดการ location และมุมมองกล้อง
   void _getLocation() async {
     _onEnabled();
     print("Cleared Location List");
@@ -46,12 +49,14 @@ class _MyMapState extends State<MapScreen> {
     });
   }
 
+  // เพิ่มจุดใน list polyline
   void _addLocations(double _latitude, double _longitude) async {
     LatLng latlong = new LatLng(_latitude, _longitude);
     _polyline.add(latlong);
     print('added latlong into list.');
   }
 
+  // เพิ่มเส้น polylines
   void _addPolylines() async {
     final int polylineCount = polylines.length;
     final String polylineIdVal = 'polyline_id_$_polylineIdCounter';
