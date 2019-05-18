@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/stat',
       routes: {
         "/" : (context) => MapScreen(),
-        "/stat": (context) => StatScreen()
+        "/stat": (context) => StatScreen(date: null)
       }
     );
   }

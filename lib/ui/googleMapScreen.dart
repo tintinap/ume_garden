@@ -22,11 +22,13 @@ class _MyMapState extends State<MapScreen> {
 
   List<LatLng> _polyline = [];
   List position = [];
+
   double latitude = 0;
   double longitude = 0;
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
   int _polylineIdCounter = 1;
   PolylineId selectedPolyline;
+  String dateToSend = 'May 18, 2019';
 
   // ลบค่าใน list polyline
   void _onEnabled() async {
@@ -111,7 +113,7 @@ class _MyMapState extends State<MapScreen> {
     print("added polyline.");
   }
 
-  // user defined function
+  // แสดง Dialog
   void _showDialog() {
     // flutter defined function
     showDialog(
@@ -135,6 +137,7 @@ class _MyMapState extends State<MapScreen> {
                 await _store.collection('location').document(date).setData({
                   'position': position,
                 });
+                print('added _polyline to position');
                 _onEnabled();
                 Navigator.of(context).pop();
               },
@@ -145,11 +148,29 @@ class _MyMapState extends State<MapScreen> {
     );
   }
 
+  // ส่งข้อมูลวันที่ไปหน้า stat
+  void _sendDataToSecondScreen(BuildContext context) {
+    String dateToSend = date;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => StatScreen(date: dateToSend),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) { 
     return new Scaffold(
       appBar: AppBar(
         title: Text('MapApi'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Stat'),
+            onPressed: (){
+              _sendDataToSecondScreen(context);
+            },
+          )
+        ],
       ),
       body: GoogleMap(
         mapType: MapType.normal,
@@ -171,7 +192,7 @@ class _MyMapState extends State<MapScreen> {
             _showDialog();
           },
           label: Text('Save All Lines!'),
-          icon: Icon(Icons.delete),
+          icon: Icon(Icons.save),
         )
       ],
     );
