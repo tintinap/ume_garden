@@ -113,7 +113,9 @@ class HomeState extends State<Home> {
         ),
       ),
       body: Container(
-        child: ListView(
+        child: visible == false?
+        ListView(
+          physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
             _tree(_plantImage),
@@ -122,7 +124,18 @@ class HomeState extends State<Home> {
             _bartxt('การเจริญเติบโต'),
             _distanceandstep(_km, _stepCountValue),
             _newtree(_lvl),
-          ],
+          ]
+        ):
+        ListView(
+          padding: EdgeInsets.all(30.0),
+          children: <Widget>[
+            _tree(_plantImage),
+            _barnum(_remainStepCount, _fullPerLvl),
+            _bar(_remainStepCount, _fullPerLvl),
+            _bartxt('การเจริญเติบโต'),
+            _distanceandstep(_km, _stepCountValue),
+            _newtree(_lvl),
+          ]
         ),
       ),
     );
@@ -283,19 +296,24 @@ Widget _tree(String plantImage) {
   );
 }
 
+bool visible = false;
 Widget _newtree(int level){
-  return Container(
-    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-    child: FlatButton(
-      child: Text("New Tree"),
-        onPressed: () {
-
-        },
-        color: Colors.teal,
-        textColor: Colors.white,
-        splashColor: Colors.green,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),  
+  level == 5? visible = true: visible = false;
+  return Visibility(
+    visible: visible,
+    child: Container(
+      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+      child: FlatButton(
+        child: Text("New Tree"),
+          onPressed: () {
+            //add new tree
+          },
+          color: Colors.teal,
+          textColor: Colors.white,
+          splashColor: Colors.green,
+          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),  
+        ),
+        alignment: Alignment.bottomCenter,
       ),
-      alignment: Alignment.bottomCenter,
-    );
+  );
 }
