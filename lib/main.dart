@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ume_garden/ui/countDocuments.dart';
 import 'package:ume_garden/ui/statDistances.dart';
 import './ui/googleMapScreen.dart';
 
@@ -15,10 +16,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       
-      initialRoute: '/stat',
+      initialRoute: '/',
       routes: {
         "/" : (context) => MapScreen(),
-        "/stat": (context) => StatScreen(date: null)
+        "/stat": (context) => StatScreen(date: null),
+        "/count": (context) => CountDocument()
       }
     );
   }

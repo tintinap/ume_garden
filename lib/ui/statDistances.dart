@@ -27,7 +27,9 @@ class _StatState extends State<StatScreen> {
 
   // อ่านค่าจาก firestore แล้วทำให้เป็น latlng
   void _getPosition() {
-    _store.collection('location').document('May 18, 2019').get().then((snapshot) {
+    String date = widget.date;
+    print(date);
+    _store.collection('location').document('non.naive@gmail.com').collection('date').document('$date').get().then((snapshot) {
       List list = snapshot.data['position'];
       for (var i=0; i<list.length; i++) {
         if (i%2 == 0) {

@@ -28,7 +28,7 @@ class _MyMapState extends State<MapScreen> {
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
   int _polylineIdCounter = 1;
   PolylineId selectedPolyline;
-  String dateToSend = 'May 18, 2019';
+  String dateToSend = 'May 19, 2019';
 
   // ลบค่าใน list polyline
   void _onEnabled() async {
@@ -51,6 +51,7 @@ class _MyMapState extends State<MapScreen> {
   // จัดการ location และมุมมองกล้อง
   void _getLocation() async {
     location.changeSettings(distanceFilter: 10);
+    print(location.getLocation().toString());
 
     final GoogleMapController controller = await _controller.future;
     location.onLocationChanged().listen((LocationData currentLocation) {
@@ -134,7 +135,8 @@ class _MyMapState extends State<MapScreen> {
             new FlatButton(
               child: new Text("Confirm"),
               onPressed: () async {
-                await _store.collection('location').document(date).setData({
+                await _store.collection('location').document('non.naive@gmail.com').collection('date').document(date).setData({
+                  'date': date,
                   'position': position,
                 });
                 print('added _polyline to position');
@@ -148,7 +150,7 @@ class _MyMapState extends State<MapScreen> {
     );
   }
 
-  // ส่งข้อมูลวันที่ไปหน้า stat
+  // ส่งข้อมูลวันที่ไปหน้า stat มีบัค
   void _sendDataToSecondScreen(BuildContext context) {
     String dateToSend = date;
     Navigator.push(
@@ -188,6 +190,7 @@ class _MyMapState extends State<MapScreen> {
           icon: Icon(Icons.location_on),
         ),
         FloatingActionButton.extended(
+          heroTag: 'SaveLines',
           onPressed: () {
             _showDialog();
           },
