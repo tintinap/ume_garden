@@ -29,7 +29,7 @@ class GuestState extends State<Guest> {
 
  Widget _buttonbox(context){
     return new Container(
-        padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+        padding: EdgeInsets.fromLTRB(0, 55, 0, 0),
         child: new Form(
           child: new ListView(
             shrinkWrap: true,
@@ -45,7 +45,7 @@ class GuestState extends State<Guest> {
     return new Hero(
       tag: 'logo',
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 150,
