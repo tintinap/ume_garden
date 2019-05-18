@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'statDistances.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _MyMapState extends State<MapScreen> {
   String date = new DateFormat.yMMMd().format(new DateTime.now());
 
   var location = new Location();
-  var currentLocation = LocationData;
+  Map<String, double> userLocation;
 
   List<LatLng> _polyline = [];
   List position = [];
@@ -29,9 +30,21 @@ class _MyMapState extends State<MapScreen> {
 
   // ลบค่าใน list polyline
   void _onEnabled() async {
-    _polyline.clear();
+    setState(() {
+      _polyline.clear();
+    });
     print("Cleared Location List");
   }
+
+  // Future<Map<String, double>> _getCurrentLocation() async {
+  //   var currentLocation = <String, double>{};
+  //   try {
+  //     currentLocation = await location.getLocation();
+  //   } catch (e) {
+  //     currentLocation = null;
+  //   }
+  //   return currentLocation;
+  // }
 
   // จัดการ location และมุมมองกล้อง
   void _getLocation() async {
@@ -98,6 +111,40 @@ class _MyMapState extends State<MapScreen> {
     print("added polyline.");
   }
 
+  // user defined function
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Want to save?"),
+          content: const Text("This will save all of your line."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Confirm"),
+              onPressed: () async {
+                await _store.collection('location').document(date).setData({
+                  'position': position,
+                });
+                _onEnabled();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) { 
     return new Scaffold(
@@ -120,13 +167,10 @@ class _MyMapState extends State<MapScreen> {
           icon: Icon(Icons.location_on),
         ),
         FloatingActionButton.extended(
-          onPressed: () async {
-            await _store.collection('location').document(date).setData({
-              'position': position,
-            });
-            _onEnabled();
+          onPressed: () {
+            _showDialog();
           },
-          label: Text('Clear Lines!'),
+          label: Text('Save All Lines!'),
           icon: Icon(Icons.delete),
         )
       ],

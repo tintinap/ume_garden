@@ -11,9 +11,11 @@ class StatScreen extends StatefulWidget {
 
 class _StatState extends State<StatScreen> {
   Completer<GoogleMapController> _controller = Completer();
+  Firestore _store = Firestore.instance;
 
   List<LatLng> _polyline = [];
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
+  LatLng latlong;
 
   double _latitude;
   double _longitude;
@@ -21,20 +23,18 @@ class _StatState extends State<StatScreen> {
   PolylineId selectedPolyline;
 
   // อ่านค่าจาก firestore แล้วทำให้เป็น latlng
-  void _getPosition() async {
-    Firestore.instance.collection('location').document('May 18, 2019').get().then((snapshot) {
+  void _getPosition() {
+    _store.collection('location').document('May 18, 2019').get().then((snapshot) {
       List list = snapshot.data['position'];
       for (var i=0; i<list.length; i++) {
-        if (i == 0) {
-          _latitude = list[i];
-        } else if (i%2 == 0) {
+        if (i%2 == 0) {
           _latitude = list[i];
         } else if (i%2 != 0) {
           _longitude = list[i];
         }
         if (_longitude != null) {
           print(_latitude.toString() + ' ' + _longitude.toString());
-          LatLng latlong = new LatLng(_latitude, _longitude);
+          latlong = new LatLng(_latitude, _longitude);
           _polyline.add(latlong);
         }
       }
@@ -49,7 +49,7 @@ class _StatState extends State<StatScreen> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
-        target: _polyline[10],
+        target: _polyline[0],
         zoom: 15.0,
       ),
     ));
