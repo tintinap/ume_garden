@@ -19,26 +19,33 @@ class ProfileState extends State<Profile> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(30.0),
-        child: Stack(
-          children: <Widget>[
-            _profile_container(),
-            _treeandstat(context),
-          ],
+        padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              _profile_container(context),
+              _treeandstat(context),
+              _treelist(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-Widget _profile_container(){
+Widget _profile_container(context){
   return Container(
-    padding: EdgeInsets.all(16.0),
+    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+    height: 180.0,
     child: ListView(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
+         _btn_edit(context),
          _profile(),
          _name(),
+         
       ],
     ),
   );
@@ -48,10 +55,10 @@ Widget _profile(){
   return new Hero(
     tag: 'profile',
     child: Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 5.0),
+      padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 5.0),
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
-        radius: 30,
+        radius: 40,
         child: Image.asset('assets/guest.png'),
       ),
     ),
@@ -63,7 +70,7 @@ Widget _name(){
     child: Text(
       'Jack\'tnp',
       style: TextStyle(
-        fontSize: 20.0,
+        fontSize: 18.0,
         fontWeight: FontWeight.w400
       ),
       textAlign: TextAlign.center,
@@ -73,6 +80,7 @@ Widget _name(){
 
 Widget _treeandstat(context){
   return Container(
+    padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
     child: Row(
       children: <Widget>[
         _tree(),
@@ -84,7 +92,7 @@ Widget _treeandstat(context){
 
 Widget _tree(){
   return Padding(
-    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+    padding: EdgeInsets.fromLTRB(20, 0, 35, 0),
     child: Text(
       'จำนวนต้นไม้ x ต้น'
     ),
@@ -93,15 +101,16 @@ Widget _tree(){
 
 Widget _btn_stat(context){
   return Container(
-    margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
       child: Text("บันทึกสถิติ",
         style: new TextStyle(
-          fontSize: 16.0,
+          fontSize: 12.0,
+          fontWeight: FontWeight.w300,
         ),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, '/stat');
+        Navigator.pushNamed(context, '/statProfile');
       },
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
@@ -111,6 +120,40 @@ Widget _btn_stat(context){
   );
 }
 
-Widget _btn_edit(){
+Widget _btn_edit(context){
+  return Container(
+    child: FlatButton(
+      child: Text("edit"),
+        onPressed: () {
+          Navigator.pushNamed(context, '/editProfile');
+        },
+        textColor: Colors.blue,
+        ),
+      alignment: Alignment.bottomRight,
+  );
+}
 
+Widget _treelist(){
+  return Container(
+    child: Wrap(
+      children: <Widget>[
+        _treestage(),
+        _treestage(),
+        _treestage(),
+        _treestage(),
+        _treestage(),
+      ],
+    )
+  );
+}
+Widget _treestage(){
+  return Container(
+    padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+    child: Column(
+      children: <Widget>[
+        Image.asset("assets/LV5.png", height: 150),
+        Text('Lv 5/5')
+      ],
+    )
+  );
 }

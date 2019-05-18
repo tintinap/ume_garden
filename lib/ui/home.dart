@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login_demo/models/todo.dart';
-import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:pedometer/pedometer.dart';
@@ -105,16 +104,6 @@ class HomeState extends State<Home> {
                 Navigator.pushNamed(context, '/setting');
               },
             ),
-            
-
-            ListTile(
-              title: Text("Login&Register"),
-              trailing: Icon(Icons.landscape),
-              onTap: () {
-                Navigator.pushNamed(context, '/');
-              },
-            ),
-
             ListTile(
               title: Text("Logout"),
               trailing: Icon(Icons.power_settings_new),
@@ -132,6 +121,7 @@ class HomeState extends State<Home> {
             _bar(_remainStepCount, _fullPerLvl),
             _bartxt('การเจริญเติบโต'),
             _distanceandstep(_km, _stepCountValue),
+            _newtree(_lvl),
           ],
         ),
       ),
@@ -218,17 +208,31 @@ class HomeState extends State<Home> {
 Widget _distanceandstep(km, stepcount) {
   return Container(
     child: Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 35.0, 0, 0),
+      padding: EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
-            child: (Text('ระยะทางรวม\n\n$km\n\nกิโลเมตร', textAlign: TextAlign.center)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text("ระยะทางรวม\n", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
+                Text("$km\n", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0), textAlign: TextAlign.center,),
+                Text("กิโลเมตร", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
+              ],
+            ),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(35, 0, 0, 0),
-            child: (Text('จำนวนก้าว\n\n$stepcount\n\nก้าว', textAlign: TextAlign.center)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text("จำนวนก้าว\n", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
+                Text("$stepcount\n", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0), textAlign: TextAlign.center,),
+                Text("ก้าว", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
+              ],
+            ),
           ),
         ],
       )
@@ -277,4 +281,21 @@ Widget _tree(String plantImage) {
       ),
     ),
   );
+}
+
+Widget _newtree(int level){
+  return Container(
+    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+    child: FlatButton(
+      child: Text("New Tree"),
+        onPressed: () {
+
+        },
+        color: Colors.teal,
+        textColor: Colors.white,
+        splashColor: Colors.green,
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),  
+      ),
+      alignment: Alignment.bottomCenter,
+    );
 }
