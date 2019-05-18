@@ -24,7 +24,7 @@ class StatProfileState extends State<StatProfile> {
             children: <Widget>[
               _profile_container(context),
               _tree(),
-              _treelist(),
+              _listview(),
             ],
           ),
         ),
@@ -41,7 +41,6 @@ Widget _profile_container(context){
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-         _btn_edit(context),
          _profile(),
          _name(),
       ],
@@ -126,40 +125,46 @@ Widget _btn_stat(context){
   );
 }
 
-Widget _btn_edit(context){
+Widget _listview() {
   return Container(
-    child: FlatButton(
-      child: Text("edit"),
-        onPressed: () {
-          Navigator.pushNamed(context, '/editProfile');
-        },
-        textColor: Colors.blue,
+        child: Center(
+          child: Column(
+            children: <Widget>[
+             Card(
+                child: Container(
+                  padding: EdgeInsets.all(32.0),
+                  child: Column(
+                    children: <Widget>[
+                     Text('Hello World'),
+                     Text('How are you?')
+                    ],
+                  ),
+                ),
+              ),
+             Card(
+                child: Container(
+                  padding: EdgeInsets.all(32.0),
+                  child: Column(
+                    children: <Widget>[
+                     Text('Hello World'),
+                     Text('How are you?')
+                    ],
+                  ),
+                ),
+              ),
+             Card(
+                child: Container(
+                  padding: EdgeInsets.all(32.0),
+                  child: Column(
+                    children: <Widget>[
+                     Text('Hello World'),
+                     Text('How are you?')
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      alignment: Alignment.bottomRight,
-  );
-}
-
-Widget _treelist(){
-  return Container(
-    child: Wrap(
-      children: <Widget>[
-        _treestage(),
-        _treestage(),
-        _treestage(),
-        _treestage(),
-        _treestage(),
-      ],
-    )
-  );
-}
-Widget _treestage(){
-  return Container(
-    padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-    child: Column(
-      children: <Widget>[
-        Image.asset("assets/LV5.png", height: 150),
-        Text('Lv 5/5')
-      ],
-    )
-  );
+      );
 }
