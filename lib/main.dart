@@ -8,6 +8,7 @@ import './ui/plantProfile.dart';
 import './services/authentication.dart';
 import './pages/root_page.dart';
 import './ui/guest.dart';
+import './ui/statprofile.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      initialRoute: '/',
+      initialRoute: '/auth',
       routes: {
       	"/" : (context) => Guest(),
       	"/auth" : (context) => RootPage(auth: new Auth()),
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         "/profile" : (context) => Profile(),
         "/setting" : (context) => Setting(),
         "/editProfile" : (context) => EditProfile(),
+        "/statProfile" : (context) => StatProfile(),
         "/plant" : (context) => PlantProfile(),
       }
     );

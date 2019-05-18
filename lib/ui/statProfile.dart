@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
 
 
-class Profile extends StatefulWidget {
+class StatProfile extends StatefulWidget {
   @override
-  ProfileState createState() {
-    return ProfileState();
+  StatProfileState createState() {
+    return StatProfileState();
   }
 
 }
 
 
-class ProfileState extends State<Profile> {
+class StatProfileState extends State<StatProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: Text("User Stat"),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+      body: Container(
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               _profile_container(context),
-              _treeandstat(context),
+              _tree(),
               _treelist(),
             ],
           ),
@@ -36,7 +35,7 @@ class ProfileState extends State<Profile> {
 
 Widget _profile_container(context){
   return Container(
-    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+    color: Colors.teal,
     height: 180.0,
     child: ListView(
       physics: const NeverScrollableScrollPhysics(),
@@ -45,7 +44,6 @@ Widget _profile_container(context){
          _btn_edit(context),
          _profile(),
          _name(),
-         
       ],
     ),
   );
@@ -54,8 +52,7 @@ Widget _profile_container(context){
 Widget _profile(){
   return new Hero(
     tag: 'profile',
-    child: Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 5.0),
+    child: Container(
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 40,
@@ -78,23 +75,32 @@ Widget _name(){
   );
 }
 
-Widget _treeandstat(context){
-  return Container(
-    padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
-    child: Row(
-      children: <Widget>[
-        _tree(),
-        _btn_stat(context),
-      ],
-    )
-  );
-}
-
 Widget _tree(){
-  return Padding(
-    padding: EdgeInsets.fromLTRB(20, 0, 35, 0),
-    child: Text(
-      'จำนวนต้นไม้ x ต้น'
+  return Container(
+    padding: EdgeInsets.all(30.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("จำนวนต้นไม้", textAlign: TextAlign.left, style: TextStyle(fontSize: 14.0, color: Colors.teal)),
+              Text("xx ต้น", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.left,),
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.fromLTRB(150, 0, 0, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text("ระยะทางรวม", textAlign: TextAlign.right, style: TextStyle(fontSize: 14.0, color: Colors.teal)),
+              Text("xx กิโลเมตร", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.right,),
+            ],
+          ),
+        ),
+      ],
     ),
   );
 }
@@ -110,7 +116,7 @@ Widget _btn_stat(context){
         ),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, '/statProfile');
+        Navigator.pushNamed(context, '/stat');
       },
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
