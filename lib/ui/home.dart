@@ -114,7 +114,7 @@ class HomeState extends State<Home> {
       ),
       body: Container(
         child: visible == false?
-        ListView(
+        ListView( //this one when has not lvl5 yet
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
@@ -126,7 +126,7 @@ class HomeState extends State<Home> {
             _newtree(_lvl),
           ]
         ):
-        ListView(
+        ListView( //this one will be using when it already lvl5
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
             _tree(_plantImage),
