@@ -68,7 +68,7 @@ class HomeState extends State<Home> {
     }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Little Garden"),

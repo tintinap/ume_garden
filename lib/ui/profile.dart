@@ -122,12 +122,22 @@ Widget _btn_stat(context){
 
 Widget _btn_edit(context){
   return Container(
-    child: FlatButton(
-      child: Text("edit"),
+    child: RaisedButton(
+      child: Text("บันทึกสถิติ",
+        style: new TextStyle(
+          fontSize: 12.0,
+          fontWeight: FontWeight.w300,
+        ),
+      ),
         onPressed: () {
           Navigator.pushNamed(context, '/editProfile');
         },
-        textColor: Colors.blue,
+        color: Colors.white,
+        splashColor: Colors.white,
+        textColor: Colors.blueGrey,
+         elevation: 5.0,
+        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+        // textColor: Colors.blue,
         ),
       alignment: Alignment.bottomRight,
   );
