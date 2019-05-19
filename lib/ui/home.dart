@@ -7,6 +7,8 @@ import 'package:flutter_login_demo/models/guest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../models/guest.dart';
+
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 
@@ -34,9 +36,12 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
+  
+
   Firestore _store = Firestore.instance;
   String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
+  GuestProvider gp = GuestProvider();
   
 //=================================pedometer part==================================
   String _km = "0.0"; //distance
@@ -102,11 +107,12 @@ class HomeState extends State<Home> {
       _sendData();
     } else {
       name = 'Guest';
+      gp.open("guest.db");
     }
     _getName();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Little Garden"),
+        title: Text("Yume Garden"),
         centerTitle: true,
       ),
       drawer: Drawer(
