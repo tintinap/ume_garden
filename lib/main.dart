@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      initialRoute: '/test',
+      initialRoute: '/home',
       routes: {
       	"/" : (context) => Guest(),
       	"/auth" : (context) => RootPage(auth: new Auth()),
