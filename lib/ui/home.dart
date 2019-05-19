@@ -188,29 +188,56 @@ class HomeState extends State<Home> {
   
   //set remainStepCount and lvl
   void _getLevel() {
-    if (_stepCountValue < 1000){ 
+    //for deploy
+    // if (_stepCountValue < 1000){ 
+    //   setState(() => _lvl = 0);
+    //   setState(() => _remainStepCount = _stepCountValue);
+    //   setState(() => _fullPerLvl = 1000);
+    // } else if (_stepCountValue < 5000) { 
+    //   setState(() => _lvl = 1);
+    //   setState(() => _remainStepCount = _stepCountValue-1000);
+    //   setState(() => _fullPerLvl = 5000);
+    // } else if (_stepCountValue < 10000) { 
+    //   setState(() => _lvl = 2); 
+    //   setState(() => _remainStepCount = _stepCountValue-5000);
+    //   setState(() => _fullPerLvl = 10000);
+    // } else if (_stepCountValue < 50000) { 
+    //   setState(() => _lvl = 3);
+    //   setState(() => _remainStepCount = _stepCountValue-10000);
+    //   setState(() => _fullPerLvl = 50000);
+    // } else if (_stepCountValue < 100000) {
+    //   setState(() => _lvl = 4);
+    //   setState(() => _remainStepCount = _stepCountValue-50000);
+    //   setState(() => _fullPerLvl = 100000);
+    // } else { 
+    //   setState(() => _lvl = 5);
+    //   setState(() => _remainStepCount = 100000);
+    //   setState(() => _fullPerLvl = 100000);
+    //for dev
+    if (_stepCountValue < 100){ 
       setState(() => _lvl = 0);
       setState(() => _remainStepCount = _stepCountValue);
-      setState(() => _fullPerLvl = 1000);
-    } else if (_stepCountValue < 5000) { 
+      setState(() => _fullPerLvl = 100);
+    } else if (_stepCountValue < 200) { 
       setState(() => _lvl = 1);
-      setState(() => _remainStepCount = _stepCountValue-1000);
-      setState(() => _fullPerLvl = 5000);
-    } else if (_stepCountValue < 10000) { 
+      setState(() => _remainStepCount = _stepCountValue-100);
+      setState(() => _fullPerLvl = 200);
+    } else if (_stepCountValue < 300) { 
       setState(() => _lvl = 2); 
-      setState(() => _remainStepCount = _stepCountValue-5000);
-      setState(() => _fullPerLvl = 10000);
-    } else if (_stepCountValue < 50000) { 
+      setState(() => _remainStepCount = _stepCountValue-200);
+      setState(() => _fullPerLvl = 300);
+    } else if (_stepCountValue < 400) { 
       setState(() => _lvl = 3);
-      setState(() => _remainStepCount = _stepCountValue-10000);
-      setState(() => _fullPerLvl = 50000);
-    } else if (_stepCountValue < 100000) {
+      setState(() => _remainStepCount = _stepCountValue-300);
+      setState(() => _fullPerLvl = 400);
+    } else if (_stepCountValue < 500) {
       setState(() => _lvl = 4);
-      setState(() => _remainStepCount = _stepCountValue-50000);
-      setState(() => _fullPerLvl = 100000);
+      setState(() => _remainStepCount = _stepCountValue-400);
+      setState(() => _fullPerLvl = 500);
     } else { 
       setState(() => _lvl = 5);
-      setState(() => _remainStepCount = _stepCountValue-100000);
+      setState(() => _remainStepCount = 500);
+      setState(() => _fullPerLvl = 500);
     }
     this._plantImage = "assets/LV$_lvl.png";
   }
