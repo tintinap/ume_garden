@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'statDistances.dart';
+
 
 class StatProfile extends StatefulWidget {
   final String user;
@@ -75,7 +77,7 @@ class StatProfileState extends State<StatProfile> {
                               Card(
                                 child: InkWell(
                                   onTap: () {
-                                    print(allDate[0]);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(date: allDate[0])));
                                     print('tabbed');
                                   },
                                   child: Container(
