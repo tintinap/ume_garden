@@ -5,6 +5,7 @@ import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login_demo/models/guest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
@@ -33,6 +34,7 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
+  Firestore _store = Firestore.instance;
   String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
   
