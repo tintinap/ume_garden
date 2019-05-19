@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
-final String tableGuest = 'Guest';
+final String tableGuest = 'guest';
 final String columnId = 'id';
 final String columnName = 'name';
 final String columnkm = 'km';
@@ -9,7 +9,7 @@ final String columnStep = 'step';
 final String columnTotalStep = 'totalStep';
 final String columnremainStep = 'remainStep';
 final String columntree = 'tree';
-final String columnLvl = 'lvl';
+final String columnLvl = 'Lvl';
 
 class Guest {
 
@@ -24,25 +24,25 @@ class Guest {
   int _lvl;
 
 
-  int get getid => this._id;
-  String get getname => this._name;
-  String get getkm => this._km;
-  String get gettotalKm => this._totalKm;
-  int get getstep => this._step;
-  int get gettotalStep => this._totalStep;
-  int get getremain => this._remainStep;
-  int get gettree => this._tree;
-  int get getlvl => this._lvl;
+  int get id => this._id;
+  String get name => this._name;
+  String get km => this._km;
+  String get totalKm => this._totalKm;
+  int get step => this._step;
+  int get total => this._totalStep;
+  int get remain => this._remainStep;
+  int get tree => this._tree;
+  int get lvl => this._lvl;
 
-  set id(int id) => this._id = id;
-  set name(String name) => this._name = name;
-  set km(String km) => this._km = km;
-  set totalKm(String totalkm) => this._totalKm = totalkm;
-  set step(int step) => this._step = step;
-  set totalStep(int totalStep) => this._totalStep = totalStep;
-  set remainStep(int remain) => this._remainStep = remain;
-  set tree(int tree) => this._tree = tree;
-  set lvl(int lvl) => this._lvl = lvl;
+  set setId(int id) => this._id = id;
+  set setName(String name) => this._name = name;
+  set setKm(String km) => this._km = km;
+  set setTotalKm(String totalkm) => this._totalKm = totalkm;
+  set setStep(int step) => this._step = step;
+  set setTotalStep(int totalStep) => this._totalStep = totalStep;
+  set setRemainStep(int remain) => this._remainStep = remain;
+  set setTree(int tree) => this._tree = tree;
+  set setLvl(int lvl) => this._lvl = lvl;
 
 
   Guest.fromMap(Map<String, dynamic> map) {
@@ -62,7 +62,7 @@ class Guest {
       columnId : _id,
       columnName : _name,
       columnkm : _km,
-      columnTotalKm : _totalKm,
+      columnTotalKm : _id,
       columnStep : _step,
       columnTotalStep : _totalStep,
       columnremainStep : _remainStep,
@@ -87,72 +87,52 @@ class Guest {
   }
 }
 
-class GuestProvider {
+class guestProvider {
   Database db;
   
   Future open(String path) async {
     print("on open function");
-    Guest a = Guest();
     db = await openDatabase(path, version: 1,
-            onCreate: (Database db, int version) async {
-          await db.execute('''
-            CREATE TABLE $tableGuest (
-              $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-              $columnName TEXT NOT NULL,
-              $columnkm TEXT NOT NULL,
-              $columnTotalKm TEXT NOT NULL,
-              $columnStep INTEGER NOT NULL,
-              $columnTotalStep INTEGER NOT NULL,
-              $columnremainStep INTEGER NOT NULL,
-              $columntree INTEGER NOT NULL,
-              $columnLvl INTEGER NOT NULL
-            )
+        onCreate: (Database db, int version) async {
+        await db.execute('''
+          CREATE TABLE $tableGuest (
+            $columnId integer primary key autoincrement,
+            $columnName text not null,
+            $columnkm text not null,
+            $columnTotalKm text not null,
+            $columnStep interger not null,
+            $columnTotalStep interger not null,
+            $columnremainStep interger not null,
+            $columntree interger not null,
+            $columnLvl interger not null,
+          )
         ''');
     });
-    if (db == null) this.insert(a);
-    print("Created table $tableGuest.");
   }
 
-
-  Future<Guest> insert(Guest guest) async {
-    print("inserting");
-    print(guest.getkm);
+  Future<Guest> insert(Guest guest) async{
     guest._id = await db.insert(
       tableGuest,
       guest.toMap()
       );
-    
     return guest;
   }
 
   Future<Guest> getGuest(int id) async{
     print('getting Guest');
-      List<Map> maps = await db.query(
-        tableGuest,
-        where: "$columnId = ?",
-        whereArgs: [id]
-      );
-
-    print('-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
-    // print(maps);
+    List<Map> maps = await db.query(
+      tableGuest,
+      where: "$columnId = ?",
+      whereArgs: [id]
+    );
     if (maps.length > 0) {
-      print("maps not nullllllllll");
       return Guest.fromMap(maps.first);
     }
-    print("asdsadasdddddddddddddddddddddddddddddddddddd");
-    return null;
+    return Guest.fromMap(maps.first);
   }
 
-  Future<int> update(Guest guest) async{
-    print("Updating");
-    return await db.update(
-      tableGuest, guest.toMap(),
-      where: "$columnId = ?",
-      whereArgs: [guest._id]);
-  }
-
-  Future deleting(int id) async{
-    print('Deleting');
+  Future delete(int id) async{
+    print('deleted');
     return await db.delete(
       tableGuest, 
       where: "$columnId = ?", 
@@ -160,6 +140,13 @@ class GuestProvider {
     );
   }
 
+  Future<int> update(Guest guest) async{
+    print("Updating");
+    return await db.update(
+      tableGuest, guest.toMap(),
+      where: "$columnId = ?",
+      whereArgs: [guest.id]);
+  }
 //   //test
 //   Future<List<guest>> getto() async{
 //     var guest =await db.query(tableguest, where: "$columnid = 0");
