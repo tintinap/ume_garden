@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_demo/services/authentication.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_login_demo/models/guest.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 
@@ -67,7 +70,7 @@ class HomeState extends State<Home> {
     }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Little Garden"),
@@ -97,6 +100,7 @@ class HomeState extends State<Home> {
                 var url = await ref.getDownloadURL();
                 print(url+'222222222222222222222222222222222222222222222222222222');
                 Navigator.push(context, MaterialPageRoute(builder: (contex) => Profile(user: url)));
+
               },
             ),
             ListTile(

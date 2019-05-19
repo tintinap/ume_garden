@@ -52,7 +52,7 @@ Widget _editform(context,getimage) {
     padding: EdgeInsets.all(25),
     child: Column(
       children: <Widget>[
-        _btn_all(),
+        _btn_all(context),
         _profile(),
         _username(),
         enableUpload(context,getimage),
@@ -61,10 +61,10 @@ Widget _editform(context,getimage) {
   );
 }
 
-Widget _btn_all() {
+Widget _btn_all(context) {
   return Row(
     children: <Widget>[
-      _btn_cancel(),
+      _btn_cancel(context),
       _btn_save(),
     ],
   );
@@ -83,13 +83,13 @@ Widget _btn_save() {
   );
 }
 
-Widget _btn_cancel() {
+Widget _btn_cancel(context) {
   return Container(
     
     child: FlatButton(
       child: Text("cancel"),
         onPressed: () {
-
+          Navigator.of(context).pop();
         },
         textColor: Colors.blue,
         ),
