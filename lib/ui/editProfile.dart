@@ -1,5 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'dart:async';
+//Image Plugin
+import 'package:image_picker/image_picker.dart';
 
+import 'package:firebase_storage/firebase_storage.dart';
 final _formKey = GlobalKey<FormState>();
 
 class EditProfile extends StatefulWidget {
@@ -10,21 +15,30 @@ class EditProfile extends StatefulWidget {
 
 }
 
-
+File sampleImage;
 class EditProfileState extends State<EditProfile> {
+  
+Future getImage() async {
+    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      sampleImage = tempImage;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Profile"),
         centerTitle: true,
       ),
-      body: Padding(
+      body:Padding(
         padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _editform(),
+              _editform(context,getImage()),
             ],
           ),
         ),
@@ -33,23 +47,24 @@ class EditProfileState extends State<EditProfile> {
   }
 }
 
-Widget _editform() {
+Widget _editform(context,getimage) {
   return Padding(
     padding: EdgeInsets.all(25),
     child: Column(
       children: <Widget>[
-        _btn_all(),
+        _btn_all(context),
         _profile(),
         _username(),
+        enableUpload(context,getimage),
       ],
     ),
   );
 }
 
-Widget _btn_all() {
+Widget _btn_all(context) {
   return Row(
     children: <Widget>[
-      _btn_cancel(),
+      _btn_cancel(context),
       _btn_save(),
     ],
   );
@@ -68,13 +83,13 @@ Widget _btn_save() {
   );
 }
 
-Widget _btn_cancel() {
+Widget _btn_cancel(context) {
   return Container(
     
     child: FlatButton(
       child: Text("cancel"),
         onPressed: () {
-
+          Navigator.of(context).pop();
         },
         textColor: Colors.blue,
         ),
@@ -114,5 +129,37 @@ Widget _profile(){
         child: Image.asset('assets/guest.png'),
       ),
     ),
+  );
+}
+
+Widget enableUpload(context, getimage) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          RaisedButton(
+            elevation: 7.0,
+            child: Text('Upload'),
+            textColor: Colors.white,
+            color: Colors.blue,
+            onPressed: () {
+              getimage();
+              
+            },
+          )
+        ],
+      ),
+    );
+  }
+Widget _uploadimg(context){
+  return Container(
+    child: FlatButton(
+      child: Text("upload profile"),
+        onPressed: () {
+        },
+        textColor: Colors.black,
+        color: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0), side: BorderSide(color: Colors.black)),
+        ),
+      alignment: Alignment.center,  
   ); 
 }

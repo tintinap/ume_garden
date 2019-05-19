@@ -5,9 +5,12 @@ import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login_demo/models/guest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
+
+import 'profile.dart';
 
 class Home extends StatefulWidget {
   Home(
@@ -31,7 +34,8 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
-  String _plantImage = "assets/LV0.png";
+  Firestore _store = Firestore.instance;
+  String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
   
 //=================================pedometer part==================================
@@ -43,6 +47,7 @@ class HomeState extends State<Home> {
   int _plants = 0; //all lvl 5 plants of user
   StreamSubscription<int> _subscription; // for pedometer package
   int _lvl = 0;
+  String name;
 
   @override
   void initState() {
@@ -66,9 +71,39 @@ class HomeState extends State<Home> {
         print(e);
       }
     }
+  
+  Future _sendData() async {
+    await _store.collection('register2').document(widget.user).setData({
+      'km': _km,
+      'totalKm': _totalKm,
+      'lvl': _lvl,
+      'tree': _plants,
+      'step': _stepCountValue,
+      'remainStep': _remainStepCount,
+      'name': widget.user
+    });
+  }
+
+  Future _getName() async {
+    await _store.collection('register2').getDocuments().then((doc){
+      setState(() {
+        doc.documents.forEach((doc) {
+        if (doc.data['name'] == widget.user) {
+          name = doc.data['name'];
+        }
+       });
+      });
+    });
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,) {
+    if (widget.user!=null) {
+      _sendData();
+    } else {
+      name = 'Guest';
+    }
+    _getName();
     return Scaffold(
       appBar: AppBar(
         title: Text("Little Garden"),
@@ -78,7 +113,7 @@ class HomeState extends State<Home> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("Thanapon Wongprasert"),
+              accountName: Text("$name"),
               currentAccountPicture: CircleAvatar(
                 backgroundColor:
                   Theme.of(context).platform == TargetPlatform.iOS
@@ -93,8 +128,12 @@ class HomeState extends State<Home> {
             ListTile(
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
-              onTap: () {
-                Navigator.pushNamed(context, '/profile');
+              onTap: () async{
+                final ref = FirebaseStorage.instance.ref().child('image');
+                var url = await ref.getDownloadURL();
+                print(url+'222222222222222222222222222222222222222222222222222222');
+                Navigator.push(context, MaterialPageRoute(builder: (contex) => Profile(user: url)));
+
               },
             ),
             ListTile(
@@ -116,7 +155,7 @@ class HomeState extends State<Home> {
         child: visible == false?
         ListView( //this one when has not lvl5 yet
           physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
           children: <Widget>[
             _tree(_plantImage),
             _barnum(_remainStepCount, _fullPerLvl),
@@ -127,7 +166,7 @@ class HomeState extends State<Home> {
           ]
         ):
         ListView( //this one will be using when it already lvl5
-          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
           children: <Widget>[
             _tree(_plantImage),
             _barnum(_remainStepCount, _fullPerLvl),
@@ -239,7 +278,7 @@ class HomeState extends State<Home> {
       setState(() => _remainStepCount = 500);
       setState(() => _fullPerLvl = 500);
     }
-    this._plantImage = "assets/LV$_lvl.png";
+    this._plantImage = "assets/maintree/LV$_lvl.png";
   }
 //=================================pedometer part==================================  
 }

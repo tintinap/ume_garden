@@ -18,10 +18,11 @@ enum FormMode { LOGIN, SIGNUP }
 
 class _LoginSignUpPageState extends State<LoginSignUpPage> {
   final _formKey = new GlobalKey<FormState>();
-
+  String _name;
   String _email;
   String _password;
   String _errorMessage;
+  int type = 0;
 
 
   // Initial form is login form
@@ -44,6 +45,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   void _validateAndSubmit() async {
     
     String email = '';
+
     setState(() {
       _errorMessage = "";
       _isLoading = true;
@@ -115,6 +117,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     setState(() {
       _formMode = FormMode.SIGNUP;
     });
+    this.type = 1;
   }
 
   void _changeFormToLogin() {
@@ -123,6 +126,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     setState(() {
       _formMode = FormMode.LOGIN;
     });
+    this.type = 0;
   }
 
   @override
@@ -180,6 +184,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             shrinkWrap: true,
             children: <Widget>[
               _showLogo(),
+              _showNameInput(),
               _showEmailInput(),
               _showPasswordInput(),
               _showPrimaryButton(),
@@ -211,7 +216,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     return new Hero(
       tag: 'hero',
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 80,
@@ -221,9 +226,34 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     );
   }
 
+  bool visible = false;
+  Widget _showNameInput() {
+    type==1? visible = true: visible = false;
+    return Visibility(
+      visible: visible,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+        child: new TextFormField(
+          maxLines: 1,
+          keyboardType: TextInputType.text,
+          autofocus: false,
+          decoration: new InputDecoration(
+              hintText: 'Name',
+              icon: new Icon(
+                Icons.person,
+                color: Colors.grey,
+              )),
+          validator: (value) => value.isEmpty ? 'Name can\'t be empty' : null,
+          onSaved: (value) => _name = value,
+        ),
+      ),
+    );
+  }
+  
+
   Widget _showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 35.0, 10.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
@@ -268,7 +298,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
               style:
                   new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300)),
       onPressed: _formMode == FormMode.LOGIN
-          ? _changeFormToSignUp
+          ? _changeFormToSignUp 
           : _changeFormToLogin,
     );
   }

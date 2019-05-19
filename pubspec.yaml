@@ -3,8 +3,9 @@ description: A new Flutter project.
 
 dependencies:
 
-  flutter:
-    sdk: flutter
+  # flutter:
+  #   sdk: flutter
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -12,12 +13,13 @@ dependencies:
   pedometer: ^0.0.5
   firebase_database: ^1.0.5
   firebase_auth: ^0.6.2+1
-  cloud_firestore: ^0.8.2+3
+  cloud_firestore: ^0.10.0
   percent_indicator: ^1.0.16
   slider: ^0.0.1
-  sqflite: ^1.0.0
-  path_provider: ^0.4.1
-
+  image_picker: ^0.4.10
+  firebase_storage: ^2.1.0+1
+  sqflite: 1.0.0
+  path_provider: 0.4.1
   
 dev_dependencies:
   flutter_test:
@@ -38,6 +40,8 @@ flutter:
 
   assets:
     - assets/
+    - assets/squaretree/
+    - assets/maintree/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
