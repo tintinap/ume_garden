@@ -8,6 +8,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'statDistances.dart';
 
 class MapScreen extends StatefulWidget {
+  final String user;
+
+  MapScreen({Key key, this.user}): super(key: key);
   @override
   _MyMapState createState() => _MyMapState();
 }
@@ -135,7 +138,7 @@ class _MyMapState extends State<MapScreen> {
             new FlatButton(
               child: new Text("Confirm"),
               onPressed: () async {
-                await _store.collection('location').document('non.naive@gmail.com').collection('date').document(date).setData({
+                await _store.collection('location').document(widget.user).collection('date').document(date).setData({
                   'date': date,
                   'position': position,
                 });

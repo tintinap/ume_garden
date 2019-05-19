@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -135,10 +136,10 @@ class HomeState extends State<Home> {
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
               onTap: () async{
-                final ref = FirebaseStorage.instance.ref().child('image');
+                final ref = FirebaseStorage.instance.ref().child('${widget.user}');
                 var url = await ref.getDownloadURL();
                 print(url+'222222222222222222222222222222222222222222222222222222');
-                Navigator.push(context, MaterialPageRoute(builder: (contex) => Profile(user: url)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url)));
 
               },
             ),

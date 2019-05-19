@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'dart:io';
 import 'statProfile.dart';
-
+import 'editProfile.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -12,8 +12,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 String test;
 class Profile extends StatefulWidget {
   final String user;
-
-  Profile({Key key, this.user}): super(key: key);
+  final String picture;
+  Profile({Key key, this.user, this.picture}): super(key: key);
   @override
   ProfileState createState() {
     print(user+'---------------------------------------------------------');
@@ -27,9 +27,11 @@ class ProfileState extends State<Profile> {
   
   Firestore _store = Firestore.instance;
   int tree;
+  String a ;
   String name;
   @override
   Widget build(BuildContext context) {
+    a = widget.user;
     _getTree();
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +43,7 @@ class ProfileState extends State<Profile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context, name),
+              _profile_container(context,a, name,widget.picture),
               _treeandstat(context, widget.user, tree),
               _treelist(),
             ],
@@ -67,7 +69,7 @@ class ProfileState extends State<Profile> {
 }
 
 
-Widget _profile_container(context, name){
+Widget _profile_container(context, a, name, picture){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
     height: 180.0,
@@ -75,9 +77,9 @@ Widget _profile_container(context, name){
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-         _btn_edit(context),
+         _btn_edit(context,a,picture),
          _profile(a),
-         _name(),
+         _name(name),
       ],
     ),
   );
@@ -156,7 +158,7 @@ Widget _btn_stat(context, user){
   );
 }
 
-Widget _btn_edit(context){
+Widget _btn_edit(context,user,picture){
   return Container(
     child: RaisedButton(
       child: Text("Edit Profile",
@@ -166,7 +168,7 @@ Widget _btn_edit(context){
         ),
       ),
         onPressed: () {
-          Navigator.pushNamed(context, '/editProfile');
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(user: user, name: picture)));
         },
         color: Colors.white,
         splashColor: Colors.white,
