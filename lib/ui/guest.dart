@@ -16,6 +16,7 @@ class GuestState extends State<Guest> {
     return Scaffold(
       body: Container(
         child: ListView(
+          physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
             _logo(),
