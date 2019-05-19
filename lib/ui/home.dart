@@ -116,7 +116,7 @@ class HomeState extends State<Home> {
         child: visible == false?
         ListView( //this one when has not lvl5 yet
           physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.all(30.0),
+          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
           children: <Widget>[
             _tree(_plantImage),
             _barnum(_remainStepCount, _fullPerLvl),
@@ -127,7 +127,7 @@ class HomeState extends State<Home> {
           ]
         ):
         ListView( //this one will be using when it already lvl5
-          padding: EdgeInsets.all(30.0),
+          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
           children: <Widget>[
             _tree(_plantImage),
             _barnum(_remainStepCount, _fullPerLvl),
@@ -258,7 +258,7 @@ Widget _distanceandstep(km, stepcount) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text("ระยะทางรวม\n", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
-                Text("$km\n", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0), textAlign: TextAlign.center,),
+                Text("$km\n", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0), textAlign: TextAlign.center,),
                 Text("กิโลเมตร", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
               ],
             ),
@@ -269,7 +269,7 @@ Widget _distanceandstep(km, stepcount) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text("จำนวนก้าว\n", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
-                Text("$stepcount\n", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0), textAlign: TextAlign.center,),
+                Text("$stepcount\n", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0), textAlign: TextAlign.center,),
                 Text("ก้าว", textAlign: TextAlign.center, style: TextStyle(fontSize: 13.0)),
               ],
             ),
@@ -291,9 +291,9 @@ Widget _barnum(int remainStep, int fullPerLvl){
 Widget _bar(int remainStep, int fullPerLvl) {
   double percentNum = remainStep/fullPerLvl;
   return Padding(
-    padding: EdgeInsets.fromLTRB(80.0, 0, 0, 0),
+    padding: EdgeInsets.fromLTRB(62.0, 0, 0, 0),
     child: LinearPercentIndicator(
-      width: 140.0,
+      width: 240.0,
       lineHeight: 14.0,
       percent: percentNum,
       backgroundColor: Colors.grey,

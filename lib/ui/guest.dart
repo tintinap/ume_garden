@@ -50,7 +50,7 @@ class GuestState extends State<Guest> {
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 150,
-          child: Image.asset('assets/Logo2.png'),
+          child: Image.asset('assets/Logo.png'),
         ),
       ),
     );
