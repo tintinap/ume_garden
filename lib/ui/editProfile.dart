@@ -8,6 +8,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 final _formKey = GlobalKey<FormState>();
 
 class EditProfile extends StatefulWidget {
+  final String user;
+  final String name;
+  EditProfile(
+    {
+      Key key, this.user, this.name
+    }
+  )
+    : super(key: key);
   @override
   EditProfileState createState() {
     return EditProfileState();
@@ -18,11 +26,12 @@ class EditProfile extends StatefulWidget {
 File sampleImage;
 class EditProfileState extends State<EditProfile> {
   
-Future getImage() async {
+static getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
+    if(tempImage != null){
       sampleImage = tempImage;
-    });
+    }
+    
   }
   
   @override
@@ -38,7 +47,7 @@ Future getImage() async {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _editform(context,getImage()),
+              _editform(context,widget.user,widget.name),
             ],
           ),
         ),
@@ -47,15 +56,15 @@ Future getImage() async {
   }
 }
 
-Widget _editform(context,getimage) {
+Widget _editform(context,String picture, String picturen) {
   return Padding(
     padding: EdgeInsets.all(25),
     child: Column(
       children: <Widget>[
         _btn_all(context),
-        _profile(),
+        _profile(picture),
         _username(),
-        enableUpload(context,getimage),
+        enableUpload(context,picturen),
       ],
     ),
   );
@@ -76,6 +85,7 @@ Widget _btn_save() {
     child: FlatButton(
       child: Text("save"),
       onPressed: () {
+        EditProfileState.getImage();
         //press to set username
       },
       textColor: Colors.blue,
@@ -118,7 +128,7 @@ Widget _username() {
   );
 }
 
-Widget _profile(){
+Widget _profile(picture){
   return new Hero(
     tag: 'profile',
     child: Padding(
@@ -126,13 +136,13 @@ Widget _profile(){
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.asset('assets/guest.png'),
+        child: Image.network(picture),
       ),
     ),
   );
 }
 
-Widget enableUpload(context, getimage) {
+Widget enableUpload(context, picture) {
     return Container(
       child: Column(
         children: <Widget>[
@@ -142,7 +152,10 @@ Widget enableUpload(context, getimage) {
             textColor: Colors.white,
             color: Colors.blue,
             onPressed: () {
-              getimage();
+              final StorageReference firebaseStorageRef =
+                  FirebaseStorage.instance.ref().child('$picture');
+              final StorageUploadTask task =
+                  firebaseStorageRef.putFile(sampleImage);
               
             },
           )

@@ -130,7 +130,7 @@ Widget _about(BuildContext context) {
         ]
       ),
       onPressed: () {
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/');
       },
     ),
   );
