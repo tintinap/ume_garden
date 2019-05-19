@@ -27,7 +27,7 @@ class ProfileState extends State<Profile> {
   
   Firestore _store = Firestore.instance;
   int tree;
-  String a ;
+  String a;
   String name;
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ Widget _profile_container(context, a, name, picture){
       shrinkWrap: true,
       children: <Widget>[
          _btn_edit(context,a,picture),
-         _profile(a),
+         _profile(picture),
          _name(name),
       ],
     ),
@@ -95,11 +95,24 @@ Widget _profile(String a){
       child: CircleAvatar (
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.network(a,fit: BoxFit.fill,height: 100,
+        child: Image.network(a ,fit: BoxFit.fill,height: 150,
               width: 150),
       ),
     ),
-  ); 
+  );
+  
+  // return Container(
+  //   padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+  //   height: 150,
+  //   width: 100,
+  //   decoration: BoxDecoration(
+  //     shape: BoxShape.circle,
+  //     image: DecorationImage(
+  //       fit: BoxFit.fill,
+  //       image: NetworkImage(a)
+  //     ),
+  //   ),
+  // );
 }
 
 Widget _name(name){
@@ -142,7 +155,7 @@ Widget _btn_stat(context, user){
     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
       child: Text("บันทึกสถิติ",
-        style: new TextStyle(
+        style: TextStyle(
           fontSize: 12.0,
           fontWeight: FontWeight.w300,
         ),
@@ -150,10 +163,11 @@ Widget _btn_stat(context, user){
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => StatProfile(user: user)));
       },
+      color: Colors.white,
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
       elevation: 5.0,
-      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),  
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0), side: BorderSide(color: Colors.grey)),  
     ),
   );
 }

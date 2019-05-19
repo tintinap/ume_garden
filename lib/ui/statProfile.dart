@@ -79,7 +79,7 @@ class StatProfileState extends State<StatProfile> {
                                     print('tabbed');
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.all(30.0),
+                                    padding: EdgeInsets.all(25.0),
                                     child: Column(
                                       children: <Widget>[
                                       Text(allDate[0],
@@ -161,7 +161,7 @@ Widget _tree(tree, km){
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(150, 0, 0, 0),
+          margin: EdgeInsets.fromLTRB(135, 0, 0, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
