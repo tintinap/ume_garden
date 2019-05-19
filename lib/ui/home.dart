@@ -121,24 +121,14 @@ class HomeState extends State<Home> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text("$name"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor:
-                  Theme.of(context).platform == TargetPlatform.iOS
-                    ? Colors.blue
-                    : Colors.white,
-                child: Text(
-                  "J",
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
             ),
             ListTile(
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
               onTap: () async{
-                final ref = FirebaseStorage.instance.ref().child('${widget.user}');
+                final ref = FirebaseStorage.instance.ref().child('$name');
                 var url = await ref.getDownloadURL();
-                print(url+'222222222222222222222222222222222222222222222222222222');
+                print(url+'33333333333333333333333333');
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url)));
 
               },
