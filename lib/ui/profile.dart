@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 
+import 'dart:io';
 
+
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+String test;
 class Profile extends StatefulWidget {
+  Profile(
+    {
+      Key key,this.user,
+    }
+  )
+    : super(key: key);
+
+  final String user;
+
+
   @override
   ProfileState createState() {
+    print(user+'---------------------------------------------------------');
     return ProfileState();
   }
 
@@ -11,6 +29,7 @@ class Profile extends StatefulWidget {
 
 
 class ProfileState extends State<Profile> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +42,7 @@ class ProfileState extends State<Profile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context),
+              _profile_container(context,widget.user),
               _treeandstat(context),
               _treelist(),
             ],
@@ -34,7 +53,7 @@ class ProfileState extends State<Profile> {
   }
 }
 
-Widget _profile_container(context){
+Widget _profile_container(context, String a){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
     height: 180.0,
@@ -43,7 +62,7 @@ Widget _profile_container(context){
       shrinkWrap: true,
       children: <Widget>[
          _btn_edit(context),
-         _profile(),
+         _profile(a),
          _name(),
          
       ],
@@ -51,15 +70,18 @@ Widget _profile_container(context){
   );
 }
 
-Widget _profile(){
+ 
+Widget _profile(String a){
+  
   return Hero(
     tag: 'profile',
     child: Padding(
       padding: EdgeInsets.all(0),
-      child: CircleAvatar(
+      child: CircleAvatar (
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.asset('assets/guest.png'),
+        child: Image.network(a,fit: BoxFit.fill,height: 100,
+              width: 150),
       ),
     ),
   ); 
@@ -100,6 +122,7 @@ Widget _tree(){
 }
 
 Widget _btn_stat(context){
+  
   return Container(
     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
@@ -110,7 +133,10 @@ Widget _btn_stat(context){
         ),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, '/statProfile');
+        
+        
+        // Navigator.pushNamed(context, '/statProfile');
+        // profile();
       },
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
@@ -125,6 +151,7 @@ Widget _btn_edit(context){
     child: FlatButton(
       child: Text("edit"),
         onPressed: () {
+          //picture();
           Navigator.pushNamed(context, '/editProfile');
         },
         textColor: Colors.blue,
