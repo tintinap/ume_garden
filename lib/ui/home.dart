@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 
+import 'profile.dart';
+
 class Home extends StatefulWidget {
   Home(
     {
@@ -94,7 +96,7 @@ class HomeState extends State<Home> {
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
               onTap: () {
-                Navigator.pushNamed(context, '/profile');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user)));
               },
             ),
             ListTile(

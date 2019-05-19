@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class StatProfile extends StatefulWidget {
+  final String user;
+
+  StatProfile({Key key, this.user}): super(key: key);
   @override
   StatProfileState createState() {
     return StatProfileState();
@@ -11,8 +15,26 @@ class StatProfile extends StatefulWidget {
 
 
 class StatProfileState extends State<StatProfile> {
+  Firestore _store = Firestore.instance;
+  String date;
+  List allDate = new List();
+  int countDoc = 0;
+
+  // นับจำนวน document ใน firestore เพื่อทำ loop
+  Future _countDocuments() async {
+    await _store.collection('register2').document(widget.user).collection('date').getDocuments().then((doc){
+      setState(() {
+        countDoc = doc.documents.length;
+      });
+      doc.documents.forEach((doc) {
+        allDate.add(doc.data['date']);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _countDocuments();
     return Scaffold(
       appBar: AppBar(
         title: Text("User Stat"),
@@ -24,9 +46,38 @@ class StatProfileState extends State<StatProfile> {
             children: <Widget>[
               _profile_container(context),
               _tree(),
-              _listview(context),
-            ],
-          ),
+              Container(
+                child: Center(
+                    child: Column(
+                        children: <Widget>[
+                          // ListView.builder(
+                          //   itemCount: 5,
+                          //   itemBuilder: (context, int index) {
+                              Card(
+                                child: InkWell(
+                                  onTap: () {
+                                    print(allDate[0]);
+                                    print('tabbed');
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(30.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                      Text(allDate[0],
+                                      style: new TextStyle(fontWeight: FontWeight.bold,
+                                        color: Colors.black)
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                    // })
+                  ]
+                )
+              ),
+            ),
+          ]),
         ),
       ),
     );
