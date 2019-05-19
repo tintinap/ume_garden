@@ -33,8 +33,7 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
-  Firestore _store = Firestore.instance;
-  String _plantImage = "assets/LV0.png";
+  String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
   
 //=================================pedometer part==================================
@@ -127,8 +126,12 @@ class HomeState extends State<Home> {
             ListTile(
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user)));
+              onTap: () async{
+                final ref = FirebaseStorage.instance.ref().child('image');
+                var url = await ref.getDownloadURL();
+                print(url+'222222222222222222222222222222222222222222222222222222');
+                Navigator.push(context, MaterialPageRoute(builder: (contex) => Profile(user: url)));
+
               },
             ),
             ListTile(
@@ -150,7 +153,7 @@ class HomeState extends State<Home> {
         child: visible == false?
         ListView( //this one when has not lvl5 yet
           physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
           children: <Widget>[
             _tree(_plantImage),
             _barnum(_remainStepCount, _fullPerLvl),
@@ -161,7 +164,7 @@ class HomeState extends State<Home> {
           ]
         ):
         ListView( //this one will be using when it already lvl5
-          padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
           children: <Widget>[
             _tree(_plantImage),
             _barnum(_remainStepCount, _fullPerLvl),
@@ -273,7 +276,7 @@ class HomeState extends State<Home> {
       setState(() => _remainStepCount = 500);
       setState(() => _fullPerLvl = 500);
     }
-    this._plantImage = "assets/LV$_lvl.png";
+    this._plantImage = "assets/maintree/LV$_lvl.png";
   }
 //=================================pedometer part==================================  
 }

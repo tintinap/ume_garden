@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'dart:io';
 import 'statProfile.dart';
 
+
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+String test;
 class Profile extends StatefulWidget {
   final String user;
 
   Profile({Key key, this.user}): super(key: key);
   @override
   ProfileState createState() {
+    print(user+'---------------------------------------------------------');
     return ProfileState();
   }
 
@@ -16,6 +24,7 @@ class Profile extends StatefulWidget {
 
 
 class ProfileState extends State<Profile> {
+  
   Firestore _store = Firestore.instance;
   int tree;
   String name;
@@ -67,23 +76,25 @@ Widget _profile_container(context, name){
       shrinkWrap: true,
       children: <Widget>[
          _btn_edit(context),
-         _profile(),
-         _name(name),
-         
+         _profile(a),
+         _name(),
       ],
     ),
   );
 }
 
-Widget _profile(){
+ 
+Widget _profile(String a){
+  
   return Hero(
     tag: 'profile',
     child: Padding(
       padding: EdgeInsets.all(0),
-      child: CircleAvatar(
+      child: CircleAvatar (
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.asset('assets/guest.png'),
+        child: Image.network(a,fit: BoxFit.fill,height: 100,
+              width: 150),
       ),
     ),
   ); 
@@ -122,6 +133,7 @@ Widget _tree(tree){
     ),
   );
 }
+
 
 Widget _btn_stat(context, user){
   return Container(
@@ -171,22 +183,23 @@ Widget _treelist(){
   return Container(
     child: Wrap(
       children: <Widget>[
-        _treestage(),
-        _treestage(),
-        _treestage(),
-        _treestage(),
-        _treestage(),
+        _treestage(0),
+        _treestage(2),
+        _treestage(1),
+        _treestage(3),
+        _treestage(4),
+        _treestage(5),
+        _treestage(1),
       ],
     )
   );
 }
-Widget _treestage(){
+Widget _treestage(int _lvl){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
     child: Column(
       children: <Widget>[
-        Image.asset("assets/LV5.png", height: 150),
-        Text('Lv 5/5')
+        Image.asset("assets/squaretree/LV$_lvl.png", height: 150),
       ],
     )
   );
