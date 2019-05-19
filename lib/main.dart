@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       
-      initialRoute: '/',
+      initialRoute: '/count',
       routes: {
         "/" : (context) => MapScreen(),
         "/stat": (context) => StatScreen(date: null),
