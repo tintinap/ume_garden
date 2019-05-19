@@ -37,6 +37,8 @@ flutter:
 
   assets:
     - assets/
+    - assets/squaretree/
+    - assets/maintree/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

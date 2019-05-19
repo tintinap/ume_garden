@@ -64,7 +64,6 @@ Widget _profile_container(context, String a){
          _btn_edit(context),
          _profile(a),
          _name(),
-         
       ],
     ),
   );
@@ -133,10 +132,7 @@ Widget _btn_stat(context){
         ),
       ),
       onPressed: () {
-        
-        
-        // Navigator.pushNamed(context, '/statProfile');
-        // profile();
+        Navigator.pushNamed(context, '/statProfile');
       },
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
@@ -151,7 +147,6 @@ Widget _btn_edit(context){
     child: FlatButton(
       child: Text("edit"),
         onPressed: () {
-          //picture();
           Navigator.pushNamed(context, '/editProfile');
         },
         textColor: Colors.blue,
@@ -164,22 +159,23 @@ Widget _treelist(){
   return Container(
     child: Wrap(
       children: <Widget>[
-        _treestage(),
-        _treestage(),
-        _treestage(),
-        _treestage(),
-        _treestage(),
+        _treestage(0),
+        _treestage(2),
+        _treestage(1),
+        _treestage(3),
+        _treestage(4),
+        _treestage(5),
+        _treestage(1),
       ],
     )
   );
 }
-Widget _treestage(){
+Widget _treestage(int _lvl){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
     child: Column(
       children: <Widget>[
-        Image.asset("assets/LV5.png", height: 150),
-        Text('Lv 5/5')
+        Image.asset("assets/squaretree/LV$_lvl.png", height: 150),
       ],
     )
   );

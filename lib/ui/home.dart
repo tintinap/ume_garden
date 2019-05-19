@@ -30,7 +30,7 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
-  String _plantImage = "assets/LV0.png";
+  String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
   
 //=================================pedometer part==================================
@@ -241,7 +241,7 @@ class HomeState extends State<Home> {
       setState(() => _remainStepCount = 500);
       setState(() => _fullPerLvl = 500);
     }
-    this._plantImage = "assets/LV$_lvl.png";
+    this._plantImage = "assets/maintree/LV$_lvl.png";
   }
 //=================================pedometer part==================================  
 }
