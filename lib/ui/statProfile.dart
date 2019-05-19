@@ -16,9 +16,11 @@ class StatProfile extends StatefulWidget {
 
 class StatProfileState extends State<StatProfile> {
   Firestore _store = Firestore.instance;
-  String date;
   List allDate = new List();
   int countDoc = 0;
+  int tree;
+  String km;
+  String name;
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   Future _countDocuments() async {
@@ -32,9 +34,24 @@ class StatProfileState extends State<StatProfile> {
     });
   }
 
+  Future _getTree() async {
+    await _store.collection('register2').getDocuments().then((doc){
+      setState(() {
+        doc.documents.forEach((doc) {
+        if (doc.data['name'] == widget.user) {
+          tree = doc.data['tree'];
+          km = doc.data['km'];
+          name = doc.data['name'];
+        }
+       });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _countDocuments();
+    _getTree();
     return Scaffold(
       appBar: AppBar(
         title: Text("User Stat"),
@@ -44,9 +61,11 @@ class StatProfileState extends State<StatProfile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context),
-              _tree(),
-              Container(
+              _profile_container(context, name),
+              _tree(tree, km),
+              allDate.length==0 ?
+              Center(child: Text('No data...'))
+                : Container(
                 child: Center(
                     child: Column(
                         children: <Widget>[
@@ -84,7 +103,7 @@ class StatProfileState extends State<StatProfile> {
   }
 }
 
-Widget _profile_container(context){
+Widget _profile_container(context, name){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
     color: Colors.teal,
@@ -94,7 +113,7 @@ Widget _profile_container(context){
       shrinkWrap: true,
       children: <Widget>[
          _profile(),
-         _name(),
+         _name(name),
       ],
     ),
   );
@@ -113,10 +132,10 @@ Widget _profile(){
   ); 
 }
 
-Widget _name(){
+Widget _name(name){
   return Container(
     child: Text(
-      'Jack\'tnp',
+      '$name',
       style: TextStyle(
         fontSize: 18.0,
         fontWeight: FontWeight.w400
@@ -126,7 +145,7 @@ Widget _name(){
   );
 }
 
-Widget _tree(){
+Widget _tree(tree, km){
   return Container(
     padding: EdgeInsets.all(30.0),
     child: Row(
@@ -137,7 +156,7 @@ Widget _tree(){
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("จำนวนต้นไม้", textAlign: TextAlign.left, style: TextStyle(fontSize: 14.0, color: Colors.teal)),
-              Text("xx ต้น", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.left,),
+              Text("$tree ต้น", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.left,),
             ],
           ),
         ),
@@ -147,7 +166,7 @@ Widget _tree(){
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text("ระยะทางรวม", textAlign: TextAlign.right, style: TextStyle(fontSize: 14.0, color: Colors.teal)),
-              Text("xx กิโลเมตร", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.right,),
+              Text("$km กิโลเมตร", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.right,),
             ],
           ),
         ),

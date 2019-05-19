@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'statProfile.dart';
 
@@ -15,8 +16,12 @@ class Profile extends StatefulWidget {
 
 
 class ProfileState extends State<Profile> {
+  Firestore _store = Firestore.instance;
+  int tree;
+  String name;
   @override
   Widget build(BuildContext context) {
+    _getTree();
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
@@ -27,8 +32,8 @@ class ProfileState extends State<Profile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context),
-              _treeandstat(context, widget.user),
+              _profile_container(context, name),
+              _treeandstat(context, widget.user, tree),
               _treelist(),
             ],
           ),
@@ -36,9 +41,24 @@ class ProfileState extends State<Profile> {
       ),
     );
   }
+
+  Future _getTree() async {
+    await _store.collection('register2').getDocuments().then((doc){
+      setState(() {
+        doc.documents.forEach((doc) {
+        if (doc.data['name'] == widget.user) {
+          tree = doc.data['tree'];
+          name = doc.data['name'];
+        }
+       });
+      });
+    });
+  }
+
 }
 
-Widget _profile_container(context){
+
+Widget _profile_container(context, name){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
     height: 180.0,
@@ -48,7 +68,7 @@ Widget _profile_container(context){
       children: <Widget>[
          _btn_edit(context),
          _profile(),
-         _name(),
+         _name(name),
          
       ],
     ),
@@ -69,10 +89,10 @@ Widget _profile(){
   ); 
 }
 
-Widget _name(){
+Widget _name(name){
   return Container(
     child: Text(
-      'Jack\'tnp',
+      '$name',
       style: TextStyle(
         fontSize: 18.0,
         fontWeight: FontWeight.w400
@@ -82,23 +102,23 @@ Widget _name(){
   );
 }
 
-Widget _treeandstat(context, user){
+Widget _treeandstat(context, user, tree){
   return Container(
     padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
     child: Row(
       children: <Widget>[
-        _tree(),
+        _tree(tree),
         _btn_stat(context, user),
       ],
     )
   );
 }
 
-Widget _tree(){
+Widget _tree(tree){
   return Padding(
     padding: EdgeInsets.fromLTRB(20, 0, 35, 0),
     child: Text(
-      'จำนวนต้นไม้ x ต้น'
+      'จำนวนต้นไม้ $tree ต้น'
     ),
   );
 }
@@ -127,7 +147,7 @@ Widget _btn_stat(context, user){
 Widget _btn_edit(context){
   return Container(
     child: RaisedButton(
-      child: Text("บันทึกสถิติ",
+      child: Text("Edit Profile",
         style: new TextStyle(
           fontSize: 12.0,
           fontWeight: FontWeight.w300,
