@@ -52,10 +52,10 @@ Widget _profile_container(context){
 }
 
 Widget _profile(){
-  return new Hero(
+  return Hero(
     tag: 'profile',
     child: Padding(
-      padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 5.0),
+      padding: EdgeInsets.all(0),
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 40,

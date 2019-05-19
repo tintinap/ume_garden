@@ -24,7 +24,7 @@ class StatProfileState extends State<StatProfile> {
             children: <Widget>[
               _profile_container(context),
               _tree(),
-              _listview(),
+              _listview(context),
             ],
           ),
         ),
@@ -35,8 +35,9 @@ class StatProfileState extends State<StatProfile> {
 
 Widget _profile_container(context){
   return Container(
+    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
     color: Colors.teal,
-    height: 180.0,
+    height: 130.0,
     child: ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -125,44 +126,76 @@ Widget _btn_stat(context){
   );
 }
 
-Widget _listview() {
+Widget _listview(context) {
   return Container(
         child: Center(
           child: Column(
             children: <Widget>[
              Card(
-                child: Container(
-                  padding: EdgeInsets.all(32.0),
-                  child: Column(
-                    children: <Widget>[
-                     Text('Hello World'),
-                     Text('How are you?')
-                    ],
+               child: InkWell(
+                  onTap: () {
+                    // function gets executed on a tap
+                    Navigator.pushNamed(context, '/home');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(30.0),
+                    child: Column(
+                      children: <Widget>[
+                      Text('May 19, 2019'),
+                      ],
+                    ),
                   ),
                 ),
               ),
              Card(
-                child: Container(
-                  padding: EdgeInsets.all(32.0),
-                  child: Column(
-                    children: <Widget>[
-                     Text('Hello World'),
-                     Text('How are you?')
-                    ],
+               child: InkWell(
+                  onTap: () {
+                    // function gets executed on a tap
+                    Navigator.pushNamed(context, '/home');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(30.0),
+                    child: Column(
+                      children: <Widget>[
+                      Text('Hello World'),
+                      ],
+                    ),
                   ),
                 ),
               ),
-             Card(
-                child: Container(
-                  padding: EdgeInsets.all(32.0),
-                  child: Column(
-                    children: <Widget>[
-                     Text('Hello World'),
-                     Text('How are you?')
-                    ],
+              Card(
+               child: InkWell(
+                  onTap: () {
+                    // function gets executed on a tap
+                    Navigator.pushNamed(context, '/home');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(30.0),
+                    child: Column(
+                      children: <Widget>[
+                      Text('Hello World'),
+                      ],
+                    ),
                   ),
                 ),
-              )
+              ),
+              Card(
+               child: InkWell(
+                  onTap: () {
+                    // function gets executed on a tap
+                    Navigator.pushNamed(context, '/home');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(30.0),
+                    child: Column(
+                      children: <Widget>[
+                      Text('Hello World'),
+                      Text('How are you?')
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

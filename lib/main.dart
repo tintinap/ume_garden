@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      initialRoute: '/auth',
+      initialRoute: '/',
       routes: {
       	"/" : (context) => Guest(),
       	"/auth" : (context) => RootPage(auth: new Auth()),
