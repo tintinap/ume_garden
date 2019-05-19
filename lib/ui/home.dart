@@ -33,6 +33,7 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
+  Firestore _store = Firestore.instance;
   String _plantImage = "assets/LV0.png";
   int _fullPerLvl = 1000;
   
@@ -45,6 +46,7 @@ class HomeState extends State<Home> {
   int _plants = 0; //all lvl 5 plants of user
   StreamSubscription<int> _subscription; // for pedometer package
   int _lvl = 0;
+  String name;
 
   @override
   void initState() {
@@ -68,9 +70,39 @@ class HomeState extends State<Home> {
         print(e);
       }
     }
+  
+  Future _sendData() async {
+    await _store.collection('register2').document(widget.user).setData({
+      'km': _km,
+      'totalKm': _totalKm,
+      'lvl': _lvl,
+      'tree': _plants,
+      'step': _stepCountValue,
+      'remainStep': _remainStepCount,
+      'name': widget.user
+    });
+  }
+
+  Future _getName() async {
+    await _store.collection('register2').getDocuments().then((doc){
+      setState(() {
+        doc.documents.forEach((doc) {
+        if (doc.data['name'] == widget.user) {
+          name = doc.data['name'];
+        }
+       });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context,) {
+    if (widget.user!=null) {
+      _sendData();
+    } else {
+      name = 'Guest';
+    }
+    _getName();
     return Scaffold(
       appBar: AppBar(
         title: Text("Little Garden"),
@@ -80,7 +112,7 @@ class HomeState extends State<Home> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("Thanapon Wongprasert"),
+              accountName: Text("$name"),
               currentAccountPicture: CircleAvatar(
                 backgroundColor:
                   Theme.of(context).platform == TargetPlatform.iOS
