@@ -16,7 +16,7 @@ class CountDocument extends StatefulWidget {
 class _CountState extends State<CountDocument> {
   Firestore _store = Firestore.instance;
   int countDoc = 0;
-  String date;
+  String date = 'May 19, 2019';
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   void _countDocuments() {
@@ -25,6 +25,16 @@ class _CountState extends State<CountDocument> {
         countDoc = doc.documents.length;
       });
     });
+  }
+
+  // ส่งข้อมูลวันที่ไปหน้า stat มีบัค
+  void _sendDataToSecondScreen(BuildContext context) {
+    String dateToSend = date;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => StatScreen(date: dateToSend),
+        ));
   }
 
   // List<Widget>prepareCardWidgets(List<SomeObject> theObjects){
@@ -46,7 +56,10 @@ class _CountState extends State<CountDocument> {
           itemCount: countDoc,
           itemBuilder: (BuildContext contex, int index) {
             return new GestureDetector(
-              onTap: () => print('tabbed'),
+              onTap: () {
+                _sendDataToSecondScreen(context);
+                print('tabbed');
+              },
               child: new Card(
                 child: new Column(
                   children: <Widget>[
