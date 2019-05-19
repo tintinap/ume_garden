@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'statProfile.dart';
 
 class Profile extends StatefulWidget {
+  final String user;
+
+  Profile({Key key, this.user}): super(key: key);
   @override
   ProfileState createState() {
     return ProfileState();
@@ -24,7 +28,7 @@ class ProfileState extends State<Profile> {
           child: Column(
             children: <Widget>[
               _profile_container(context),
-              _treeandstat(context),
+              _treeandstat(context, widget.user),
               _treelist(),
             ],
           ),
@@ -78,13 +82,13 @@ Widget _name(){
   );
 }
 
-Widget _treeandstat(context){
+Widget _treeandstat(context, user){
   return Container(
     padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
     child: Row(
       children: <Widget>[
         _tree(),
-        _btn_stat(context),
+        _btn_stat(context, user),
       ],
     )
   );
@@ -99,7 +103,7 @@ Widget _tree(){
   );
 }
 
-Widget _btn_stat(context){
+Widget _btn_stat(context, user){
   return Container(
     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
@@ -110,7 +114,7 @@ Widget _btn_stat(context){
         ),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, '/statProfile');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StatProfile(user: user)));
       },
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
