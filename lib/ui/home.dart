@@ -3,7 +3,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_login_demo/models/todo.dart';
+import 'package:flutter_login_demo/models/guest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:pedometer/pedometer.dart';

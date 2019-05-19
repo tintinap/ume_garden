@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => new _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
-  List<Todo> _todoList;
+  List<Guest> _todoList;
   
   final FirebaseDatabase _database = FirebaseDatabase.instance;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

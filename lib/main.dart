@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_demo/ui/testpage.dart';
 //import './ui/main_screen.dart';
 import './ui/home.dart';
 import './ui/profile.dart';
@@ -9,6 +10,8 @@ import './services/authentication.dart';
 import './pages/root_page.dart';
 import './ui/guest.dart';
 import './ui/statprofile.dart';
+import './ui/testpage.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      initialRoute: '/',
+      initialRoute: '/test',
       routes: {
       	"/" : (context) => Guest(),
       	"/auth" : (context) => RootPage(auth: new Auth()),
@@ -33,6 +36,7 @@ class MyApp extends StatelessWidget {
         "/editProfile" : (context) => EditProfile(),
         "/statProfile" : (context) => StatProfile(),
         "/plant" : (context) => PlantProfile(),
+        "/test" : (context) => TestPage(),
       }
     );
   }
