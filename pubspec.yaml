@@ -22,12 +22,10 @@ dependencies:
   intl: ^0.15.8
   sqflite: 1.0.0
   path_provider: 0.4.1
-  audio_service: ^0.2.0
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.7.0"
 
 
 # For information on the generic Dart part of this file, see the
