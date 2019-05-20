@@ -26,7 +26,7 @@ class StatProfileState extends State<StatProfile> {
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   Future _countDocuments() async {
-    await _store.collection('register2').document(widget.user).collection('date').getDocuments().then((doc){
+    await _store.collection('register2').document(widget.user).collection('asdsa').getDocuments().then((doc){
       setState(() {
         countDoc = doc.documents.length;
       });
@@ -77,7 +77,8 @@ class StatProfileState extends State<StatProfile> {
                               Card(
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(date: allDate[0])));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+                                      date: allDate[0], user: widget.user)));
                                     print('tabbed');
                                   },
                                   child: Container(

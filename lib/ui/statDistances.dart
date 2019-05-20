@@ -6,7 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StatScreen extends StatefulWidget {
   final String date;
-  StatScreen({Key key, @required this.date}) : super(key: key);
+  final String user;
+  StatScreen({Key key, this.date, this.user}) : super(key: key);
 
   @override
   _StatState createState() => _StatState();
@@ -28,8 +29,9 @@ class _StatState extends State<StatScreen> {
   // อ่านค่าจาก firestore แล้วทำให้เป็น latlng
   void _getPosition() {
     String date = widget.date;
-    print(date);
-    _store.collection('location').document('non.naive@gmail.com').collection('date').document('$date').get().then((snapshot) {
+    String user = widget.user;
+    print(user+' '+date);
+    _store.collection('register2').document(user).collection('asdsa').document(date).get().then((snapshot) {
       List list = snapshot.data['position'];
       for (var i=0; i<list.length; i++) {
         if (i%2 == 0) {
@@ -83,9 +85,10 @@ class _StatState extends State<StatScreen> {
       appBar: AppBar(
         title: Text('Create Polyline Stat'),
       ),
-      body: GoogleMap(
+      body: _polyline.length==0 ? Center(child: Text('No data...'))
+        :GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(target: LatLng(13.73, 100.78), zoom: 14),
+        initialCameraPosition: CameraPosition(target: _polyline[0], zoom: 14),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
