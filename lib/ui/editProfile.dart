@@ -61,32 +61,35 @@ Widget _editform(context,String picture, String picturen) {
     padding: EdgeInsets.all(25),
     child: Column(
       children: <Widget>[
-        _btn_all(context),
+        _btn_all(context, picture),
         _profile(picturen),
         //_username(),
-        enableUpload(context,picture),
+        enableUpload(),
       ],
     ),
   );
 }
 
-Widget _btn_all(context) {
+Widget _btn_all(context, picture) {
   return Row(
     children: <Widget>[
       _btn_cancel(context),
-      _btn_save(),
+      _btn_save(picture),
     ],
   );
 }
 
-Widget _btn_save() {
+Widget _btn_save(picture) {
   return Container(
     margin: EdgeInsets.fromLTRB(75, 0, 0, 0),
     child: FlatButton(
       child: Text("save"),
       onPressed: () {
-        EditProfileState.getImage();
-        //press to set username
+        print(picture);
+              final StorageReference firebaseStorageRef =
+                  FirebaseStorage.instance.ref().child('$picture');
+              final StorageUploadTask task =
+                  firebaseStorageRef.putFile(sampleImage);
       },
       textColor: Colors.blue,
     ),
@@ -136,44 +139,29 @@ Widget _profile(picture){
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.network(picture),
+        child: Image.network(
+          picture, scale: 10.0, width: 100, height: 100,
+        ),
       ),
     ),
   );
 }
 
-Widget enableUpload(context, picture) {
+Widget enableUpload() {
     return Container(
       child: Column(
         children: <Widget>[
           RaisedButton(
             elevation: 7.0,
             child: Text('Upload'),
-            textColor: Colors.white,
-            color: Colors.blue,
+            textColor: Colors.black,
+            color: Colors.white,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0), side: BorderSide(color: Colors.black)),
             onPressed: () {
-              print(picture);
-              final StorageReference firebaseStorageRef =
-                  FirebaseStorage.instance.ref().child('$picture');
-              final StorageUploadTask task =
-                  firebaseStorageRef.putFile(sampleImage);
-              
+              EditProfileState.getImage();    
             },
           )
         ],
       ),
     );
   }
-Widget _uploadimg(context){
-  return Container(
-    child: FlatButton(
-      child: Text("upload profile"),
-        onPressed: () {
-        },
-        textColor: Colors.black,
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0), side: BorderSide(color: Colors.black)),
-        ),
-      alignment: Alignment.center,  
-  ); 
-}
