@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'dart:io';
+
 import 'statProfile.dart';
 import 'editProfile.dart';
 
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 
 String test;
 class Profile extends StatefulWidget {
@@ -193,17 +191,13 @@ Widget _btn_edit(context,user,picture){
   );
 }
 
-Widget _treelist(){
+Widget _treelist(tree){
   return Container(
     child: Wrap(
       children: <Widget>[
-        _treestage(0),
-        _treestage(2),
-        _treestage(1),
-        _treestage(3),
-        _treestage(4),
-        _treestage(5),
-        _treestage(1),
+        for (var i = 0; i < 5; i++) {
+          _treestage(5),
+        },
       ],
     )
   );
