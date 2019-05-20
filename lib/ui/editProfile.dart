@@ -62,9 +62,9 @@ Widget _editform(context,String picture, String picturen) {
     child: Column(
       children: <Widget>[
         _btn_all(context),
-        _profile(picture),
-        _username(),
-        enableUpload(context,picturen),
+        _profile(picturen),
+        //_username(),
+        enableUpload(context,picture),
       ],
     ),
   );
@@ -152,6 +152,7 @@ Widget enableUpload(context, picture) {
             textColor: Colors.white,
             color: Colors.blue,
             onPressed: () {
+              print(picture);
               final StorageReference firebaseStorageRef =
                   FirebaseStorage.instance.ref().child('$picture');
               final StorageUploadTask task =

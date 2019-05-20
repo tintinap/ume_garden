@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'dart:io';
 import 'statProfile.dart';
+import 'editProfile.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -15,7 +16,7 @@ class Profile extends StatefulWidget {
   Profile({Key key, this.user, this.picture}): super(key: key);
   @override
   ProfileState createState() {
-    print(user+'---------------------------------------------------------');
+    //print(user + '---------------------------------------------------------');
     return ProfileState();
   }
 
@@ -30,12 +31,7 @@ class ProfileState extends State<Profile> {
   String name;
   @override
   Widget build(BuildContext context) {
-    if (widget.user == null){
-      a = "https://i.imgur.com/Wu4VXkq.png";
-    }
-    else{
-      a = widget.user;
-    }
+    a = widget.user;
     _getTree();
     return Scaffold(
       appBar: AppBar(
@@ -83,7 +79,7 @@ Widget _profile_container(context, a, name, picture){
       children: <Widget>[
          _btn_edit(context,a,picture),
          _profile(picture),
-         _name(name),
+         //_name(name),
       ],
     ),
   );
@@ -98,8 +94,7 @@ Widget _profile(String a){
       child: CircleAvatar (
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.network(a ,fit: BoxFit.fill,height: 150,
-              width: 150),
+        child: Image.network(a),
       ),
     ),
   );
@@ -123,7 +118,7 @@ Widget _name(name){
     child: Text(
       '$name',
       style: TextStyle(
-        fontSize: 18.0,
+        fontSize: 14.0,
         fontWeight: FontWeight.w400
       ),
       textAlign: TextAlign.center,

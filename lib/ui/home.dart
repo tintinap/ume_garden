@@ -103,7 +103,7 @@ class HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context,) {
+  Widget build(BuildContext context) {
     if (widget.user!=null) {
       _sendData();
     } else {
@@ -126,11 +126,23 @@ class HomeState extends State<Home> {
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
               onTap: () async{
-                final ref = FirebaseStorage.instance.ref().child('$name');
-                var url = await ref.getDownloadURL();
-                print(url+'33333333333333333333333333');
+                var url='';
+                if(name == 'Guest'){
+                  url = await 'https://firebasestorage.googleapis.com/v0/b/flutter-assignment-02.appspot.com/o/guest.png?alt=media&token=655c467e-10ee-4914-9f29-c05269138195';
+                }
+                else {
+                  print('asdasdasdsadsadasdas');
+                  try{
+                    final ref = FirebaseStorage.instance.ref().child('$name');
+                  url = await ref.getDownloadURL();
+                  }
+                  catch(IOException){
+                     url = await 'https://firebasestorage.googleapis.com/v0/b/flutter-assignment-02.appspot.com/o/guest.png?alt=media&token=655c467e-10ee-4914-9f29-c05269138195';
+                  }
+                  
+                }
+                
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url)));
-
               },
             ),
             ListTile(
