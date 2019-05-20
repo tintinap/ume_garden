@@ -13,7 +13,8 @@ String test;
 class Profile extends StatefulWidget {
   final String user;
   final String picture;
-  Profile({Key key, this.user, this.picture}): super(key: key);
+  final int tree;
+  Profile({Key key, this.user, this.picture, this.tree}): super(key: key);
   @override
   ProfileState createState() {
     //print(user + '---------------------------------------------------------');
@@ -24,13 +25,13 @@ class Profile extends StatefulWidget {
 
 
 class ProfileState extends State<Profile> {
-  
   Firestore _store = Firestore.instance;
   int tree;
   String a;
   String name;
   @override
   Widget build(BuildContext context) {
+    print(widget.tree);
     a = widget.user;
     _getTree();
     return Scaffold(

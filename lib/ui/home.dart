@@ -13,6 +13,7 @@ import '../models/guest.dart';
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
 
+import 'googleMapScreen.dart';
 import 'profile.dart';
 
 class Home extends StatefulWidget {
@@ -142,7 +143,14 @@ class HomeState extends State<Home> {
                   
                 }
                 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url, tree: _plants)));
+              },
+            ),
+            ListTile(
+              title: Text("Create Polyline"),
+              trailing: Icon(Icons.linear_scale),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(user: widget.user)));
               },
             ),
             ListTile(

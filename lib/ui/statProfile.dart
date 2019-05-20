@@ -26,7 +26,7 @@ class StatProfileState extends State<StatProfile> {
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   Future _countDocuments() async {
-    await _store.collection('register2').document(widget.user).collection('asdsa').getDocuments().then((doc){
+    await _store.collection('register2').document(widget.user).collection('date').getDocuments().then((doc){
       setState(() {
         countDoc = doc.documents.length;
       });
