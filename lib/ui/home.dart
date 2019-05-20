@@ -55,6 +55,9 @@ class HomeState extends State<Home> {
   int _lvl = 0;
   String name;
 
+  // get from firestore
+  int currentTree;
+
   @override
   void initState() {
     super.initState();
@@ -90,13 +93,13 @@ class HomeState extends State<Home> {
     });
   }
 
-  Future _getName() async {
+  Future _getData() async {
     await _store.collection('register2').getDocuments().then((doc){
       setState(() {
         doc.documents.forEach((doc) {
-        if (doc.data['name'] == widget.user) {
+        if (widget.user == doc.data['name']) {
           name = doc.data['name'];
-          
+          currentTree = doc.data['tree'];
         }
        });
       });
@@ -106,12 +109,14 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (widget.user!=null) {
-      _sendData();
+      // _sendData();
     } else {
       name = 'Guest';
       gp.open("guest.db");
     }
-    _getName();
+    setState(() {
+      _getData();
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text("Yume Garden"),
@@ -143,7 +148,7 @@ class HomeState extends State<Home> {
                   
                 }
                 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url, tree: currentTree)));
               },
             ),
             ListTile(
