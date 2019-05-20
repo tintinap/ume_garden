@@ -184,7 +184,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             shrinkWrap: true,
             children: <Widget>[
               _showLogo(),
-              _showNameInput(),
+              //_showNameInput(),
               _showEmailInput(),
               _showPasswordInput(),
               _showPrimaryButton(),

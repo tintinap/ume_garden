@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'dart:io';
 import 'statProfile.dart';
-import 'editProfile.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -31,7 +30,12 @@ class ProfileState extends State<Profile> {
   String name;
   @override
   Widget build(BuildContext context) {
-    a = widget.user;
+    if (widget.user == null){
+      a = "https://i.imgur.com/Wu4VXkq.png";
+    }
+    else{
+      a = widget.user;
+    }
     _getTree();
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +91,6 @@ Widget _profile_container(context, a, name, picture){
 
  
 Widget _profile(String a){
-  
   return Hero(
     tag: 'profile',
     child: Padding(
