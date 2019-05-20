@@ -192,14 +192,18 @@ Widget _btn_edit(context,user,picture){
   );
 }
 
-Widget _treelist(tree){
+List<Widget> _loopTree(amount, level){
+  List<Widget> items = List();
+  for (int i = 0; i < amount; i++){
+    items.add(_treestage(level));
+  }
+  return items;
+}
+
+Widget _treelist(){
   return Container(
     child: Wrap(
-      children: <Widget>[
-        for (var i = 0; i < 5; i++) {
-          _treestage(5),
-        },
-      ],
+      children: _loopTree(5, 5),
     )
   );
 }
