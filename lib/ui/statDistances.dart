@@ -17,7 +17,7 @@ class _StatState extends State<StatScreen> {
   Completer<GoogleMapController> _controller = Completer();
   Firestore _store = Firestore.instance;
 
-  List<LatLng> _polyline = [];
+  List<LatLng> _polyline = [LatLng(13.73, 100.78), LatLng(13.75, 100.79)];
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
   LatLng latlong;
 
@@ -28,15 +28,14 @@ class _StatState extends State<StatScreen> {
 
   // อ่านค่าจาก firestore แล้วทำให้เป็น latlng
   void _getPosition() {
-    String date = widget.date;
-    String user = widget.user;
-    print(user+' '+date);
-    _store.collection('register2').document(user).collection('asdsa').document(date).get().then((snapshot) {
+    _store.collection('register2').document(widget.user).collection('asdsa').document(widget.date).get().then((snapshot) {
       List list = snapshot.data['position'];
-      for (var i=0; i<list.length; i++) {
+      for (int i=0; i<list.length; i++) {
         if (i%2 == 0) {
+          _latitude.toString();
           _latitude = list[i];
         } else if (i%2 != 0) {
+          _longitude.toString();
           _longitude = list[i];
         }
         if (_longitude != null) {
@@ -80,7 +79,7 @@ class _StatState extends State<StatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _getPosition();
+    // _getPosition();
     return new Scaffold(
       appBar: AppBar(
         title: Text('Create Polyline Stat'),

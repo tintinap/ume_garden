@@ -18,7 +18,7 @@ class StatProfile extends StatefulWidget {
 
 class StatProfileState extends State<StatProfile> {
   Firestore _store = Firestore.instance;
-  List allDate = new List();
+  List allDate = [];
   int countDoc = 0;
   int tree;
   String km;
@@ -93,7 +93,47 @@ class StatProfileState extends State<StatProfile> {
                               ),
                             ),
                           ),
-                        )
+                        ),
+                        // Card(
+                        //         child: InkWell(
+                        //           onTap: () {
+                        //             Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+                        //               date: allDate[1], user: widget.user)));
+                        //             print('tabbed');
+                        //           },
+                        //           child: Container(
+                        //             padding: EdgeInsets.all(25.0),
+                        //             child: Column(
+                        //               children: <Widget>[
+                        //               Text(allDate[1],
+                        //               style: new TextStyle(fontWeight: FontWeight.bold,
+                        //                 color: Colors.black)
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // Card(
+                        //         child: InkWell(
+                        //           onTap: () {
+                        //             Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+                        //               date: allDate[2], user: widget.user)));
+                        //             print('tabbed');
+                        //           },
+                        //           child: Container(
+                        //             padding: EdgeInsets.all(25.0),
+                        //             child: Column(
+                        //               children: <Widget>[
+                        //               Text(allDate[2],
+                        //               style: new TextStyle(fontWeight: FontWeight.bold,
+                        //                 color: Colors.black)
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // )
                     // })
                   ]
                 )
