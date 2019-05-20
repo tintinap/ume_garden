@@ -86,7 +86,8 @@ class HomeState extends State<Home> {
       'tree': _plants,
       'step': _stepCountValue,
       'remainStep': _remainStepCount,
-      'name': widget.user
+      'name': widget.user,
+      'total_step' : _totalStep
     });
   }
 

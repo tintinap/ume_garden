@@ -15,8 +15,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_login_demo"
-        android:icon="@mipmap/ic_launcher">
+        android:label="UMEGarden"
+        android:icon="@mipmap/logo2">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDesaSN3yfjzA98ZncrC-24q1QpGdPPhL0"/>
         <activity
