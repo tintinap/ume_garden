@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 import 'statProfile.dart';
 import 'editProfile.dart';
-
-
 
 String test;
 class Profile extends StatefulWidget {
@@ -44,7 +41,7 @@ class ProfileState extends State<Profile> {
             children: <Widget>[
               _profile_container(context,a, name,widget.picture),
               _treeandstat(context, widget.user, tree),
-              _treelist(),
+              _treelist(this.tree),
             ],
           ),
         ),
@@ -200,13 +197,14 @@ List<Widget> _loopTree(amount, level){
   return items;
 }
 
-Widget _treelist(){
+Widget _treelist(amount){
   return Container(
     child: Wrap(
-      children: _loopTree(7, 5),
+      children: _loopTree(amount, 5),
     )
   );
 }
+
 Widget _treestage(int _lvl){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
