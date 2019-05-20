@@ -44,7 +44,7 @@ class ProfileState extends State<Profile> {
             children: <Widget>[
               _profile_container(context,a, name,widget.picture),
               _treeandstat(context, widget.user, tree),
-              _treelist(tree),
+              _treelist(),
             ],
           ),
         ),
@@ -192,19 +192,18 @@ Widget _btn_edit(context,user,picture){
   );
 }
 
-List<Widget> getList(tree) {
-  List<Widget> childs = [];
-  for (var i = 0; i < 5; i++) {
-    _treestage(5);
-    print("......................" + i.toString());
+List<Widget> _loopTree(amount, level){
+  List<Widget> items = List();
+  for (int i = 0; i < amount; i++){
+    items.add(_treestage(level));
   }
-  return childs;
+  return items;
 }
 
-Widget _treelist(tree){
+Widget _treelist(){
   return Container(
     child: Wrap(
-      children: getList(tree),
+      children: _loopTree(7, 5),
     )
   );
 }
