@@ -20,6 +20,9 @@ dependencies:
   firebase_storage: ^2.1.0+1
   sqflite: 1.0.0
   path_provider: 0.4.1
+  google_maps_flutter: ^0.5.13
+  location: 2.3.0
+  intl: ^0.15.8
   
 dev_dependencies:
   flutter_test:

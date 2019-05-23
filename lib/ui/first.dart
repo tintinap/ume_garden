@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:slider/slider.dart';
+import 'home.dart';
+import '../globals.dart' as globals;
 
-class Guest extends StatefulWidget {
+import '../models/guest.dart';
+
+class First extends StatefulWidget {
+
   @override
   GuestState createState() {
     return GuestState();
@@ -9,10 +14,14 @@ class Guest extends StatefulWidget {
 
 }
 
-class GuestState extends State<Guest> {
-  @override
+class GuestState extends State<First> {
 
-  Widget build(BuildContext context) {
+  static List<Map> guet = [];
+  
+  @override
+  Widget build(BuildContext) {
+    // gp.open("Guest.db");
+    print("pang");
     return Scaffold(
       body: Container(
         child: ListView(
@@ -20,7 +29,7 @@ class GuestState extends State<Guest> {
           padding: EdgeInsets.all(30.0),
           children: <Widget>[
             _logo(),
-            _buttonbox(context),
+            _buttonbox(context, globals.gp),
           ],
         ),
       ),
@@ -28,7 +37,7 @@ class GuestState extends State<Guest> {
   }
 }
 
- Widget _buttonbox(context){
+ Widget _buttonbox(context, provider){
     return new Container(
         padding: EdgeInsets.fromLTRB(0, 55, 0, 0),
         child: new Form(
@@ -36,7 +45,7 @@ class GuestState extends State<Guest> {
             shrinkWrap: true,
             children: <Widget>[
               _auth(context),
-              _guest(context),
+              _guest(context, provider),
             ],
           ),
         ));
@@ -77,7 +86,7 @@ Widget _auth(context) {
   );
 }
 
-Widget _guest(context) {
+Widget _guest(context, provider) {
   return Container(
     margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
@@ -87,8 +96,12 @@ Widget _guest(context) {
           fontSize: 16.0,
         ),
       ),
-      onPressed: () {
-        Navigator.pushNamed(context, '/home');
+      onPressed: () async{
+        GuestState.guet = await provider.db.rawQuery("select * from Guest");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Home(guestd: GuestState.guet,)));
+        print("<================================>");
+        print("thisone ${GuestState.guet}");
+        print("<================================>");
       },
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,

@@ -8,12 +8,18 @@ import './ui/setting.dart';
 import './ui/plantProfile.dart';
 import './services/authentication.dart';
 import './pages/root_page.dart';
-import './ui/guest.dart';
+import './ui/first.dart';
 import './ui/statprofile.dart';
-import './ui/testpage.dart';
+// import './ui/testpage.dart';
+import 'models/guest.dart';
 
+import 'globals.dart' as globals;
 
-void main() => runApp(MyApp());
+// GuestProvider gp = GuestProvider();
+void main() async{
+  await globals.gp.open('guest.db');
+  runApp(MyApp());
+} 
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -26,9 +32,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      initialRoute: '/home',
+      initialRoute: '/',
       routes: {
-      	"/" : (context) => Guest(),
+      	"/" : (context) => First(),
       	"/auth" : (context) => RootPage(auth: new Auth()),
         "/home" : (context) => Home(),
         "/profile" : (context) => Profile(),
@@ -36,7 +42,7 @@ class MyApp extends StatelessWidget {
         "/editProfile" : (context) => EditProfile(),
         "/statProfile" : (context) => StatProfile(),
         "/plant" : (context) => PlantProfile(),
-        "/test" : (context) => TestPage(),
+        // "/test" : (context) => TestPage(),
       }
     );
   }
