@@ -4,7 +4,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
-// import 'package:flutter_login_demo/models/guest.dart';
+import 'package:flutter_login_demo/models/guest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -66,8 +66,6 @@ class HomeState extends State<Home> {
   int _lvl = globals.guest[0]['lvl'];
   String name = 'Guest';
 
-  int _count = 1; // for pedo but no need to add to db
-
   // get from firestore
   int currentTree;
 
@@ -90,6 +88,7 @@ class HomeState extends State<Home> {
       try {
         await widget.auth.signOut();
         widget.onSignedOut();
+        
       } catch (e) {
         print(e);
       }
@@ -302,7 +301,6 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       _remainStepCount = 0;
       _lvl = 0;
       _plantImage = "assets/maintree/LV$_lvl.png";
-      _count = 1;
     });
     resetRecord = Guest.fromUpdate(
         1,
@@ -339,7 +337,6 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       _lvl = 0;
       _plants = 0;
       _plantImage = "assets/maintree/LV$_lvl.png";
-      _count = 1;
     });
     Guest emptyRecord = Guest();
     List<Map> currentRecord = await globals.gp.db.rawQuery("select * from Guest");

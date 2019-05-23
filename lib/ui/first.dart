@@ -76,6 +76,7 @@ Widget _auth(context) {
       ),
       color: Colors.teal,
       onPressed: () {
+        print('pressed sign in');
         Navigator.pushNamed(context, '/auth');
       },
       splashColor: Colors.teal,
@@ -97,6 +98,7 @@ Widget _guest(context, provider) {
         ),
       ),
       onPressed: () async{
+        // Navigator.pushNamed(context, '/home');
         GuestState.guet = await provider.db.rawQuery("select * from Guest");
         Navigator.push(context, MaterialPageRoute(builder: (context) => Home(guestd: GuestState.guet,)));
         print("<================================>");
