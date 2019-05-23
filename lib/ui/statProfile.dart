@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'statDistances.dart';
+
 
 class StatProfile extends StatefulWidget {
   final String user;
@@ -16,7 +18,7 @@ class StatProfile extends StatefulWidget {
 
 class StatProfileState extends State<StatProfile> {
   Firestore _store = Firestore.instance;
-  List allDate = new List();
+  List allDate = [];
   int countDoc = 0;
   int tree;
   String km;
@@ -75,11 +77,12 @@ class StatProfileState extends State<StatProfile> {
                               Card(
                                 child: InkWell(
                                   onTap: () {
-                                    print(allDate[0]);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+                                      date: allDate[0], user: widget.user)));
                                     print('tabbed');
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.all(30.0),
+                                    padding: EdgeInsets.all(25.0),
                                     child: Column(
                                       children: <Widget>[
                                       Text(allDate[0],
@@ -90,7 +93,7 @@ class StatProfileState extends State<StatProfile> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                     // })
                   ]
                 )
@@ -161,7 +164,7 @@ Widget _tree(tree, km){
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(150, 0, 0, 0),
+          margin: EdgeInsets.fromLTRB(135, 0, 0, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[

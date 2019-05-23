@@ -31,7 +31,6 @@ class _MyMapState extends State<MapScreen> {
   Map<PolylineId, Polyline> polylines = <PolylineId, Polyline>{};
   int _polylineIdCounter = 1;
   PolylineId selectedPolyline;
-  String dateToSend = 'May 19, 2019';
 
   // ลบค่าใน list polyline
   void _onEnabled() async {
@@ -54,7 +53,6 @@ class _MyMapState extends State<MapScreen> {
   // จัดการ location และมุมมองกล้อง
   void _getLocation() async {
     location.changeSettings(distanceFilter: 10);
-    print(location.getLocation().toString());
 
     final GoogleMapController controller = await _controller.future;
     location.onLocationChanged().listen((LocationData currentLocation) {
@@ -138,7 +136,7 @@ class _MyMapState extends State<MapScreen> {
             new FlatButton(
               child: new Text("Confirm"),
               onPressed: () async {
-                await _store.collection('location').document(widget.user).collection('date').document(date).setData({
+                await _store.collection('register2').document(widget.user).collection('date').document(date).setData({
                   'date': date,
                   'position': position,
                 });
@@ -153,29 +151,11 @@ class _MyMapState extends State<MapScreen> {
     );
   }
 
-  // ส่งข้อมูลวันที่ไปหน้า stat มีบัค
-  void _sendDataToSecondScreen(BuildContext context) {
-    String dateToSend = date;
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => StatScreen(date: dateToSend),
-        ));
-  }
-
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
         title: Text('MapApi'),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Stat'),
-            onPressed: (){
-              _sendDataToSecondScreen(context);
-            },
-          )
-        ],
       ),
       body: GoogleMap(
         mapType: MapType.normal,
@@ -196,6 +176,7 @@ class _MyMapState extends State<MapScreen> {
           heroTag: 'SaveLines',
           onPressed: () {
             _showDialog();
+            // Navigator.pop(context);
           },
           label: Text('Save All Lines!'),
           icon: Icon(Icons.save),

@@ -68,6 +68,9 @@ class HomeState extends State<Home> {
 
   int _count = 1; // for pedo but no need to add to db
 
+  // get from firestore
+  int currentTree;
+
   @override
   void initState() {
     super.initState();
@@ -105,12 +108,13 @@ class HomeState extends State<Home> {
     });
   }
 
-  Future _getName() async {
+  Future _getData() async {
     await _store.collection('register2').getDocuments().then((doc){
       setState(() {
         doc.documents.forEach((doc) {
-        if (doc.data['name'] == widget.user) {
+        if (widget.user == doc.data['name']) {
           name = doc.data['name'];
+          currentTree = doc.data['tree'];
         }
        });
       });
@@ -118,13 +122,15 @@ class HomeState extends State<Home> {
   }
   
   @override
-  Widget build(BuildContext context,) {
+  Widget build(BuildContext context) {
     if (widget.user!=null) {
-      _sendData();
+      // _sendData();
     } else {
       name = 'Guest';
     }
-    _getName();
+    setState(() {
+      _getData();
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text("Yume Garden"),
@@ -135,26 +141,28 @@ class HomeState extends State<Home> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountName: Text("$name"),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor:
-                  Theme.of(context).platform == TargetPlatform.iOS
-                    ? Colors.blue
-                    : Colors.white,
-                child: Text(
-                  "J",
-                  style: TextStyle(fontSize: 40.0),
-                ),
-              ),
             ),
             ListTile(
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
               onTap: () async{
-                final ref = FirebaseStorage.instance.ref().child('${widget.user}');
-                var url = await ref.getDownloadURL();
-                print(url+'222222222222222222222222222222222222222222222222222222');
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url)));
-
+                var url='';
+                if(name == 'Guest'){
+                  url = await 'https://firebasestorage.googleapis.com/v0/b/flutter-assignment-02.appspot.com/o/guest.png?alt=media&token=655c467e-10ee-4914-9f29-c05269138195';
+                }
+                else {
+                  print('asdasdasdsadsadasdas');
+                  try{
+                    final ref = FirebaseStorage.instance.ref().child('$name');
+                  url = await ref.getDownloadURL();
+                  }
+                  catch(IOException){
+                     url = await 'https://firebasestorage.googleapis.com/v0/b/flutter-assignment-02.appspot.com/o/guest.png?alt=media&token=655c467e-10ee-4914-9f29-c05269138195';
+                  }
+                  
+                }
+                
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url, tree: currentTree)));
               },
             ),
             ListTile(

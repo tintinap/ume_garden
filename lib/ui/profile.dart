@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'dart:io';
 import 'statProfile.dart';
 import 'editProfile.dart';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 String test;
 class Profile extends StatefulWidget {
   final String user;
   final String picture;
-  Profile({Key key, this.user, this.picture}): super(key: key);
+  final int tree;
+  Profile({Key key, this.user, this.picture, this.tree}): super(key: key);
   @override
   ProfileState createState() {
-    print(user+'---------------------------------------------------------');
+    //print(user + '---------------------------------------------------------');
     return ProfileState();
   }
 
@@ -24,13 +20,13 @@ class Profile extends StatefulWidget {
 
 
 class ProfileState extends State<Profile> {
-  
   Firestore _store = Firestore.instance;
   int tree;
-  String a ;
+  String a;
   String name;
   @override
   Widget build(BuildContext context) {
+    print(widget.tree);
     a = widget.user;
     _getTree();
     return Scaffold(
@@ -45,7 +41,7 @@ class ProfileState extends State<Profile> {
             children: <Widget>[
               _profile_container(context,a, name,widget.picture),
               _treeandstat(context, widget.user, tree),
-              _treelist(),
+              _treelist(this.tree),
             ],
           ),
         ),
@@ -78,8 +74,8 @@ Widget _profile_container(context, a, name, picture){
       shrinkWrap: true,
       children: <Widget>[
          _btn_edit(context,a,picture),
-         _profile(a),
-         _name(name),
+         _profile(picture),
+         //_name(name),
       ],
     ),
   );
@@ -87,7 +83,6 @@ Widget _profile_container(context, a, name, picture){
 
  
 Widget _profile(String a){
-  
   return Hero(
     tag: 'profile',
     child: Padding(
@@ -95,11 +90,23 @@ Widget _profile(String a){
       child: CircleAvatar (
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.network(a,fit: BoxFit.fill,height: 100,
-              width: 150),
+        child: Image.network(a),
       ),
     ),
-  ); 
+  );
+  
+  // return Container(
+  //   padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+  //   height: 150,
+  //   width: 100,
+  //   decoration: BoxDecoration(
+  //     shape: BoxShape.circle,
+  //     image: DecorationImage(
+  //       fit: BoxFit.fill,
+  //       image: NetworkImage(a)
+  //     ),
+  //   ),
+  // );
 }
 
 Widget _name(name){
@@ -107,7 +114,7 @@ Widget _name(name){
     child: Text(
       '$name',
       style: TextStyle(
-        fontSize: 18.0,
+        fontSize: 14.0,
         fontWeight: FontWeight.w400
       ),
       textAlign: TextAlign.center,
@@ -142,7 +149,7 @@ Widget _btn_stat(context, user){
     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
       child: Text("บันทึกสถิติ",
-        style: new TextStyle(
+        style: TextStyle(
           fontSize: 12.0,
           fontWeight: FontWeight.w300,
         ),
@@ -150,10 +157,11 @@ Widget _btn_stat(context, user){
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => StatProfile(user: user)));
       },
+      color: Colors.white,
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
       elevation: 5.0,
-      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),  
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0), side: BorderSide(color: Colors.grey)),  
     ),
   );
 }
@@ -181,21 +189,22 @@ Widget _btn_edit(context,user,picture){
   );
 }
 
-Widget _treelist(){
+List<Widget> _loopTree(amount, level){
+  List<Widget> items = List();
+  for (int i = 0; i < amount; i++){
+    items.add(_treestage(level));
+  }
+  return items;
+}
+
+Widget _treelist(amount){
   return Container(
     child: Wrap(
-      children: <Widget>[
-        _treestage(0),
-        _treestage(2),
-        _treestage(1),
-        _treestage(3),
-        _treestage(4),
-        _treestage(5),
-        _treestage(1),
-      ],
+      children: _loopTree(amount, 5),
     )
   );
 }
+
 Widget _treestage(int _lvl){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
