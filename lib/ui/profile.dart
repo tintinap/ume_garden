@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_login_demo/ui/editProfile.dart';
 
 import 'statProfile.dart';
 import 'editProfile.dart';

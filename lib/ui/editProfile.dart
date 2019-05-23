@@ -36,7 +36,6 @@ static getImage() async {
   
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Profile"),
