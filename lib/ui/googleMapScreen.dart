@@ -159,7 +159,7 @@ class _MyMapState extends State<MapScreen> {
       ),
       body: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(target: LatLng(13.73, 100.78), zoom: 14),
+        initialCameraPosition: CameraPosition(target: LatLng(13.73, 100.78), zoom: 1),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
@@ -168,7 +168,9 @@ class _MyMapState extends State<MapScreen> {
       ),
       persistentFooterButtons: <Widget>[
         FloatingActionButton.extended(
-          onPressed: _getLocation,
+          onPressed: () {
+            _getLocation();
+          },
           label: Text('Create Polyline!'),
           icon: Icon(Icons.location_on),
         ),

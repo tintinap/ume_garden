@@ -74,7 +74,7 @@ class StatProfileState extends State<StatProfile> {
                     shrinkWrap: true,
                     itemCount: countDoc,
                     itemBuilder: (context, index) =>
-                        _card(context, allDate, index),
+                        _card(context, allDate, index, widget.user),
                   ),
                 ),
             ]
@@ -254,47 +254,21 @@ Widget _listview(context) {
       );
 }
 
-Widget _card(BuildContext context, allDate, index) {
-  Card(
-    child: ListTile(
-      title: Text(allDate[index],
+Widget _card(BuildContext context, allDate, index, user) {
+  return Card(
+    child: InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+          date: allDate[index], user: user)));
+          print('tabbed');
+      },
+      child: ListTile(
+        contentPadding: EdgeInsets.all(20.0),
+        title: Text(allDate[index],
         style: new TextStyle(fontWeight: FontWeight.bold,
         color: Colors.black)
       ),
+    ),  
     ),
   );
-  // Container(
-  //         child: Center(
-  //           child: Column(
-  //             children: <Widget>[
-  //               ListView.builder(
-  //                 itemCount: countDoc,
-  //                 shrinkWrap: true,
-  //                 scrollDirection: Axis.vertical,
-  //                 itemBuilder: (context, int index) {
-  //                   Card(
-  //                     child: InkWell(
-  //                       onTap: () {
-  //                       Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
-  //                         date: allDate[index], user: user)));
-  //                         print('tabbed');
-  //                       },
-  //                       child: Container(
-  //                         padding: EdgeInsets.all(25.0),
-  //                         child: Column(
-  //                           children: <Widget>[
-  //                             Text(allDate[index],
-  //                             style: new TextStyle(fontWeight: FontWeight.bold,
-  //                             color: Colors.black)
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           );
-  //         })
-  //       ]
-  //     )
-  //   ),
-  // );
 }
