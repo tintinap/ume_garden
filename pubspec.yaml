@@ -19,7 +19,7 @@ dependencies:
   image_picker: ^0.4.10
   firebase_storage: ^2.1.0+1
   google_maps_flutter: ^0.5.13
-  location: 2.3.0
+  location: 1.4.1
   intl: ^0.15.8
   sqflite: 1.0.0
   path_provider: 0.4.1

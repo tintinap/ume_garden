@@ -21,7 +21,6 @@ class _MyMapState extends State<MapScreen> {
   String date = new DateFormat.yMMMd().format(new DateTime.now());
 
   var location = new Location();
-  Map<String, double> userLocation;
 
   List<LatLng> _polyline = [];
   List position = [];
@@ -40,40 +39,29 @@ class _MyMapState extends State<MapScreen> {
     print("Cleared Location List");
   }
 
-  // Future<Map<String, double>> _getCurrentLocation() async {
-  //   var currentLocation = <String, double>{};
-  //   try {
-  //     currentLocation = await location.getLocation();
-  //   } catch (e) {
-  //     currentLocation = null;
-  //   }
-  //   return currentLocation;
-  // }
-
   // จัดการ location และมุมมองกล้อง
   void _getLocation() async {
-    location.changeSettings(distanceFilter: 10);
-
-    final GoogleMapController controller = await _controller.future;
-    location.onLocationChanged().listen((LocationData currentLocation) {
-      print(currentLocation.latitude);
-      print(currentLocation.longitude);
+    // location.changeSettings(distanceFilter: 10);
+    location.onLocationChanged().listen((Map<String,double> currentLocation) async {
+      final GoogleMapController controller = await _controller.future;
+      print(currentLocation['latitude']);
+      print(currentLocation['longitude']);
       if (latitude == 0 && longitude == 0){
-        _addLocations(currentLocation.latitude, currentLocation.longitude);
+        _addLocations(currentLocation['latitude'], currentLocation['longitude']);
         _addPolylines();
         controller.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(
-            target: LatLng(currentLocation.latitude, currentLocation.longitude),
+            target: LatLng(currentLocation['latitude'], currentLocation['longitude']),
             zoom: 15.0,
           ),
         ));
       } else {
-        if (currentLocation.latitude != latitude || currentLocation.longitude != longitude) {
-          _addLocations(currentLocation.latitude, currentLocation.longitude);
+        if (currentLocation['latitude'] != latitude || currentLocation['longitude'] != longitude) {
+          _addLocations(currentLocation['latitude'], currentLocation['longitude']);
           _addPolylines();
           controller.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(
-              target: LatLng(currentLocation.latitude, currentLocation.longitude),
+              target: LatLng(currentLocation['latitude'], currentLocation['longitude']),
               zoom: 15.0,
             ),
           ));
@@ -142,7 +130,7 @@ class _MyMapState extends State<MapScreen> {
                 });
                 print('added _polyline to position');
                 _onEnabled();
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
             ),
           ],
@@ -159,7 +147,7 @@ class _MyMapState extends State<MapScreen> {
       ),
       body: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(target: LatLng(13.73, 100.78), zoom: 14),
+        initialCameraPosition: CameraPosition(target: LatLng(13.73, 100.78), zoom: 1),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
@@ -168,7 +156,9 @@ class _MyMapState extends State<MapScreen> {
       ),
       persistentFooterButtons: <Widget>[
         FloatingActionButton.extended(
-          onPressed: _getLocation,
+          onPressed: () {
+            _getLocation();
+          },
           label: Text('Create Polyline!'),
           icon: Icon(Icons.location_on),
         ),
@@ -176,7 +166,6 @@ class _MyMapState extends State<MapScreen> {
           heroTag: 'SaveLines',
           onPressed: () {
             _showDialog();
-            // Navigator.pop(context);
           },
           label: Text('Save All Lines!'),
           icon: Icon(Icons.save),

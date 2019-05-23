@@ -82,15 +82,14 @@ class _StatState extends State<StatScreen> {
     });
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Create Polyline Stat'),
+        title: Text('Polyline Stat'),
       ),
-      body: _polyline.length==0 ? Center(child: Text('No data...')) :GoogleMap(
+      body: _polyline.length==0 ? Center(child: Text('Please Tab View Polyline.')) :GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(target: _polyline[0], zoom: 14),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
-        myLocationEnabled: true,
         polylines: Set<Polyline>.of(polylines.values),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -99,7 +98,7 @@ class _StatState extends State<StatScreen> {
             _addPolylines();
           });
         },
-        label: Text('Create Polyline!'),
+        label: Text('View Polyline!'),
         icon: Icon(Icons.location_on),
       ),
     );

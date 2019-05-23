@@ -67,39 +67,18 @@ class StatProfileState extends State<StatProfile> {
               _tree(tree, km),
               allDate.length==0 ?
               Center(child: Text('No data...'))
-                : Container(
-                child: Center(
-                    child: Column(
-                        children: <Widget>[
-                          // ListView.builder(
-                          //   itemCount: 5,
-                          //   itemBuilder: (context, int index) {
-                              Card(
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
-                                      date: allDate[0], user: widget.user)));
-                                    print('tabbed');
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(25.0),
-                                    child: Column(
-                                      children: <Widget>[
-                                      Text(allDate[0],
-                                      style: new TextStyle(fontWeight: FontWeight.bold,
-                                        color: Colors.black)
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                    // })
-                  ]
-                )
-              ),
-            ),
-          ]),
+              : Container(
+                  height: 300,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: countDoc,
+                    itemBuilder: (context, index) =>
+                        _card(context, allDate, index, widget.user),
+                  ),
+                ),
+            ]
+          ),
         ),
       ),
     );
@@ -199,78 +178,21 @@ Widget _btn_stat(context){
   );
 }
 
-Widget _listview(context) {
-  return Container(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-             Card(
-               child: InkWell(
-                  onTap: () {
-                    // function gets executed on a tap
-                    Navigator.pushNamed(context, '/home');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(30.0),
-                    child: Column(
-                      children: <Widget>[
-                      Text('May 19, 2019'),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-             Card(
-               child: InkWell(
-                  onTap: () {
-                    // function gets executed on a tap
-                    Navigator.pushNamed(context, '/home');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(30.0),
-                    child: Column(
-                      children: <Widget>[
-                      Text('Hello World'),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-               child: InkWell(
-                  onTap: () {
-                    // function gets executed on a tap
-                    Navigator.pushNamed(context, '/home');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(30.0),
-                    child: Column(
-                      children: <Widget>[
-                      Text('Hello World'),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Card(
-               child: InkWell(
-                  onTap: () {
-                    // function gets executed on a tap
-                    Navigator.pushNamed(context, '/home');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(30.0),
-                    child: Column(
-                      children: <Widget>[
-                      Text('Hello World'),
-                      Text('How are you?')
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+Widget _card(BuildContext context, allDate, index, user) {
+  return Card(
+    child: InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+          date: allDate[index], user: user)));
+          print('tabbed');
+      },
+      child: ListTile(
+        contentPadding: EdgeInsets.all(20.0),
+        title: Text(allDate[index],
+        style: new TextStyle(fontWeight: FontWeight.bold,
+        color: Colors.black)
+      ),
+    ),  
+    ),
+  );
 }
