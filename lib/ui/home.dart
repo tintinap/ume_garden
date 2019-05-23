@@ -53,7 +53,6 @@ class HomeState extends State<Home> {
   int _fullPerLvl = 1000;
   // GuestProvider gp = GuestProvider();
   Guest updateRecord = Guest();
-  Guest resetRecord = Guest();
   
 //=================================pedometer part==================================
   String _km = globals.guest[0]['km']; //"0.0" distance 
@@ -64,7 +63,7 @@ class HomeState extends State<Home> {
   int _plants = globals.guest[0]['tree']; //0 all lvl 5 plants of user
   StreamSubscription<int> _subscription; // for pedometer package
   int _lvl = globals.guest[0]['lvl'];
-  String name = 'Guest';
+  String name = globals.guest[0]['name'];
 
   // get from firestore
   int currentTree;
@@ -225,29 +224,29 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
     if (stepCountValue > 0) {
       setState(() {
 
-        if (globals.guest[0]['step'] > _stepCountValue) {
-          _stepCountValue = globals.guest[0]['step']+1;
-          print('_stepCountValue = $_stepCountValue >');
-        } else {
+        // if (globals.guest[0]['step'] > _stepCountValue) {
+        //   _stepCountValue = globals.guest[0]['step']+1;
+        //   print('_stepCountValue = $_stepCountValue >');
+        // } else {
           _stepCountValue += 1;
           print('_stepCountValue = $_stepCountValue else');
-        }
+        // }
 
-        if (globals.guest[0]['totalStep'] > _totalStep) {
-          _totalStep = globals.guest[0]['totalStep']+1;
-          print('_totalStep = $_totalStep >');
-        } else {
+        // if (globals.guest[0]['totalStep'] > _totalStep) {
+        //   _totalStep = globals.guest[0]['totalStep']+1;
+        //   print('_totalStep = $_totalStep >');
+        // } else {
           _totalStep += 1;
           print('_totalStep = $_totalStep else');
-        }
+    //     }
       });
     } else {
       print("device's stepCount = 0");
     }
     setState(() {
-      _km = (globals.guest[0]['step']/2000).toStringAsFixed(1);
+      _km = (globals.guest[0]['step']/2000).toStringAsFixed(2);
       print("_km = $_km");
-      _totalKm= (globals.guest[0]['step']/2000).toStringAsFixed(1);
+      _totalKm = (globals.guest[0]['totalStep']/2000).toStringAsFixed(2);
       print("_totalKm = $_totalKm");
     });
 
@@ -299,7 +298,7 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       _lvl = 0;
       _plantImage = "assets/maintree/LV$_lvl.png";
     });
-    resetRecord = Guest.fromUpdate(
+    Guest resetRecord = Guest.fromUpdate(
         1,
         name, //
         _km,
@@ -328,11 +327,10 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       _totalStep = 0;
       _km = "0.0";
       _totalKm = "0.0";
-      _plants += 1;
+      _plants = 0;
       _fullPerLvl = 1000;
       _remainStepCount = 0;
       _lvl = 0;
-      _plants = 0;
       _plantImage = "assets/maintree/LV$_lvl.png";
     });
     Guest emptyRecord = Guest();
