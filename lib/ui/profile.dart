@@ -10,7 +10,8 @@ class Profile extends StatefulWidget {
   final String user;
   final String picture;
   final int tree;
-  Profile({Key key, this.user, this.picture, this.tree}): super(key: key);
+  final String totalKm;
+  Profile({Key key, this.user, this.picture, this.tree, this.totalKm}): super(key: key);
   @override
   ProfileState createState() {
     //print(user + '---------------------------------------------------------');

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'statDistances.dart';
+import '../globals.dart' as globals;
 
 
 class StatProfile extends StatefulWidget {
@@ -20,9 +21,8 @@ class StatProfileState extends State<StatProfile> {
   Firestore _store = Firestore.instance;
   List allDate = [];
   int countDoc = 0;
+  String totalKm;
   int tree;
-  String km;
-  String name;
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   Future _countDocuments() async {
@@ -36,24 +36,16 @@ class StatProfileState extends State<StatProfile> {
     });
   }
 
-  Future _getTree() async {
-    await _store.collection('register2').getDocuments().then((doc){
-      setState(() {
-        doc.documents.forEach((doc) {
-        if (doc.data['name'] == widget.user) {
-          tree = doc.data['tree'];
-          km = doc.data['km'];
-          name = doc.data['name'];
-        }
-       });
-      });
-    });
+  void _getData() async {
+    List<Map> current = await globals.gp.db.rawQuery("select * from Guest");
+    totalKm = current[0]['totalKm'];
+    tree = current[0]['tree'];
   }
 
   @override
   Widget build(BuildContext context) {
     _countDocuments();
-    _getTree();
+    _getData();
     return Scaffold(
       appBar: AppBar(
         title: Text("User Stat"),
@@ -63,8 +55,8 @@ class StatProfileState extends State<StatProfile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context, name),
-              _tree(tree, km),
+              _profile_container(context, widget.user),
+              _tree(tree, totalKm),
               allDate.length==0 ?
               Center(child: Text('No data...'))
               : Container(
