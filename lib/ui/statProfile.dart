@@ -67,7 +67,16 @@ class StatProfileState extends State<StatProfile> {
               _tree(tree, km),
               allDate.length==0 ?
               Center(child: Text('No data...'))
-              : _card(context, countDoc, allDate, widget.user),
+              : Container(
+                  height: 300,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: countDoc,
+                    itemBuilder: (context, index) =>
+                        _card(context, allDate, index),
+                  ),
+                ),
             ]
           ),
         ),
@@ -245,39 +254,47 @@ Widget _listview(context) {
       );
 }
 
-Widget _card(context, countDoc, allDate, user) {
-  Container(
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                ListView.builder(
-                  itemCount: countDoc,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, int index) {
-                    Card(
-                      child: InkWell(
-                        onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
-                        date: allDate[index], user: user)));
-                          print('tabbed');
-                        },
-                        child: Container(
-                        padding: EdgeInsets.all(25.0),
-                        child: Column(
-                          children: <Widget>[
-                        Text(allDate[index],
-                        style: new TextStyle(fontWeight: FontWeight.bold,
-                        color: Colors.black)
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          })
-        ]
-      )
+Widget _card(BuildContext context, allDate, index) {
+  Card(
+    child: ListTile(
+      title: Text(allDate[index],
+        style: new TextStyle(fontWeight: FontWeight.bold,
+        color: Colors.black)
+      ),
     ),
   );
+  // Container(
+  //         child: Center(
+  //           child: Column(
+  //             children: <Widget>[
+  //               ListView.builder(
+  //                 itemCount: countDoc,
+  //                 shrinkWrap: true,
+  //                 scrollDirection: Axis.vertical,
+  //                 itemBuilder: (context, int index) {
+  //                   Card(
+  //                     child: InkWell(
+  //                       onTap: () {
+  //                       Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+  //                         date: allDate[index], user: user)));
+  //                         print('tabbed');
+  //                       },
+  //                       child: Container(
+  //                         padding: EdgeInsets.all(25.0),
+  //                         child: Column(
+  //                           children: <Widget>[
+  //                             Text(allDate[index],
+  //                             style: new TextStyle(fontWeight: FontWeight.bold,
+  //                             color: Colors.black)
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           );
+  //         })
+  //       ]
+  //     )
+  //   ),
+  // );
 }
