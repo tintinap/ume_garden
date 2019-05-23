@@ -88,7 +88,6 @@ class _RootPageState extends State<RootPage> {
   }
 
 List<Map> _guestd = [];
-bool _isLoading = false;
  Future getfirebaseData() async { 
     await _store.collection("register2").where("name",  isEqualTo: _test).getDocuments().then((doc){
       setState(() {
@@ -118,9 +117,6 @@ bool _isLoading = false;
         }
       ];
     });
-     setState(() {
-        _isLoading = false;
-     });
   }
 
 

@@ -25,6 +25,8 @@ class ProfileState extends State<Profile> {
   int tree;
   String a;
   String name;
+
+
   @override
   Widget build(BuildContext context) {
     print(widget.tree);

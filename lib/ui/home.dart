@@ -88,6 +88,22 @@ class HomeState extends State<Home> {
       try {
         await widget.auth.signOut();
         widget.onSignedOut();
+        Guest signOutRecord = Guest.fromUpdate(
+          1,
+          "Guest",
+          _km,
+          _totalKm, 
+          _stepCountValue, 
+          _totalStep, 
+          _remainStepCount, 
+          _plants, 
+          _lvl
+        );
+        globals.gp.update(signOutRecord);
+        List<Map> newRecord = await globals.gp.db.rawQuery("select * from Guest");
+        print("cccccccccccccccccccccccccccccccccccccccc");
+        print(newRecord[0]);
+        print("cccccccccccccccccccccccccccccccccccccccc");
         
       } catch (e) {
         print(e);
@@ -101,25 +117,12 @@ class HomeState extends State<Home> {
       'lvl': _lvl,
       'tree': _plants,
       'step': _stepCountValue,
-      // 'totalStep' : _totalStep,
+      'totalStep' : _totalStep,
       'remainStep': _remainStepCount,
       'name': widget.user,
-      'total_step' : _totalStep
     });
   }
 
-  Future _getData() async {
-    await _store.collection('register2').getDocuments().then((doc){
-      setState(() {
-        doc.documents.forEach((doc) {
-        if (widget.user == doc.data['name']) {
-          name = doc.data['name'];
-          currentTree = doc.data['tree'];
-        }
-       });
-      });
-    });
-  }
   
   @override
   Widget build(BuildContext context) {
@@ -128,9 +131,7 @@ class HomeState extends State<Home> {
     } else {
       name = 'Guest';
     }
-    setState(() {
-      _getData();
-    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Yume Garden"),
@@ -162,7 +163,7 @@ class HomeState extends State<Home> {
                   
                 }
                 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url, tree: currentTree)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: name, picture: url, tree: _plants)));
               },
             ),
             ListTile(
@@ -250,15 +251,6 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       print("_totalKm = $_totalKm");
     });
 
-    // double totalKm = 0;
-    //   if (_plants > 0) {
-    //     totalKm += _stepCountValue/2000;
-    //     _totalKm = totalKm.toStringAsFixed(1);
-    //     _totalStep += _stepCountValue;
-    //   } else {
-    //     _totalKm = _km;
-    //     _totalStep = _stepCountValue;
-    //   }
     print("totalKm = $_totalKm, totalStepCount = $_totalStep");
 
     _getLevel();
@@ -279,6 +271,10 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       print("not update yet");
     }
     List<Map> current = await globals.gp.db.rawQuery("select * from Guest");
+    if (current[0]['name'] != "Guest") {
+      //up to firebase
+      _sendData();
+    }
     print("=========================================here is current Guest===========================================");
     print(current);
     print("=========================================here is current Guest===========================================");
@@ -350,6 +346,9 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
     print("cccccccccccccccccccccccccccccccccccccccc");
     print(newRecord[0]);
     print("cccccccccccccccccccccccccccccccccccccccc");
+    if (name != 'Guest') {
+      _sendData();
+    }
   }
   
   //set remainStepCount and lvl
@@ -418,8 +417,8 @@ Widget _newtree(int level) {
         child: Text("New Tree"),
           onPressed: () async {
             //add new tree
-            // setUpNewPlant();
-            reset();
+            setUpNewPlant();
+            // reset();
           },
           color: Colors.teal,
           textColor: Colors.white,
