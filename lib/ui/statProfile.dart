@@ -67,39 +67,9 @@ class StatProfileState extends State<StatProfile> {
               _tree(tree, km),
               allDate.length==0 ?
               Center(child: Text('No data...'))
-                : Container(
-                child: Center(
-                    child: Column(
-                        children: <Widget>[
-                          // ListView.builder(
-                          //   itemCount: 5,
-                          //   itemBuilder: (context, int index) {
-                              Card(
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
-                                      date: allDate[0], user: widget.user)));
-                                    print('tabbed');
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(25.0),
-                                    child: Column(
-                                      children: <Widget>[
-                                      Text(allDate[0],
-                                      style: new TextStyle(fontWeight: FontWeight.bold,
-                                        color: Colors.black)
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                    // })
-                  ]
-                )
-              ),
-            ),
-          ]),
+              : _card(context, countDoc, allDate, widget.user),
+            ]
+          ),
         ),
       ),
     );
@@ -273,4 +243,41 @@ Widget _listview(context) {
           ),
         ),
       );
+}
+
+Widget _card(context, countDoc, allDate, user) {
+  Container(
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                ListView.builder(
+                  itemCount: countDoc,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, int index) {
+                    Card(
+                      child: InkWell(
+                        onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+                        date: allDate[index], user: user)));
+                          print('tabbed');
+                        },
+                        child: Container(
+                        padding: EdgeInsets.all(25.0),
+                        child: Column(
+                          children: <Widget>[
+                        Text(allDate[index],
+                        style: new TextStyle(fontWeight: FontWeight.bold,
+                        color: Colors.black)
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          })
+        ]
+      )
+    ),
+  );
 }

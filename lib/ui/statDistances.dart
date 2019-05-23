@@ -84,7 +84,7 @@ class _StatState extends State<StatScreen> {
       appBar: AppBar(
         title: Text('Create Polyline Stat'),
       ),
-      body: _polyline.length==0 ? Center(child: Text('No data...')) :GoogleMap(
+      body: _polyline.length==0 ? Center(child: Text('Please Tab View POlyline.')) :GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(target: _polyline[0], zoom: 14),
         onMapCreated: (GoogleMapController controller) {
