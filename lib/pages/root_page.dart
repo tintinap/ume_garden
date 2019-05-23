@@ -148,14 +148,19 @@ bool _isLoading = false;
           // print(_guestd[0]['name']);
           // print('-------------------------3');
           if (_test == _guestd[0]['name']) {
-            return new Home(
-              userId: _userId,
-              auth: widget.auth,
-              onSignedOut: _onSignedOut,
-              user: _test,
-              guestd: this._guestd,
-            );
+            try {
+              return new Home(
+                userId: _userId,
+                auth: widget.auth,
+                onSignedOut: _onSignedOut,
+                user: _test,
+                guestd: this._guestd,
+              );
+            } catch (e) {
+              print(e+'=========================');
+            }
           } else {
+            print('loading');
             return _buildWaitingScreen();
           }
         } else {
