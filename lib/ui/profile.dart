@@ -2,21 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_demo/ui/editProfile.dart';
 
-import 'dart:io';
 import 'statProfile.dart';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'editProfile.dart';
 
 String test;
 class Profile extends StatefulWidget {
   final String user;
   final String picture;
-  Profile({Key key, this.user, this.picture}): super(key: key);
+  final int tree;
+  Profile({Key key, this.user, this.picture, this.tree}): super(key: key);
   @override
   ProfileState createState() {
-    print(user+'---------------------------------------------------------');
+    //print(user + '---------------------------------------------------------');
     return ProfileState();
   }
 
@@ -24,19 +21,14 @@ class Profile extends StatefulWidget {
 
 
 class ProfileState extends State<Profile> {
-  
   Firestore _store = Firestore.instance;
   int tree;
   String a;
   String name;
   @override
   Widget build(BuildContext context) {
-    if (widget.user == null){
-      a = "https://i.imgur.com/Wu4VXkq.png";
-    }
-    else{
-      a = widget.user;
-    }
+    print(widget.tree);
+    a = widget.user;
     _getTree();
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +42,7 @@ class ProfileState extends State<Profile> {
             children: <Widget>[
               _profile_container(context,a, name,widget.picture),
               _treeandstat(context, widget.user, tree),
-              _treelist(),
+              _treelist(this.tree),
             ],
           ),
         ),
@@ -84,7 +76,7 @@ Widget _profile_container(context, a, name, picture){
       children: <Widget>[
          _btn_edit(context,a,picture),
          _profile(picture),
-         _name(name),
+         //_name(name),
       ],
     ),
   );
@@ -99,8 +91,7 @@ Widget _profile(String a){
       child: CircleAvatar (
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.network(a ,fit: BoxFit.fill,height: 150,
-              width: 150),
+        child: Image.network(a),
       ),
     ),
   );
@@ -124,7 +115,7 @@ Widget _name(name){
     child: Text(
       '$name',
       style: TextStyle(
-        fontSize: 18.0,
+        fontSize: 14.0,
         fontWeight: FontWeight.w400
       ),
       textAlign: TextAlign.center,
@@ -199,21 +190,22 @@ Widget _btn_edit(context,user,picture){
   );
 }
 
-Widget _treelist(){
+List<Widget> _loopTree(amount, level){
+  List<Widget> items = List();
+  for (int i = 0; i < amount; i++){
+    items.add(_treestage(level));
+  }
+  return items;
+}
+
+Widget _treelist(amount){
   return Container(
     child: Wrap(
-      children: <Widget>[
-        _treestage(0),
-        _treestage(2),
-        _treestage(1),
-        _treestage(3),
-        _treestage(4),
-        _treestage(5),
-        _treestage(1),
-      ],
+      children: _loopTree(amount, 5),
     )
   );
 }
+
 Widget _treestage(int _lvl){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 10, 0, 20),

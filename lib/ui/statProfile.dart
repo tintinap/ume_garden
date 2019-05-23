@@ -18,7 +18,7 @@ class StatProfile extends StatefulWidget {
 
 class StatProfileState extends State<StatProfile> {
   Firestore _store = Firestore.instance;
-  List allDate = new List();
+  List allDate = [];
   int countDoc = 0;
   int tree;
   String km;
@@ -77,7 +77,8 @@ class StatProfileState extends State<StatProfile> {
                               Card(
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(date: allDate[0])));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+                                      date: allDate[0], user: widget.user)));
                                     print('tabbed');
                                   },
                                   child: Container(
@@ -92,7 +93,7 @@ class StatProfileState extends State<StatProfile> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                     // })
                   ]
                 )

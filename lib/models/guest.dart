@@ -85,6 +85,18 @@ class Guest {
     this._tree = 0;
     this._lvl = 0;
   }
+  
+  Guest.fromUpdate(int id, String name, String km, String totalKm, int step, int totalStep, int remainStep, int tree, int lvl) {
+    this._id = id;
+    this._name = name;
+    this._km = km;
+    this._totalKm = totalKm;
+    this._step = step;
+    this._totalStep = totalStep;
+    this._remainStep = remainStep;
+    this._tree = tree;
+    this._lvl = lvl;
+  }
 }
 
 class GuestProvider {
@@ -109,7 +121,16 @@ class GuestProvider {
             )
         ''');
     });
-    if (db == null) this.insert(a);
+    List<Map> dbLenList = await this.db.rawQuery("select count(*) from Guest");
+    int db_len = dbLenList[0]['count(*)'];
+    if (db == null || db_len == 0) {
+      this.insert(a);
+      print('inserted');
+    } else {
+      print("db not null");
+      print(db);
+      print(db_len);
+    };
     print("Created table $tableGuest.");
   }
 
@@ -121,11 +142,11 @@ class GuestProvider {
       tableGuest,
       guest.toMap()
       );
-    
+    print("${guest.getkm} inserted.");
     return guest;
   }
 
-  Future<Guest> getGuest(int id) async{
+  Future<List<Map>> getGuest(int id) async{
     print('getting Guest');
       List<Map> maps = await db.query(
         tableGuest,
@@ -137,9 +158,9 @@ class GuestProvider {
     // print(maps);
     if (maps.length > 0) {
       print("maps not nullllllllll");
-      return Guest.fromMap(maps.first);
+      return maps;
     }
-    print("asdsadasdddddddddddddddddddddddddddddddddddd");
+    print("maps null");
     return null;
   }
 

@@ -4,11 +4,13 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_login_demo/models/guest.dart';
+// import 'package:flutter_login_demo/models/guest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/guest.dart';
+import 'first.dart';
+import '../globals.dart' as globals;
 
 import 'package:pedometer/pedometer.dart';
 import 'dart:async';
@@ -18,7 +20,7 @@ import 'profile.dart';
 class Home extends StatefulWidget {
   Home(
     {
-      Key key, this.auth, this.userId, this.onSignedOut,this.user,
+      Key key, this.auth, this.userId, this.onSignedOut,this.user, this.guestd,
     }
   )
     : super(key: key);
@@ -27,9 +29,17 @@ class Home extends StatefulWidget {
   final VoidCallback onSignedOut;
   final String userId;
   final String user;
+  final List<Map> guestd;
+  // static List<Map> guest;
   
   @override
   HomeState createState() {
+    /*if firebase {
+      guest = guestfirebase
+    } else guest = guestd
+    */
+    globals.guest = guestd;
+    print("hhi ${globals.guest} ${globals.guest[0]['km']}");
     return HomeState();
   }
 
@@ -37,32 +47,39 @@ class Home extends StatefulWidget {
 
 
 class HomeState extends State<Home> {
-  
 
   Firestore _store = Firestore.instance;
   String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
-  GuestProvider gp = GuestProvider();
+  // GuestProvider gp = GuestProvider();
+  Guest updateRecord = Guest();
+  Guest resetRecord = Guest();
   
 //=================================pedometer part==================================
-  String _km = "0.0"; //distance
-  String _totalKm = "0.0"; // Total distance
-  int _stepCountValue = 0; //all Foot step record
-  int _totalStep = 0; // Total footstep
-  int  _remainStepCount = 0; //step that will be showed on screen
-  int _plants = 0; //all lvl 5 plants of user
+  String _km = globals.guest[0]['km']; //"0.0" distance 
+  String _totalKm = globals.guest[0]['totalKm']; //"0.0" Total distance
+  int _stepCountValue = globals.guest[0]['step']; //0 all Foot step record
+  int _totalStep = globals.guest[0]['totalStep']; //0 Total footstep
+  int _remainStepCount = globals.guest[0]['remainStep']; //0 step that will be showed on screen
+  int _plants = globals.guest[0]['tree']; //0 all lvl 5 plants of user
   StreamSubscription<int> _subscription; // for pedometer package
-  int _lvl = 0;
-  String name;
+  int _lvl = globals.guest[0]['lvl'];
+  String name = 'Guest';
+
+  int _count = 1; // for pedo but no need to add to db
+
+  // get from firestore
+  int currentTree;
 
   @override
   void initState() {
     super.initState();
     //initPlatformState();
     setUpPedometer();
+
   }
 
-  void setUpPedometer() {
+  void setUpPedometer() async {
     Pedometer pedometer = new Pedometer();
     this._subscription = pedometer.stepCountStream.listen(_onData,
         onError: _onError, onDone: _onDone, cancelOnError: true);
@@ -85,33 +102,36 @@ class HomeState extends State<Home> {
       'lvl': _lvl,
       'tree': _plants,
       'step': _stepCountValue,
+      // 'totalStep' : _totalStep,
       'remainStep': _remainStepCount,
       'name': widget.user,
       'total_step' : _totalStep
     });
   }
 
-  Future _getName() async {
+  Future _getData() async {
     await _store.collection('register2').getDocuments().then((doc){
       setState(() {
         doc.documents.forEach((doc) {
-        if (doc.data['name'] == widget.user) {
+        if (widget.user == doc.data['name']) {
           name = doc.data['name'];
+          currentTree = doc.data['tree'];
         }
        });
       });
     });
   }
-
+  
   @override
-  Widget build(BuildContext context,) {
+  Widget build(BuildContext context) {
     if (widget.user!=null) {
-      _sendData();
+      // _sendData();
     } else {
       name = 'Guest';
-      gp.open("guest.db");
     }
-    _getName();
+    setState(() {
+      _getData();
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text("Yume Garden"),
@@ -127,11 +147,23 @@ class HomeState extends State<Home> {
               title: Text("Profile"),
               trailing: Icon(Icons.person_outline),
               onTap: () async{
-                final ref = FirebaseStorage.instance.ref().child('$name');
-                var url = await ref.getDownloadURL();
-                print(url+'33333333333333333333333333');
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url)));
-
+                var url='';
+                if(name == 'Guest'){
+                  url = await 'https://firebasestorage.googleapis.com/v0/b/flutter-assignment-02.appspot.com/o/guest.png?alt=media&token=655c467e-10ee-4914-9f29-c05269138195';
+                }
+                else {
+                  print('asdasdasdsadsadasdas');
+                  try{
+                    final ref = FirebaseStorage.instance.ref().child('$name');
+                  url = await ref.getDownloadURL();
+                  }
+                  catch(IOException){
+                     url = await 'https://firebasestorage.googleapis.com/v0/b/flutter-assignment-02.appspot.com/o/guest.png?alt=media&token=655c467e-10ee-4914-9f29-c05269138195';
+                  }
+                  
+                }
+                
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: widget.user, picture: url, tree: currentTree)));
               },
             ),
             ListTile(
@@ -177,32 +209,81 @@ class HomeState extends State<Home> {
       ),
     );
   }
+/// Generate a modifiable result set
+List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> results) {
+  // Generate modifiable
+  return List<Map<dynamic, dynamic>>.generate(
+      results.length, 
+      (index) => Map<dynamic, dynamic>.from(results[index]),
+      growable: true
+    );
+}  
 //=================================pedometer part==================================
   //stepCountIncrease when device's vibrating
   void _onData(int stepCountValue) async {
     print('step Count value = $stepCountValue');
+    if (stepCountValue > 0) {
+      setState(() {
+
+        if (globals.guest[0]['step'] > _stepCountValue) {
+          _stepCountValue = globals.guest[0]['step']+1;
+          print('_stepCountValue = $_stepCountValue >');
+        } else {
+          _stepCountValue += 1;
+          print('_stepCountValue = $_stepCountValue else');
+        }
+
+        if (globals.guest[0]['totalStep'] > _totalStep) {
+          _totalStep = globals.guest[0]['totalStep']+1;
+          print('_totalStep = $_totalStep >');
+        } else {
+          _totalStep += 1;
+          print('_totalStep = $_totalStep else');
+        }
+      });
+    } else {
+      print("device's stepCount = 0");
+    }
     setState(() {
-      _stepCountValue = stepCountValue;
-      print('_step Count value = $_stepCountValue');
+      _km = (globals.guest[0]['step']/2000).toStringAsFixed(1);
+      print("_km = $_km");
+      _totalKm= (globals.guest[0]['step']/2000).toStringAsFixed(1);
+      print("_totalKm = $_totalKm");
     });
 
-    setState(() {
-      _km = (stepCountValue/2000).toStringAsFixed(1);
-      print("_km = $_km");
-    });
-    double totalKm = 0;
-      if (_plants > 0) {
-        totalKm += _stepCountValue/2000;
-        _totalKm = totalKm.toStringAsFixed(1);
-        _totalStep += _stepCountValue;
-      } else {
-        _totalKm = _km;
-        _totalStep = _stepCountValue;
-      }
+    // double totalKm = 0;
+    //   if (_plants > 0) {
+    //     totalKm += _stepCountValue/2000;
+    //     _totalKm = totalKm.toStringAsFixed(1);
+    //     _totalStep += _stepCountValue;
+    //   } else {
+    //     _totalKm = _km;
+    //     _totalStep = _stepCountValue;
+    //   }
     print("totalKm = $_totalKm, totalStepCount = $_totalStep");
 
     _getLevel();
-
+    updateRecord = Guest.fromUpdate(
+      1,
+      name,
+      _km,
+      _totalKm, 
+      _stepCountValue, 
+      _totalStep, 
+      _remainStepCount, 
+      _plants, 
+      _lvl
+    );
+    if (globals.gp.db != null) {
+      globals.gp.update(updateRecord);
+    } else {
+      print("not update yet");
+    }
+    List<Map> current = await globals.gp.db.rawQuery("select * from Guest");
+    print("=========================================here is current Guest===========================================");
+    print(current);
+    print("=========================================here is current Guest===========================================");
+    // reset();
   }
 
   void _onDone() {}
@@ -212,15 +293,66 @@ class HomeState extends State<Home> {
   }
 
   //setup for new plant after done the previous one 
-  void setUpNewPlant() {
+  void setUpNewPlant() async{
     setState(() {
-      int stepCountValue = 0;
-      stepCountValue = 0;
-      _stepCountValue = stepCountValue;
+
+      _stepCountValue = 0;
       _km = "0.0";
       _plants += 1;
       _fullPerLvl = 1000;
+      _remainStepCount = 0;
+      _lvl = 0;
+      _plantImage = "assets/maintree/LV$_lvl.png";
+      _count = 1;
     });
+    resetRecord = Guest.fromUpdate(
+        1,
+        name, //
+        _km,
+        _totalKm, //
+        _stepCountValue, 
+        _totalStep, //
+        _remainStepCount, 
+        _plants, //
+        _lvl
+      );
+      List<Map> currentRecord = await globals.gp.db.rawQuery("select * from Guest");
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      print(currentRecord[0]);
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      globals.gp.update(resetRecord);
+      print("added new tree");
+      List<Map> newRecord = await globals.gp.db.rawQuery("select * from Guest");
+      print("cccccccccccccccccccccccccccccccccccccccc");
+      print(newRecord[0]);
+      print("cccccccccccccccccccccccccccccccccccccccc");
+    }
+
+  void reset() async {
+    setState(() {
+      _stepCountValue = 0;
+      _totalStep = 0;
+      _km = "0.0";
+      _totalKm = "0.0";
+      _plants += 1;
+      _fullPerLvl = 1000;
+      _remainStepCount = 0;
+      _lvl = 0;
+      _plants = 0;
+      _plantImage = "assets/maintree/LV$_lvl.png";
+      _count = 1;
+    });
+    Guest emptyRecord = Guest();
+    List<Map> currentRecord = await globals.gp.db.rawQuery("select * from Guest");
+    print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    print(currentRecord[0]);
+    print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    globals.gp.update(emptyRecord);
+    print('reseted');
+    List<Map> newRecord = await globals.gp.db.rawQuery("select * from Guest");
+    print("cccccccccccccccccccccccccccccccccccccccc");
+    print(newRecord[0]);
+    print("cccccccccccccccccccccccccccccccccccccccc");
   }
   
   //set remainStepCount and lvl
@@ -278,7 +410,29 @@ class HomeState extends State<Home> {
     }
     this._plantImage = "assets/maintree/LV$_lvl.png";
   }
-//=================================pedometer part==================================  
+//=================================pedometer part================================== 
+Widget _newtree(int level) {
+  level == 5? visible = true: visible = false;
+  return Visibility(
+    visible: visible,
+    child: Container(
+      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+      child: FlatButton(
+        child: Text("New Tree"),
+          onPressed: () async {
+            //add new tree
+            // setUpNewPlant();
+            reset();
+          },
+          color: Colors.teal,
+          textColor: Colors.white,
+          splashColor: Colors.green,
+          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),  
+        ),
+        alignment: Alignment.bottomCenter,
+      ),
+  );
+}
 }
 
 
@@ -360,24 +514,8 @@ Widget _tree(String plantImage) {
   );
 }
 
+
+
 bool visible = false;
-Widget _newtree(int level){
-  level == 5? visible = true: visible = false;
-  return Visibility(
-    visible: visible,
-    child: Container(
-      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-      child: FlatButton(
-        child: Text("New Tree"),
-          onPressed: () {
-            //add new tree
-          },
-          color: Colors.teal,
-          textColor: Colors.white,
-          splashColor: Colors.green,
-          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),  
-        ),
-        alignment: Alignment.bottomCenter,
-      ),
-  );
-}
+
+
