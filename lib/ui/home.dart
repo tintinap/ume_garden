@@ -517,8 +517,4 @@ Widget _tree(String plantImage) {
   );
 }
 
-
-
 bool visible = false;
-
-

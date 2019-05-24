@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+import 'dart:convert';
 
 import 'statDistances.dart';
 import '../globals.dart' as globals;
+import 'package:http/http.dart' as http;
 
 
 class StatProfile extends StatefulWidget {
@@ -22,7 +25,10 @@ class StatProfileState extends State<StatProfile> {
   List allDate = [];
   int countDoc = 0;
   String totalKm;
-  int tree;
+  int tree = 0;
+  int value = 0;
+  String name;
+  List multipler = [];
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   Future _countDocuments() async {
@@ -36,16 +42,34 @@ class StatProfileState extends State<StatProfile> {
     });
   }
 
+  //get data from database
   void _getData() async {
     List<Map> current = await globals.gp.db.rawQuery("select * from Guest");
     totalKm = current[0]['totalKm'];
     tree = current[0]['tree'];
+    name = current[0]['name'];
+  }
+
+  //get point multipler
+  Future<String> _getPointMul() async {
+    http.Response response = await http.get(
+      Uri.encodeFull(" https://my-json-server.typicode.com/tintinap/ume_garden/db/score_multipler"),
+      headers: {"Accept": "application/json"},
+    );
+    multipler = json.decode(response.body);
+    if (name == 'Guest') {
+      value = tree; 
+    } else {
+      value = multipler[0]['score']* tree;
+    }
+    return "Success!";
   }
 
   @override
   Widget build(BuildContext context) {
     _countDocuments();
     _getData();
+    _getPointMul();
     return Scaffold(
       appBar: AppBar(
         title: Text("User Stat"),
@@ -56,7 +80,7 @@ class StatProfileState extends State<StatProfile> {
           child: Column(
             children: <Widget>[
               _profile_container(context, widget.user),
-              _tree(tree, totalKm),
+              _tree(value, totalKm, name),
               allDate.length==0 ?
               Center(child: Text('No data...'))
               : Container(
@@ -120,7 +144,7 @@ Widget _name(name){
   );
 }
 
-Widget _tree(tree, km){
+Widget _tree(value, km, checkName){
   return Container(
     padding: EdgeInsets.all(30.0),
     child: Row(
@@ -129,9 +153,15 @@ Widget _tree(tree, km){
         Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: 
+            checkName == 'Guest'?
+            <Widget>[
               Text("จำนวนต้นไม้", textAlign: TextAlign.left, style: TextStyle(fontSize: 14.0, color: Colors.teal)),
-              Text("$tree ต้น", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.left,),
+              Text("$value ต้น", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.left,),
+            ]:
+            <Widget>[
+              Text("คะแนน", textAlign: TextAlign.left, style: TextStyle(fontSize: 14.0, color: Colors.teal)),
+              Text("$value คะแนน", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.left,),
             ],
           ),
         ),

@@ -72,6 +72,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
             "lvl": 0, // current lvl of present tree
             "remainStep": 0,
             'totalStep': 0, // screen display total step
+            "score": 0,
           };
           documentReference.setData(data).whenComplete(() {
           print("Document Added");
