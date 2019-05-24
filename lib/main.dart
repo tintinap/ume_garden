@@ -5,6 +5,7 @@ import './ui/home.dart';
 import './ui/profile.dart';
 import './ui/editProfile.dart';
 import './ui/setting.dart';
+import './ui/about.dart';
 import './ui/plantProfile.dart';
 import './services/authentication.dart';
 import './pages/root_page.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       	"/auth" : (context) => RootPage(auth: new Auth()),
         "/home" : (context) => Home(),
         "/profile" : (context) => Profile(),
+        "/about" : (context) => About(),
         "/setting" : (context) => Setting(),
         "/editProfile" : (context) => EditProfile(),
         "/statProfile" : (context) => StatProfile(),

@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
-import 'dart:convert';
 
 import 'statDistances.dart';
 import '../globals.dart' as globals;
@@ -29,7 +30,6 @@ class StatProfileState extends State<StatProfile> {
   int tree = 0;
   int value = 0;
   String name;
-  List multipler = [];
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   Future _countDocuments() async {
@@ -46,6 +46,8 @@ class StatProfileState extends State<StatProfile> {
   //get data from database
   void _getData() async {
     List<Map> current = await globals.gp.db.rawQuery("select * from Guest");
+    print(widget.user);
+    print(current);
     totalKm = current[0]['totalKm'];
     tree = current[0]['tree'];
     name = current[0]['name'];
@@ -53,15 +55,21 @@ class StatProfileState extends State<StatProfile> {
 
   //get point multipler
   Future<String> _getPointMul() async {
-    http.Response response = await http.get(
-      Uri.encodeFull("https://my-json-server.typicode.com/tintinap/ume_garden/db/score_multipler"),
-      headers: {"Accept": "application/json"},
-    );
-    multipler = json.decode(response.body);
-    if (name == 'Guest') {
+
+    if (widget.user == 'Guest') {
       value = tree; 
     } else {
-      value = multipler[0]['score']* tree;
+      print("==========================================================================JSON1");
+      http.Response response = await http.get(
+        Uri.encodeFull("https://my-json-server.typicode.com/tintinap/ume_garden/db/"),
+        headers: {"Accept": "application/json"},
+      );
+      print("==========================================================================JSON2");
+      print("JSON go here ${response.body}");
+      var multipler = jsonDecode(response.body);
+      print(multipler['score_multipler'][0]['score']);
+      print("tree = $tree");
+      value = multipler['score_multipler'][0]['score'] * tree;
     }
     return "Success!";
   }
@@ -81,7 +89,7 @@ class StatProfileState extends State<StatProfile> {
           child: Column(
             children: <Widget>[
               _profile_container(context, widget.user, widget.picture),
-              _tree(value, totalKm, name),
+              _tree(value, totalKm, widget.user),
               allDate.length==0 ?
               Center(child: Text('No data...'))
               : Container(
@@ -152,7 +160,7 @@ Widget _name(name){
   );
 }
 
-Widget _tree(value, km, checkName){
+Widget _tree(value, totalKm, checkName){
   return Container(
     padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
     child: Row(
@@ -179,7 +187,7 @@ Widget _tree(value, km, checkName){
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Text("ระยะทางรวม", textAlign: TextAlign.right, style: TextStyle(fontSize: 14.0, color: Colors.teal)),
-              Text("$km กิโลเมตร", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.right,),
+              Text("$totalKm กิโลเมตร", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0), textAlign: TextAlign.right,),
             ],
           ),
         ),
