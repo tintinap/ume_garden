@@ -7,8 +7,9 @@ import '../globals.dart' as globals;
 
 class StatProfile extends StatefulWidget {
   final String user;
+  final String picture;
 
-  StatProfile({Key key, this.user}): super(key: key);
+  StatProfile({Key key, this.user, this.picture}): super(key: key);
   @override
   StatProfileState createState() {
     return StatProfileState();
@@ -55,7 +56,7 @@ class StatProfileState extends State<StatProfile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context, widget.user),
+              _profile_container(context, widget.user, widget.picture),
               _tree(tree, totalKm),
               allDate.length==0 ?
               Center(child: Text('No data...'))
@@ -77,7 +78,7 @@ class StatProfileState extends State<StatProfile> {
   }
 }
 
-Widget _profile_container(context, name){
+Widget _profile_container(context, name, picture){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
     color: Colors.teal,
@@ -86,21 +87,24 @@ Widget _profile_container(context, name){
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-         _profile(),
+         _profile(picture),
          _name(name),
       ],
     ),
   );
 }
 
-Widget _profile(){
+Widget _profile(picture){
   return new Hero(
     tag: 'profile',
     child: Container(
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 40,
-        child: Image.asset('assets/guest.png'),
+        child: picture==null ? Image.asset('guest.png', scale: 10.0, width: 200, height: 200,)
+          : Image.network(
+            picture, scale: 10.0, width: 100, height: 100,
+        ),
       ),
     ),
   ); 

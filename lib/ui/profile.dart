@@ -44,7 +44,7 @@ class ProfileState extends State<Profile> {
           child: Column(
             children: <Widget>[
               _profile_container(context,name,widget.picture),
-              _treeandstat(context, widget.user, widget.tree),
+              _treeandstat(context, widget.user, widget.tree, widget.picture),
               _treelist(widget.tree, widget.level),
             ],
           ),
@@ -126,13 +126,13 @@ Widget _name(name){
   );
 }
 
-Widget _treeandstat(context, user, tree){
+Widget _treeandstat(context, user, tree, picture){
   return Container(
     padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
     child: Row(
       children: <Widget>[
         _tree(tree),
-        _btn_stat(context, user),
+        _btn_stat(context, user, picture),
       ],
     )
   );
@@ -148,7 +148,7 @@ Widget _tree(tree){
 }
 
 
-Widget _btn_stat(context, user){
+Widget _btn_stat(context, user, picture){
   return Container(
     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
@@ -159,7 +159,7 @@ Widget _btn_stat(context, user){
         ),
       ),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => StatProfile(user: user)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StatProfile(user: user, picture: picture)));
       },
       color: Colors.white,
       splashColor: Colors.grey,

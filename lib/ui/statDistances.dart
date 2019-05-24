@@ -43,9 +43,9 @@ class _StatState extends State<StatScreen> {
         }
       }
     });
-    for (var i in _polyline){
-      print(i);
-    }
+    // for (var i in _polyline){
+    //   print(i);
+    // }
   }
 
   // เพิ่ม polyline
