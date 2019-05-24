@@ -11,7 +11,8 @@ class Profile extends StatefulWidget {
   final String picture;
   final int tree;
   final String totalKm;
-  Profile({Key key, this.user, this.picture, this.tree, this.totalKm}): super(key: key);
+  final int level;
+  Profile({Key key, this.user, this.picture, this.tree, this.totalKm, this.level}): super(key: key);
   @override
   ProfileState createState() {
     //print(user + '---------------------------------------------------------');
@@ -24,15 +25,14 @@ class Profile extends StatefulWidget {
 class ProfileState extends State<Profile> {
   Firestore _store = Firestore.instance;
   int tree;
-  String a;
   String name;
 
 
   @override
   Widget build(BuildContext context) {
-    print(widget.tree);
-    a = widget.user;
-    _getTree();
+    print(widget.level);
+    name = widget.user;
+    // _getTree();
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
@@ -43,9 +43,9 @@ class ProfileState extends State<Profile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context,a, name,widget.picture),
-              _treeandstat(context, widget.user, tree),
-              _treelist(this.tree),
+              _profile_container(context,name,widget.picture),
+              _treeandstat(context, widget.user, widget.tree),
+              _treelist(widget.tree, widget.level),
             ],
           ),
         ),
@@ -53,23 +53,23 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  Future _getTree() async {
-    await _store.collection('register2').getDocuments().then((doc){
-      setState(() {
-        doc.documents.forEach((doc) {
-        if (doc.data['name'] == widget.user) {
-          tree = doc.data['tree'];
-          name = doc.data['name'];
-        }
-       });
-      });
-    });
-  }
+  // Future _getTree() async {
+  //   await _store.collection('register2').getDocuments().then((doc){
+  //     setState(() {
+  //       doc.documents.forEach((doc) {
+  //       if (doc.data['name'] == widget.user) {
+  //         tree = doc.data['tree'];
+  //         name = doc.data['name'];
+  //       }
+  //      });
+  //     });
+  //   });
+  // }
 
 }
 
 
-Widget _profile_container(context, a, name, picture){
+Widget _profile_container(context, name, picture){
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
     height: 180.0,
@@ -77,7 +77,7 @@ Widget _profile_container(context, a, name, picture){
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-         _btn_edit(context,a,picture),
+         _btn_edit(context,name,picture),
          _profile(picture),
          //_name(name),
       ],
@@ -195,16 +195,20 @@ Widget _btn_edit(context,user,picture){
 
 List<Widget> _loopTree(amount, level){
   List<Widget> items = List();
-  for (int i = 0; i < amount; i++){
-    items.add(_treestage(level));
+  for (int i = 0; i < amount+1; i++){
+    if (i==0) {
+      items.add(_treestage(level));
+    } else {
+      items.add(_treestage(5));
+    }
   }
   return items;
 }
 
-Widget _treelist(amount){
+Widget _treelist(amount, level){
   return Container(
     child: Wrap(
-      children: _loopTree(amount, 5),
+      children: _loopTree(amount, level),
     )
   );
 }
