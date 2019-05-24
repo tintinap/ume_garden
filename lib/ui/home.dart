@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart';
 
 import '../models/guest.dart';
 import 'first.dart';
@@ -63,6 +64,7 @@ class HomeState extends State<Home> {
   var location = new Location();
   double latitude = 0;
   double longitude = 0;
+  String error;
   
 //=================================pedometer part==================================
   String _km = globals.guest[0]['km']; //"0.0" distance 
@@ -75,15 +77,16 @@ class HomeState extends State<Home> {
   int _lvl = globals.guest[0]['lvl'];
   String name = globals.guest[0]['name'];
 
-  // get from firestore
-  int currentTree;
-
   @override
   void initState() {
     super.initState();
     //initPlatformState();
     setUpPedometer();
-
+    if (widget.user!=null) {
+      setState(() {
+        _getLocation();
+      });
+    }
   }
 
   void setUpPedometer() async {
@@ -137,11 +140,13 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     if (widget.user!=null) {
       // _sendData();
+      setState(() {
+        _getLocation();
+      });
     } else {
       name = 'Guest';
     }
 
-    _getLocation();
     return Scaffold(
       appBar: AppBar(
         title: Text("Yume Garden"),
@@ -418,34 +423,38 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
   }
 
 // จัดการ location ================================================================================
-  void _getLocation() {
-    // location.changeSettings(distanceFilter: 10);
-    location.onLocationChanged().listen((Map<String,double> currentLocation) {
-      print("WTF");
-      double _latitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
-      double _longitude = double.parse(currentLocation['longitude'].toStringAsFixed(4));
-      if (latitude == 0 && longitude == 0){
-        _addLocations(_latitude, _longitude);
-        print("Lat: $_latitude Lng: $_longitude");
-        print("WTF");
-      } else {
-        if (_latitude != latitude || _longitude != longitude) {
-          _addLocations(_latitude, _longitude);
-          print("Lat: $_latitude Lng: $_latitude");
-          print("WTF2");
-        }
+  void _getLocation() async {
+    try {
+      location.onLocationChanged().listen((Map<String,double> currentLocation) {
+        setState(() {
+          double _latitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
+          double _longitude = double.parse(currentLocation['longitude'].toStringAsFixed(4));
+          if (latitude == 0 && longitude == 0){
+            _addLocations(_latitude, _longitude);
+            print("Lat: $_latitude Lng: $_longitude");
+          } else {
+            if (_latitude != latitude || _longitude != longitude) {
+              _addLocations(_latitude, _longitude);
+              print("Lat: $_latitude Lng: $_latitude");
+            }
+          }
+        });
+      });
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        error = 'Permission denied';
+      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
+        error = 'Permission denied - please ask the user to enable it from the app settings';
       }
-    });
+    }
   }
 
   // เพิ่มจุดใน list polyline
-  void _addLocations(_latitude, _longitude) async {
-    latitude = _latitude;
-    longitude = _longitude;
-    print('added latlong into list.');
+  void _addLocations(_latitude, _longitude) {
     List tempList = [];
     _store.collection('register2').document(name).collection('date').document(date).get().then((snapshot) {
       List list = snapshot.data['position'];
+      print(list.length);
       if (list.length!=0) {
         for (int i=0; i<list.length; i++) {
           tempList.add(list[i]);
@@ -467,6 +476,9 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
         print('Sent to firestore');
       }
     });
+    latitude = double.parse(_latitude.toStringAsFixed(4));
+    longitude = double.parse(_longitude.toStringAsFixed(4));;
+    print('added latlong into list');
   }
 
   // ลบค่าใน list polyline
