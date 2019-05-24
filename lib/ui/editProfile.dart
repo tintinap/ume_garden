@@ -137,9 +137,9 @@ Widget _profile(picture){
       padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 5.0),
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
-        radius: 40,
-        child: Image.network(
-          picture, scale: 10.0, width: 100, height: 100,
+        radius: 120.0,
+        child: ClipOval(
+          child: Image.network(picture),
         ),
       ),
     ),

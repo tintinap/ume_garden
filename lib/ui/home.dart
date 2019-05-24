@@ -163,7 +163,7 @@ class HomeState extends State<Home> {
                   
                 }
                 
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: name, picture: url, tree: _plants, totalKm: _totalKm)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: name, picture: url, tree: _plants, totalKm: _totalKm, level: _lvl)));
               },
               
             ),
