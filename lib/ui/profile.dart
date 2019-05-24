@@ -36,14 +36,11 @@ class Profile extends StatefulWidget {
 
 
 class ProfileState extends State<Profile> {
-  Firestore _store = Firestore.instance;
-  int tree;
-  String name;
 
   @override
   Widget build(BuildContext context) {
     print(widget.level);
-    name = widget.user;
+    String name = widget.user;
     // _getTree();
     return Scaffold(
       appBar: AppBar(
