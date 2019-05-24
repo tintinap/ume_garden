@@ -130,7 +130,7 @@ Widget _name(name){
 
 Widget _tree(tree, km){
   return Container(
-    padding: EdgeInsets.all(30.0),
+    padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -181,7 +181,7 @@ Widget _btn_stat(context){
 
 Widget _card(BuildContext context, allDate, index, user) {
   return Container(
-    margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
+    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
     child: Card(
       child: InkWell(
         onTap: () {
@@ -190,7 +190,7 @@ Widget _card(BuildContext context, allDate, index, user) {
             print('tabbed');
         },
         child: ListTile(
-          contentPadding: EdgeInsets.all(20.0),
+          contentPadding: EdgeInsets.all(10.0),
           title: Text(allDate[index],
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)
