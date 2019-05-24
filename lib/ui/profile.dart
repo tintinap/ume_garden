@@ -35,14 +35,11 @@ Widget _buildWaitingScreen() {
 }
 
 class ProfileState extends State<Profile> {
-  Firestore _store = Firestore.instance;
-  int tree;
-  String name;
 
   @override
   Widget build(BuildContext context) {
     print(widget.level);
-    name = widget.user;
+    String name = widget.user;
     // _getTree();
     return Scaffold(
       appBar: AppBar(
@@ -71,7 +68,7 @@ class ProfileState extends State<Profile> {
                   ]
                 : <Widget>[
                     _profile_container(context, name, widget.picture),
-                    _treeandstat(context, widget.user, widget.tree),
+                    _treeandstat(context, widget.user, widget.tree, widget.picture),
                     _treelist(widget.tree, widget.level),
                   ],
           ),
@@ -153,15 +150,16 @@ Widget _name(name) {
   );
 }
 
-Widget _treeandstat(context, user, tree) {
+Widget _treeandstat(context, user, tree, picture){
   return Container(
-      padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
-      child: Row(
-        children: <Widget>[
-          _tree(tree),
-          _btn_stat(context, user),
-        ],
-      ));
+    padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
+    child: Row(
+      children: <Widget>[
+        _tree(tree),
+        _btn_stat(context, user, picture),
+      ],
+    )
+  );
 }
 
 Widget _tree(tree) {
@@ -171,7 +169,8 @@ Widget _tree(tree) {
   );
 }
 
-Widget _btn_stat(context, user) {
+
+Widget _btn_stat(context, user, picture){
   return Container(
     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
@@ -183,8 +182,7 @@ Widget _btn_stat(context, user) {
         ),
       ),
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => StatProfile(user: user)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => StatProfile(user: user, picture: picture)));
       },
       color: Colors.white,
       splashColor: Colors.grey,
