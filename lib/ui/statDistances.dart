@@ -27,8 +27,8 @@ class _StatState extends State<StatScreen> {
   PolylineId selectedPolyline;
 
   // อ่านค่าจาก firestore แล้วทำให้เป็น latlng
-  void _getPosition() {
-    _store.collection('register2').document(widget.user).collection('date').document(widget.date).get().then((snapshot) {
+  void _getPosition() async {
+    await _store.collection('register2').document(widget.user).collection('date').document(widget.date).get().then((snapshot) {
       List list = snapshot.data['position'];
       for (int i=0; i<list.length; i++) {
         if (i%2 == 0) {

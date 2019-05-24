@@ -195,31 +195,36 @@ Widget _btn_stat(context, user, picture){
   );
 }
 
+bool visible = false;
 Widget _btn_edit(context, user, picture) {
-  return Container(
-    child: RaisedButton(
-      child: Text(
-        "Edit Profile",
-        style: new TextStyle(
-          fontSize: 12.0,
-          fontWeight: FontWeight.w300,
+  user == 'Guest'? visible = false: visible = true;
+  return Visibility(
+    visible: visible,
+    child: Container(
+      child: RaisedButton(
+        child: Text(
+          "Edit Profile",
+          style: new TextStyle(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w300,
+          ),
         ),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditProfile(user: user, name: picture)));
+        },
+        color: Colors.white,
+        splashColor: Colors.white,
+        textColor: Colors.blueGrey,
+        elevation: 5.0,
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0)),
+        // textColor: Colors.blue,
       ),
-      onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EditProfile(user: user, name: picture)));
-      },
-      color: Colors.white,
-      splashColor: Colors.white,
-      textColor: Colors.blueGrey,
-      elevation: 5.0,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
-      // textColor: Colors.blue,
+      alignment: Alignment.bottomRight,
     ),
-    alignment: Alignment.bottomRight,
   );
 }
 

@@ -22,59 +22,59 @@ class SettingState extends State<Setting> {
         centerTitle: true,
       ),
       body: Container(
-        child: ListView(
-          padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
-          children: <Widget>[
-            _bgmusic(),
-            Padding(
-              padding: EdgeInsets.all(0),
-              child: Slider(
-                min: 0,
-                max: 15,
-                onChanged: (newRating) {
-                  setState(() => _sliderValueBG = newRating);
-                },
-                value: _sliderValueBG,
-                divisions: 5,
-                activeColor: Colors.teal,
-                inactiveColor: Colors.blueGrey,
-              )
-            ),
-            _sfxmusic(),
-            Padding(
-              padding: EdgeInsets.all(0),
-              child: Slider(
-                min: 0,
-                max: 15,
-                onChanged: (newRating) {
-                  setState(() => _sliderValueVFX = newRating);
-                },
-                value: _sliderValueVFX,
-                divisions: 5,
-                activeColor: Colors.teal,
-                inactiveColor: Colors.blueGrey,
-              )
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Checkbox(
-                      value: _noti,
-                      onChanged: (bool value) {
-                          setState(() {
-                              _noti = value;
-                          });
-                      },
-                  ),
-                  Text('Notifications'),
-                ],
-              ),
-            ),
-            _about(context)
-          ],
-        ),
+        // child: ListView(
+        //   padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
+        //   children: <Widget>[
+        //     _bgmusic(),
+        //     Padding(
+        //       padding: EdgeInsets.all(0),
+        //       child: Slider(
+        //         min: 0,
+        //         max: 15,
+        //         onChanged: (newRating) {
+        //           setState(() => _sliderValueBG = newRating);
+        //         },
+        //         value: _sliderValueBG,
+        //         divisions: 5,
+        //         activeColor: Colors.teal,
+        //         inactiveColor: Colors.blueGrey,
+        //       )
+        //     ),
+        //     _sfxmusic(),
+        //     Padding(
+        //       padding: EdgeInsets.all(0),
+        //       child: Slider(
+        //         min: 0,
+        //         max: 15,
+        //         onChanged: (newRating) {
+        //           setState(() => _sliderValueVFX = newRating);
+        //         },
+        //         value: _sliderValueVFX,
+        //         divisions: 5,
+        //         activeColor: Colors.teal,
+        //         inactiveColor: Colors.blueGrey,
+        //       )
+        //     ),
+        //     Container(
+        //       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+        //       child: Row(
+        //         mainAxisSize: MainAxisSize.min,
+        //         children: <Widget>[
+        //           Checkbox(
+        //               value: _noti,
+        //               onChanged: (bool value) {
+        //                   setState(() {
+        //                       _noti = value;
+        //                   });
+        //               },
+        //           ),
+        //           Text('Notifications'),
+        //         ],
+        //       ),
+        //     ),
+        //     _about(context)
+        //   ],
+        // ),
       ),
     );
   }
