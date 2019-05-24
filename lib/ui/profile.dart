@@ -64,13 +64,17 @@ class ProfileState extends State<Profile> {
                             children: <Widget>[
                               Center(
                                 child: _showCircularProgress(name==null),
+                              ),
+                              Center(
+                                child: Text("---------------------------ไม่เข้ารอโหลด----------------------------"),
                               )
                           ],)
                         ),
                     ),
                   ),
                   ]
-                : <Widget>[
+                :
+                 <Widget>[
                     _profile_container(context,name,widget.picture),
                     _treeandstat(context, widget.user, widget.tree, widget.picture),
                     _treelist(widget.tree, widget.level),

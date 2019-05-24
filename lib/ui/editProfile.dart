@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_demo/ui/home.dart';
 import 'dart:async';
 //Image Plugin
 import 'package:image_picker/image_picker.dart';
-
+import 'home.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 final _formKey = GlobalKey<FormState>();
 
@@ -73,22 +74,27 @@ Widget _btn_all(context, picture) {
   return Row(
     children: <Widget>[
       _btn_cancel(context),
-      _btn_save(picture),
+      _btn_save(picture, context),
     ],
   );
 }
 
-Widget _btn_save(picture) {
+Widget _btn_save(picture, context) {
   return Container(
     margin: EdgeInsets.fromLTRB(75, 0, 0, 0),
     child: FlatButton(
       child: Text("save"),
-      onPressed: () {
+      onPressed: () async{
         print(picture);
-              final StorageReference firebaseStorageRef =
-                  FirebaseStorage.instance.ref().child('$picture');
-              final StorageUploadTask task =
-                  firebaseStorageRef.putFile(sampleImage);
+        try{
+          final StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child('$picture');
+          final StorageUploadTask task = firebaseStorageRef.putFile(sampleImage);
+          await Navigator.pushNamed(context, '/auth');
+          }
+        catch(e){
+          print(e);
+        }
+        
       },
       textColor: Colors.blue,
     ),
