@@ -63,14 +63,6 @@ class HomeState extends State<Home> {
   var location = new Location();
   double latitude = 0;
   double longitude = 0;
-
-  Future _sendLocat(position) async {
-    await _store.collection('register2').document(widget.user).collection('date').document(date).setData({
-      'date': date,
-      'position': position,
-    });
-    print('Sent to firestore');
-  }
   
 //=================================pedometer part==================================
   String _km = globals.guest[0]['km']; //"0.0" distance 
@@ -429,15 +421,18 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
   void _getLocation() {
     // location.changeSettings(distanceFilter: 10);
     location.onLocationChanged().listen((Map<String,double> currentLocation) {
+      print("WTF");
       double _latitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
-      double _longitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
+      double _longitude = double.parse(currentLocation['longitude'].toStringAsFixed(4));
       if (latitude == 0 && longitude == 0){
         _addLocations(_latitude, _longitude);
         print("Lat: $_latitude Lng: $_longitude");
+        print("WTF");
       } else {
         if (_latitude != latitude || _longitude != longitude) {
           _addLocations(_latitude, _longitude);
-          print("Lat: ${currentLocation['latitude']} Lng: ${currentLocation['longitude']}");
+          print("Lat: $_latitude Lng: $_latitude");
+          print("WTF2");
         }
       }
     });
@@ -445,17 +440,33 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
 
   // เพิ่มจุดใน list polyline
   void _addLocations(_latitude, _longitude) async {
-    _store.collection('register2').document(widget.user).collection('date').document(date).get().then((snapshot) {
-      List list = snapshot.data['position'];
-      list.add(_latitude);
-      list.add(_longitude);
-      _sendLocat(list);
-    });
-    setState(() {
-      latitude = double.parse(_latitude.toStringAsFixed(4));
-      longitude = double.parse(_longitude.toStringAsFixed(4));
-    });
+    latitude = _latitude;
+    longitude = _longitude;
     print('added latlong into list.');
+    List tempList = [];
+    _store.collection('register2').document(name).collection('date').document(date).get().then((snapshot) {
+      List list = snapshot.data['position'];
+      if (list.length!=0) {
+        for (int i=0; i<list.length; i++) {
+          tempList.add(list[i]);
+        }
+        tempList.add(_latitude);
+        tempList.add(_longitude);
+        _store.collection('register2').document(name).collection('date').document(date).setData({
+          'date': date,
+          'position': tempList,
+        });
+        print('Sent to firestore');
+      } else {
+        tempList.add(_latitude);
+        tempList.add(_longitude);
+        _store.collection('register2').document(name).collection('date').document(date).setData({
+          'date': date,
+          'position': tempList,
+        });
+        print('Sent to firestore');
+      }
+    });
   }
 
   // ลบค่าใน list polyline

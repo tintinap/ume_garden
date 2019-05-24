@@ -22,8 +22,8 @@ class StatProfileState extends State<StatProfile> {
   Firestore _store = Firestore.instance;
   List allDate = [];
   int countDoc = 0;
-  String totalKm;
-  int tree;
+  String totalKm = "0.0";
+  int tree = 0;
 
   // นับจำนวน document ใน firestore เพื่อทำ loop
   Future _countDocuments() async {
