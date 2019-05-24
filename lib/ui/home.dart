@@ -251,6 +251,7 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
     if (stepCountValue > 0) {
       setState(() {
           _stepCountValue += 1;
+          // _remainStepCount += 1;
           print('_stepCountValue = $_stepCountValue else');
 
           _totalStep += 1;
@@ -260,9 +261,9 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       print("device's stepCount = 0");
     }
     setState(() {
-      _km = (globals.guest[0]['step']/2000).toStringAsFixed(2);
+      _km = (_stepCountValue/2000).toStringAsFixed(2);
       print("_km = $_km");
-      _totalKm = (globals.guest[0]['totalStep']/2000).toStringAsFixed(2);
+      _totalKm = (_totalStep/2000).toStringAsFixed(2);
       print("_totalKm = $_totalKm");
     });
 
@@ -345,7 +346,8 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       _km = "0.0";
       _totalKm = "0.0";
       _plants = 0;
-      _fullPerLvl = 1000;
+      // _fullPerLvl = 1000;
+      _fullPerLvl = 100;
       _remainStepCount = 0;
       _lvl = 0;
       _plantImage = "assets/maintree/LV$_lvl.png";
@@ -368,6 +370,7 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
   
   //set remainStepCount and lvl
   void _getLevel() {
+    // _remainStepCount += 1;
     //for deploy
     // if (_stepCountValue < 1000){ 
     //   setState(() => _lvl = 0);
@@ -396,32 +399,34 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
     //for dev
     if (_stepCountValue < 100){ 
       setState(() => _lvl = 0);
-      setState(() => _remainStepCount = _stepCountValue);
       setState(() => _fullPerLvl = 100);
-    } else if (_remainStepCount < 200) { 
+      setState(() => _remainStepCount = _stepCountValue);
+    } else if (_stepCountValue < 300) { 
       setState(() => _lvl = 1);
-      setState(() => _remainStepCount = _stepCountValue-100);
       setState(() => _fullPerLvl = 200);
-    } else if (_remainStepCount < 300) { 
+      setState(() => _remainStepCount = _stepCountValue-100);
+    } else if (_stepCountValue < 600) { 
       setState(() => _lvl = 2); 
-      setState(() => _remainStepCount = _stepCountValue-200);
       setState(() => _fullPerLvl = 300);
-    } else if (_remainStepCount < 400) { 
-      setState(() => _lvl = 3);
       setState(() => _remainStepCount = _stepCountValue-300);
+    } else if (_stepCountValue < 1000) { 
+      setState(() => _lvl = 3);
       setState(() => _fullPerLvl = 400);
-    } else if (_remainStepCount < 500) {
+      setState(() => _remainStepCount = _stepCountValue-600);
+    } else if (_stepCountValue < 1500) {
       setState(() => _lvl = 4);
-      setState(() => _remainStepCount = _stepCountValue-400);
       setState(() => _fullPerLvl = 500);
+      setState(() => _remainStepCount = _stepCountValue-1000);
     } else { 
       setState(() => _lvl = 5);
-      setState(() => _remainStepCount = 500);
       setState(() => _fullPerLvl = 500);
+      setState(() => _remainStepCount = 500);
     }
     setState(() {
       this._plantImage = "assets/maintree/LV$_lvl.png";
     });
+    print("remain : $_remainStepCount , fullPerLvl: $_fullPerLvl}");
+    print("percent: ${_remainStepCount/_fullPerLvl}");
   }
 
 // จัดการ location ================================================================================
