@@ -6,27 +6,39 @@ import 'statProfile.dart';
 import 'editProfile.dart';
 
 String test;
+
 class Profile extends StatefulWidget {
   final String user;
   final String picture;
   final int tree;
   final String totalKm;
+
   final int level;
   Profile({Key key, this.user, this.picture, this.tree, this.totalKm, this.level}): super(key: key);
+
   @override
   ProfileState createState() {
     //print(user + '---------------------------------------------------------');
     return ProfileState();
   }
-
 }
+
+
+  Widget _buildWaitingScreen() {
+    return Scaffold(
+      body: Container(
+        alignment: Alignment.center,
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
 
 
 class ProfileState extends State<Profile> {
   Firestore _store = Firestore.instance;
   int tree;
   String name;
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +54,28 @@ class ProfileState extends State<Profile> {
         padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
         child: SingleChildScrollView(
           child: Column(
-            children: <Widget>[
-              _profile_container(context,name,widget.picture),
-              _treeandstat(context, widget.user, widget.tree, widget.picture),
-              _treelist(widget.tree, widget.level),
-            ],
+            children: name == null
+                ? <Widget>[
+                  Scaffold(
+                    body:Center(
+                      child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Center(
+                                child: _showCircularProgress(name==null),
+                              )
+                          ],)
+                        ),
+                    ),
+                  ),
+                  ]
+                : <Widget>[
+                    _profile_container(context,name,widget.picture),
+                    _treeandstat(context, widget.user, widget.tree, widget.picture),
+                    _treelist(widget.tree, widget.level),
+                  ],
+
           ),
         ),
       ),
@@ -85,20 +114,21 @@ Widget _profile_container(context, name, picture){
   );
 }
 
- 
-Widget _profile(String a){
+Widget _profile(String a) {
   return Hero(
     tag: 'profile',
     child: Padding(
       padding: EdgeInsets.all(0),
-      child: CircleAvatar (
+      child: CircleAvatar(
         backgroundColor: Colors.transparent,
-        radius: 40,
-        child: Image.network(a),
+        radius: 60.0,
+        child: ClipOval(
+          child: Image.network(a),
+        ),
       ),
     ),
   );
-  
+
   // return Container(
   //   padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
   //   height: 150,
@@ -113,14 +143,11 @@ Widget _profile(String a){
   // );
 }
 
-Widget _name(name){
+Widget _name(name) {
   return Container(
     child: Text(
       '$name',
-      style: TextStyle(
-        fontSize: 14.0,
-        fontWeight: FontWeight.w400
-      ),
+      style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
       textAlign: TextAlign.center,
     ),
   );
@@ -138,12 +165,10 @@ Widget _treeandstat(context, user, tree, picture){
   );
 }
 
-Widget _tree(tree){
+Widget _tree(tree) {
   return Padding(
     padding: EdgeInsets.fromLTRB(20, 0, 35, 0),
-    child: Text(
-      'จำนวนต้นไม้ $tree ต้น'
-    ),
+    child: Text('จำนวนต้นไม้ $tree ต้น'),
   );
 }
 
@@ -152,7 +177,8 @@ Widget _btn_stat(context, user, picture){
   return Container(
     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
     child: RaisedButton(
-      child: Text("บันทึกสถิติ",
+      child: Text(
+        "บันทึกสถิติ",
         style: TextStyle(
           fontSize: 12.0,
           fontWeight: FontWeight.w300,
@@ -165,35 +191,42 @@ Widget _btn_stat(context, user, picture){
       splashColor: Colors.grey,
       textColor: Colors.blueGrey,
       elevation: 5.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0), side: BorderSide(color: Colors.grey)),  
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          side: BorderSide(color: Colors.grey)),
     ),
   );
 }
 
-Widget _btn_edit(context,user,picture){
+Widget _btn_edit(context, user, picture) {
   return Container(
     child: RaisedButton(
-      child: Text("Edit Profile",
+      child: Text(
+        "Edit Profile",
         style: new TextStyle(
           fontSize: 12.0,
           fontWeight: FontWeight.w300,
         ),
       ),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(user: user, name: picture)));
-        },
-        color: Colors.white,
-        splashColor: Colors.white,
-        textColor: Colors.blueGrey,
-         elevation: 5.0,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-        // textColor: Colors.blue,
-        ),
-      alignment: Alignment.bottomRight,
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditProfile(user: user, name: picture)));
+      },
+      color: Colors.white,
+      splashColor: Colors.white,
+      textColor: Colors.blueGrey,
+      elevation: 5.0,
+      shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(30.0)),
+      // textColor: Colors.blue,
+    ),
+    alignment: Alignment.bottomRight,
   );
 }
 
-List<Widget> _loopTree(amount, level){
+List<Widget> _loopTree(amount, level) {
   List<Widget> items = List();
   for (int i = 0; i < amount+1; i++){
     if (i==0) {
@@ -213,13 +246,20 @@ Widget _treelist(amount, level){
   );
 }
 
-Widget _treestage(int _lvl){
+Widget _treestage(int _lvl) {
   return Container(
-    padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-    child: Column(
-      children: <Widget>[
-        Image.asset("assets/squaretree/LV$_lvl.png", height: 150),
-      ],
-    )
-  );
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+      child: Column(
+        children: <Widget>[
+          Image.asset("assets/squaretree/LV$_lvl.png", height: 150),
+        ],
+      ));
 }
+
+
+  Widget _showCircularProgress(load){
+    if (load) {
+      return Center(child: CircularProgressIndicator());
+    } return Container(height: 0.0, width: 0.0,);
+
+  }

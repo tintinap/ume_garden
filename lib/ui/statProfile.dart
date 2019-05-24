@@ -116,7 +116,8 @@ Widget _name(name){
       '$name',
       style: TextStyle(
         fontSize: 18.0,
-        fontWeight: FontWeight.w400
+        fontWeight: FontWeight.w400,
+        color: Colors.white
       ),
       textAlign: TextAlign.center,
     ),
@@ -175,20 +176,23 @@ Widget _btn_stat(context){
 }
 
 Widget _card(BuildContext context, allDate, index, user) {
-  return Card(
-    child: InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
-          date: allDate[index], user: user)));
-          print('tabbed');
-      },
-      child: ListTile(
-        contentPadding: EdgeInsets.all(20.0),
-        title: Text(allDate[index],
-        style: new TextStyle(fontWeight: FontWeight.bold,
-        color: Colors.black)
+  return Container(
+    margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
+    child: Card(
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => StatScreen(
+            date: allDate[index], user: user)));
+            print('tabbed');
+        },
+        child: ListTile(
+          contentPadding: EdgeInsets.all(20.0),
+          title: Text(allDate[index],
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)
+          ),
+        ),  
       ),
-    ),  
-    ),
+    )
   );
 }

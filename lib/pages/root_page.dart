@@ -87,7 +87,7 @@ class _RootPageState extends State<RootPage> {
     );
   }
 
-List<Map> _guestd = [];
+List<Map> _guestd = [{'id': 1, 'name': 'Guest', 'km': '0.0', 'totalKm': '0.0', 'step': 0, 'totalStep': 0, 'remainStep': 0, 'tree': 0, 'lvl': 0}];
  Future getfirebaseData() async { 
     await _store.collection("register2").where("name",  isEqualTo: _test).getDocuments().then((doc){
       setState(() {
