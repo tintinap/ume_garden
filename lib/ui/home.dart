@@ -149,7 +149,7 @@ class HomeState extends State<Home> {
       ),
       drawer: Drawer(
         child: ListView(
-          children: <Widget>[
+          children:<Widget>[
             UserAccountsDrawerHeader(
               accountName: Text("$name"),
             ),
@@ -177,18 +177,28 @@ class HomeState extends State<Home> {
               },
               
             ),
+     
             ListTile(
-              title: Text("Setting"),
-              trailing: Icon(Icons.settings),
+              title: Text("About"),
+              trailing: Icon(Icons.error_outline),
               onTap: () {
-                Navigator.pushNamed(context, '/setting');
+                Navigator.pushNamed(context, '/about');
               },
             ),
-            ListTile(
-              title: Text("Logout"),
-              trailing: Icon(Icons.power_settings_new),
-              onTap: _signOut,
-            ),
+            // child :name == 'Guest'
+            name!='Guest' ? ListTile(
+                title: Text("Logout"),
+                trailing: Icon(Icons.power_settings_new),
+                onTap: _signOut,
+              )
+              : ListTile(
+                title: Text('Exit'),
+                trailing: Icon(Icons.power_settings_new),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/');
+                } 
+              ),
+
           ],
         ),
       ),
