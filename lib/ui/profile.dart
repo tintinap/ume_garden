@@ -210,7 +210,6 @@ List<Widget> _loopTree(amount, level){
 
 Widget _treelist(amount, level){
   return Container(
-    mainAxisAlignment: MainAxisAlignment.start,
     child: Wrap(
       children: _loopTree(amount, level),
     )
