@@ -66,7 +66,7 @@ class _StatState extends State<StatScreen> {
       polylineId: polylineId,
       consumeTapEvents: false,
       color: Colors.red,
-      width: 15,
+      width: 30,
       points: _polyline,
     );
     setState(() {
@@ -86,7 +86,7 @@ class _StatState extends State<StatScreen> {
       ),
       body: _polyline.length==0 ? Center(child: Text('Please Tab View Polyline.')) :GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(target: _polyline[0], zoom: 14),
+        initialCameraPosition: CameraPosition(target: _polyline[0], zoom: 20),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
