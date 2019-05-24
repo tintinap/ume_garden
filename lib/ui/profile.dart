@@ -35,6 +35,21 @@ Widget _buildWaitingScreen() {
 }
 
 class ProfileState extends State<Profile> {
+  Image _image = new Image.network(
+    'https://firebasestorage.googleapis.com/v0/b/flutter-assignment-02.appspot.com/o/guest.png?alt=media&token=655c467e-10ee-4914-9f29-c05269138195',
+  );
+
+  bool _loading = true;
+  @override
+  void initState() {
+    _image.image.resolve(new ImageConfiguration()).addListener((_, __) {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +82,7 @@ class ProfileState extends State<Profile> {
                     ),
                   ]
                 : <Widget>[
-                    _profile_container(context, name, widget.picture),
+                    _profile_container(context, name, widget.picture, _loading),
                     _treeandstat(context, widget.user, widget.tree, widget.picture),
                     _treelist(widget.tree, widget.level),
                   ],
@@ -92,7 +107,7 @@ class ProfileState extends State<Profile> {
 
 }
 
-Widget _profile_container(context, name, picture) {
+Widget _profile_container(context, name, picture, _loading) {
   return Container(
     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
     height: 180.0,
@@ -101,14 +116,14 @@ Widget _profile_container(context, name, picture) {
       shrinkWrap: true,
       children: <Widget>[
         _btn_edit(context, name, picture),
-        _profile(picture),
+        _profile(picture, _loading),
         //_name(name),
       ],
     ),
   );
 }
 
-Widget _profile(String a) {
+Widget _profile(String a, _loading) {
   return Hero(
     tag: 'profile',
     child: Padding(
@@ -119,7 +134,7 @@ Widget _profile(String a) {
           radius: 60,
           // backgroundImage: NetworkImage(a),
           child: ClipOval(
-            child: Image.network(a, width: 120, height: 120, fit: BoxFit.cover),
+            child: _loading? Image.asset("assets/guest.png", width: 120, height: 120, fit: BoxFit.cover) : Image.network(a, width: 120, height: 120, fit: BoxFit.cover),
           ),
         ),
       ),

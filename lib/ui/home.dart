@@ -55,9 +55,8 @@ class HomeState extends State<Home> {
 
   Firestore _store = Firestore.instance;
   String date = new DateFormat.yMMMd().format(new DateTime.now());
-  String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
-  // GuestProvider gp = GuestProvider();
+  String _plantImage = "assets/maintree/LV0.png";
   Guest updateRecord = Guest();
 
 //=================================StreamLocation==================================
@@ -81,6 +80,7 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     //initPlatformState();
+    _plantImage = "assets/maintree/LV$_lvl.png";
     setUpPedometer();
     if (widget.user!=null) {
       setState(() {
@@ -250,30 +250,20 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
     print('step Count value = $stepCountValue');
     if (stepCountValue > 0) {
       setState(() {
-
-        // if (globals.guest[0]['step'] > _stepCountValue) {
-        //   _stepCountValue = globals.guest[0]['step']+1;
-        //   print('_stepCountValue = $_stepCountValue >');
-        // } else {
           _stepCountValue += 1;
+          // _remainStepCount += 1;
           print('_stepCountValue = $_stepCountValue else');
-        // }
 
-        // if (globals.guest[0]['totalStep'] > _totalStep) {
-        //   _totalStep = globals.guest[0]['totalStep']+1;
-        //   print('_totalStep = $_totalStep >');
-        // } else {
           _totalStep += 1;
           print('_totalStep = $_totalStep else');
-    //     }
       });
     } else {
       print("device's stepCount = 0");
     }
     setState(() {
-      _km = (globals.guest[0]['step']/2000).toStringAsFixed(2);
+      _km = (_stepCountValue/2000).toStringAsFixed(2);
       print("_km = $_km");
-      _totalKm = (globals.guest[0]['totalStep']/2000).toStringAsFixed(2);
+      _totalKm = (_totalStep/2000).toStringAsFixed(2);
       print("_totalKm = $_totalKm");
     });
 
@@ -320,7 +310,8 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       _stepCountValue = 0;
       _km = "0.0";
       _plants += 1;
-      _fullPerLvl = 1000;
+      // _fullPerLvl = 1000; // default
+      _fullPerLvl = 100;
       _remainStepCount = 0;
       _lvl = 0;
       _plantImage = "assets/maintree/LV$_lvl.png";
@@ -355,7 +346,8 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
       _km = "0.0";
       _totalKm = "0.0";
       _plants = 0;
-      _fullPerLvl = 1000;
+      // _fullPerLvl = 1000;
+      _fullPerLvl = 100;
       _remainStepCount = 0;
       _lvl = 0;
       _plantImage = "assets/maintree/LV$_lvl.png";
@@ -378,24 +370,25 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
   
   //set remainStepCount and lvl
   void _getLevel() {
+    // _remainStepCount += 1;
     //for deploy
     // if (_stepCountValue < 1000){ 
     //   setState(() => _lvl = 0);
     //   setState(() => _remainStepCount = _stepCountValue);
     //   setState(() => _fullPerLvl = 1000);
-    // } else if (_stepCountValue < 5000) { 
+    // } else if (_remainStepCount < 5000) { 
     //   setState(() => _lvl = 1);
     //   setState(() => _remainStepCount = _stepCountValue-1000);
     //   setState(() => _fullPerLvl = 5000);
-    // } else if (_stepCountValue < 10000) { 
+    // } else if (_remainStepCount < 10000) { 
     //   setState(() => _lvl = 2); 
     //   setState(() => _remainStepCount = _stepCountValue-5000);
     //   setState(() => _fullPerLvl = 10000);
-    // } else if (_stepCountValue < 50000) { 
+    // } else if (_remainStepCount < 50000) { 
     //   setState(() => _lvl = 3);
     //   setState(() => _remainStepCount = _stepCountValue-10000);
     //   setState(() => _fullPerLvl = 50000);
-    // } else if (_stepCountValue < 100000) {
+    // } else if (_remainStepCount < 100000) {
     //   setState(() => _lvl = 4);
     //   setState(() => _remainStepCount = _stepCountValue-50000);
     //   setState(() => _fullPerLvl = 100000);
@@ -406,30 +399,34 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
     //for dev
     if (_stepCountValue < 100){ 
       setState(() => _lvl = 0);
-      setState(() => _remainStepCount = _stepCountValue);
       setState(() => _fullPerLvl = 100);
-    } else if (_stepCountValue < 200) { 
-      setState(() => _lvl = 1);
-      setState(() => _remainStepCount = _stepCountValue-100);
-      setState(() => _fullPerLvl = 200);
+      setState(() => _remainStepCount = _stepCountValue);
     } else if (_stepCountValue < 300) { 
+      setState(() => _lvl = 1);
+      setState(() => _fullPerLvl = 200);
+      setState(() => _remainStepCount = _stepCountValue-100);
+    } else if (_stepCountValue < 600) { 
       setState(() => _lvl = 2); 
-      setState(() => _remainStepCount = _stepCountValue-200);
       setState(() => _fullPerLvl = 300);
-    } else if (_stepCountValue < 400) { 
-      setState(() => _lvl = 3);
       setState(() => _remainStepCount = _stepCountValue-300);
+    } else if (_stepCountValue < 1000) { 
+      setState(() => _lvl = 3);
       setState(() => _fullPerLvl = 400);
-    } else if (_stepCountValue < 500) {
+      setState(() => _remainStepCount = _stepCountValue-600);
+    } else if (_stepCountValue < 1500) {
       setState(() => _lvl = 4);
-      setState(() => _remainStepCount = _stepCountValue-400);
       setState(() => _fullPerLvl = 500);
+      setState(() => _remainStepCount = _stepCountValue-1000);
     } else { 
       setState(() => _lvl = 5);
-      setState(() => _remainStepCount = 500);
       setState(() => _fullPerLvl = 500);
+      setState(() => _remainStepCount = 500);
     }
-    this._plantImage = "assets/maintree/LV$_lvl.png";
+    setState(() {
+      this._plantImage = "assets/maintree/LV$_lvl.png";
+    });
+    print("remain : $_remainStepCount , fullPerLvl: $_fullPerLvl}");
+    print("percent: ${_remainStepCount/_fullPerLvl}");
   }
 
 // จัดการ location ================================================================================
@@ -450,20 +447,39 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
           }
         });
       });
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        error = 'Permission denied';
-      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
-        error = 'Permission denied - please ask the user to enable it from the app settings';
-      }
+    } on PlatformException {
+      await showDialog<dynamic>(
+        context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("No Location"),
+              content: Text(
+                "Please allow this App to use Location or turn on your GPS."),
+              actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  "Ok"
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      });
     }
   }
 
   // เพิ่มจุดใน list polyline
   void _addLocations(_latitude, _longitude) {
     List tempList = [];
+    List list;
     _store.collection('register2').document(name).collection('date').document(date).get().then((snapshot) {
-      List list = snapshot.data['position'];
+      try {
+        list = snapshot.data['position'];
+      } catch (e) {
+        list = [];
+      }
       print(list.length);
       if (list.length!=0) {
         for (int i=0; i<list.length; i++) {
