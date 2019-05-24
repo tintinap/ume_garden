@@ -447,12 +447,26 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
           }
         });
       });
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        error = 'Permission denied';
-      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
-        error = 'Permission denied - please ask the user to enable it from the app settings';
-      }
+    } on PlatformException {
+      await showDialog<dynamic>(
+        context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("No Location"),
+              content: Text(
+                "Please allow this App to use Location or turn on your GPS."),
+              actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  "Ok"
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      });
     }
   }
 
