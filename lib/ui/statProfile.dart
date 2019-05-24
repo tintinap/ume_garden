@@ -54,7 +54,7 @@ class StatProfileState extends State<StatProfile> {
   //get point multipler
   Future<String> _getPointMul() async {
     http.Response response = await http.get(
-      Uri.encodeFull(" https://my-json-server.typicode.com/tintinap/ume_garden/db/score_multipler"),
+      Uri.encodeFull("https://my-json-server.typicode.com/tintinap/ume_garden/db/score_multipler"),
       headers: {"Accept": "application/json"},
     );
     multipler = json.decode(response.body);
@@ -70,7 +70,7 @@ class StatProfileState extends State<StatProfile> {
   Widget build(BuildContext context) {
     _countDocuments();
     _getData();
-    _getPointMul();
+    // _getPointMul();
     return Scaffold(
       appBar: AppBar(
         title: Text("User Stat"),
