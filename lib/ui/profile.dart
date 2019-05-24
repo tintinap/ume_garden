@@ -91,10 +91,12 @@ Widget _profile(String a){
     tag: 'profile',
     child: Padding(
       padding: EdgeInsets.all(0),
-      child: CircleAvatar (
+      child: CircleAvatar(
         backgroundColor: Colors.transparent,
-        radius: 40,
-        child: Image.network(a),
+        radius: 50.0,
+        child: ClipOval(
+          child: Image.network(a),
+        ),
       ),
     ),
   );
