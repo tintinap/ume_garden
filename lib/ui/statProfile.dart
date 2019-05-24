@@ -80,9 +80,9 @@ class StatProfileState extends State<StatProfile> {
 
 Widget _profile_container(context, name, picture){
   return Container(
-    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     color: Colors.teal,
-    height: 130.0,
+    height: 150.0,
     child: ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -94,20 +94,24 @@ Widget _profile_container(context, name, picture){
   );
 }
 
-Widget _profile(picture){
-  return new Hero(
+
+Widget _profile(String a) {
+  return Hero(
     tag: 'profile',
-    child: Container(
-      child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 40,
-        child: picture==null ? Image.asset('guest.png', scale: 10.0, width: 200, height: 200,)
-          : Image.network(
-            picture, scale: 10.0, width: 100, height: 100,
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(0,0,0,8),
+      child: Container(
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 50,
+          // backgroundImage: NetworkImage(a),
+          child: ClipOval(
+            child: Image.network(a, width: 100, height: 100, fit: BoxFit.cover),
+          ),
         ),
       ),
     ),
-  ); 
+  );
 }
 
 Widget _name(name){
