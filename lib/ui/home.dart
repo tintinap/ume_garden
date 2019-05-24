@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart';
 
 import '../models/guest.dart';
 import 'first.dart';
@@ -62,14 +63,7 @@ class HomeState extends State<Home> {
   var location = new Location();
   double latitude = 0;
   double longitude = 0;
-
-  Future _sendLocat(position) async {
-    await _store.collection('register2').document(widget.user).collection('date').document(date).setData({
-      'date': date,
-      'position': position,
-    });
-    print('Sent to firestore');
-  }
+  String error;
   
 //=================================pedometer part==================================
   String _km = globals.guest[0]['km']; //"0.0" distance 
@@ -82,16 +76,17 @@ class HomeState extends State<Home> {
   int _lvl = globals.guest[0]['lvl'];
   String name = globals.guest[0]['name'];
 
-  // get from firestore
-  int currentTree;
-
   @override
   void initState() {
     super.initState();
     //initPlatformState();
     _plantImage = "assets/maintree/LV$_lvl.png";
     setUpPedometer();
-
+    if (widget.user!=null) {
+      setState(() {
+        _getLocation();
+      });
+    }
   }
 
   void setUpPedometer() async {
@@ -145,11 +140,13 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     if (widget.user!=null) {
       // _sendData();
+      setState(() {
+        _getLocation();
+      });
     } else {
       name = 'Guest';
     }
 
-    _getLocation();
     return Scaffold(
       appBar: AppBar(
         title: Text("Yume Garden"),
@@ -157,7 +154,7 @@ class HomeState extends State<Home> {
       ),
       drawer: Drawer(
         child: ListView(
-          children: <Widget>[
+          children:<Widget>[
             UserAccountsDrawerHeader(
               accountName: Text("$name"),
             ),
@@ -185,18 +182,28 @@ class HomeState extends State<Home> {
               },
               
             ),
+     
             ListTile(
-              title: Text("Setting"),
-              trailing: Icon(Icons.settings),
+              title: Text("About"),
+              trailing: Icon(Icons.error_outline),
               onTap: () {
-                Navigator.pushNamed(context, '/setting');
+                Navigator.pushNamed(context, '/about');
               },
             ),
-            ListTile(
-              title: Text("Logout"),
-              trailing: Icon(Icons.power_settings_new),
-              onTap: _signOut,
-            ),
+            // child :name == 'Guest'
+            name!='Guest' ? ListTile(
+                title: Text("Logout"),
+                trailing: Icon(Icons.power_settings_new),
+                onTap: _signOut,
+              )
+              : ListTile(
+                title: Text('Exit'),
+                trailing: Icon(Icons.power_settings_new),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/');
+                } 
+              ),
+
           ],
         ),
       ),
@@ -418,36 +425,62 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
   }
 
 // จัดการ location ================================================================================
-  void _getLocation() {
-    // location.changeSettings(distanceFilter: 10);
-    location.onLocationChanged().listen((Map<String,double> currentLocation) {
-      double _latitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
-      double _longitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
-      if (latitude == 0 && longitude == 0){
-        _addLocations(_latitude, _longitude);
-        print("Lat: $_latitude Lng: $_longitude");
-      } else {
-        if (_latitude != latitude || _longitude != longitude) {
-          _addLocations(_latitude, _longitude);
-          print("Lat: ${currentLocation['latitude']} Lng: ${currentLocation['longitude']}");
-        }
+  void _getLocation() async {
+    try {
+      location.onLocationChanged().listen((Map<String,double> currentLocation) {
+        setState(() {
+          double _latitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
+          double _longitude = double.parse(currentLocation['longitude'].toStringAsFixed(4));
+          if (latitude == 0 && longitude == 0){
+            _addLocations(_latitude, _longitude);
+            print("Lat: $_latitude Lng: $_longitude");
+          } else {
+            if (_latitude != latitude || _longitude != longitude) {
+              _addLocations(_latitude, _longitude);
+              print("Lat: $_latitude Lng: $_latitude");
+            }
+          }
+        });
+      });
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        error = 'Permission denied';
+      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
+        error = 'Permission denied - please ask the user to enable it from the app settings';
       }
-    });
+    }
   }
 
   // เพิ่มจุดใน list polyline
-  void _addLocations(_latitude, _longitude) async {
-    _store.collection('register2').document(widget.user).collection('date').document(date).get().then((snapshot) {
+  void _addLocations(_latitude, _longitude) {
+    List tempList = [];
+    _store.collection('register2').document(name).collection('date').document(date).get().then((snapshot) {
       List list = snapshot.data['position'];
-      list.add(_latitude);
-      list.add(_longitude);
-      _sendLocat(list);
+      print(list.length);
+      if (list.length!=0) {
+        for (int i=0; i<list.length; i++) {
+          tempList.add(list[i]);
+        }
+        tempList.add(_latitude);
+        tempList.add(_longitude);
+        _store.collection('register2').document(name).collection('date').document(date).setData({
+          'date': date,
+          'position': tempList,
+        });
+        print('Sent to firestore');
+      } else {
+        tempList.add(_latitude);
+        tempList.add(_longitude);
+        _store.collection('register2').document(name).collection('date').document(date).setData({
+          'date': date,
+          'position': tempList,
+        });
+        print('Sent to firestore');
+      }
     });
-    setState(() {
-      latitude = double.parse(_latitude.toStringAsFixed(4));
-      longitude = double.parse(_longitude.toStringAsFixed(4));
-    });
-    print('added latlong into list.');
+    latitude = double.parse(_latitude.toStringAsFixed(4));
+    longitude = double.parse(_longitude.toStringAsFixed(4));;
+    print('added latlong into list');
   }
 
   // ลบค่าใน list polyline

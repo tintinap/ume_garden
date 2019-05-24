@@ -3,6 +3,7 @@ import 'package:flutter_login_demo/services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../ui/home.dart';
+import 'package:intl/intl.dart';
 
 FirebaseAuth a;
 class LoginSignUpPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class LoginSignUpPage extends StatefulWidget {
 enum FormMode { LOGIN, SIGNUP }
 
 class _LoginSignUpPageState extends State<LoginSignUpPage> {
+  String date = new DateFormat.yMMMd().format(new DateTime.now());
   final _formKey = new GlobalKey<FormState>();
   String _name;
   String _email;
@@ -55,6 +57,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     if (_validateAndSave()) {
       String userId = "";
       final DocumentReference documentReference = Firestore.instance.document("register2/"+_email);
+      final DocumentReference docRefForLocation = Firestore.instance.document("register2/"+_email).collection('date').document(date);
       try {
         if (_formMode == FormMode.LOGIN) {
           userId = await widget.auth.signIn(_email, _password);
@@ -80,6 +83,13 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           print("Document Added");
           }).catchError((e) => print(e));
           _showVerifyEmailSentDialog();
+          print('Signed up user: $userId');
+          docRefForLocation.setData({
+            'date': date,
+            'position': []
+          }).whenComplete(() {
+            print("Date Added");
+          }).catchError((e) => print(e));
           print('Signed up user: $userId');
         }
         setState(() {

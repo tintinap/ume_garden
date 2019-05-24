@@ -78,7 +78,7 @@ class StatProfileState extends State<StatProfile> {
   Widget build(BuildContext context) {
     _countDocuments();
     _getData();
-    _getPointMul();
+    // _getPointMul();
     return Scaffold(
       appBar: AppBar(
         title: Text("User Stat"),
