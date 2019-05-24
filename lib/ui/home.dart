@@ -468,8 +468,13 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
   // เพิ่มจุดใน list polyline
   void _addLocations(_latitude, _longitude) {
     List tempList = [];
+    List list;
     _store.collection('register2').document(name).collection('date').document(date).get().then((snapshot) {
-      List list = snapshot.data['position'];
+      try {
+        list = snapshot.data['position'];
+      } catch (e) {
+        list = [];
+      }
       print(list.length);
       if (list.length!=0) {
         for (int i=0; i<list.length; i++) {

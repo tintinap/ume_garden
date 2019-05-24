@@ -77,9 +77,11 @@ class _StatState extends State<StatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
+    if (widget.user!='Guest') {
+      setState(() {
       _getPosition();
-    });
+      });
+    }
     return new Scaffold(
       appBar: AppBar(
         title: Text('Polyline Stat'),

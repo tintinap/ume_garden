@@ -76,9 +76,11 @@ class StatProfileState extends State<StatProfile> {
 
   @override
   Widget build(BuildContext context) {
-    _countDocuments();
-    _getData();
-    // _getPointMul();
+    if (widget.user!='Guest') {
+      _countDocuments();
+      _getData();
+    }
+    _getPointMul();
     return Scaffold(
       appBar: AppBar(
         title: Text("User Stat"),
