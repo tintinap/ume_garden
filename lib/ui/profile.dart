@@ -14,7 +14,9 @@ class Profile extends StatefulWidget {
   final String totalKm;
 
   final int level;
-  Profile({Key key, this.user, this.picture, this.tree, this.totalKm, this.level}): super(key: key);
+  Profile(
+      {Key key, this.user, this.picture, this.tree, this.totalKm, this.level})
+      : super(key: key);
 
   @override
   ProfileState createState() {
@@ -23,17 +25,14 @@ class Profile extends StatefulWidget {
   }
 }
 
-
-  Widget _buildWaitingScreen() {
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-
+Widget _buildWaitingScreen() {
+  return Scaffold(
+    body: Container(
+      alignment: Alignment.center,
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
 
 class ProfileState extends State<Profile> {
 
@@ -53,26 +52,25 @@ class ProfileState extends State<Profile> {
           child: Column(
             children: name == null
                 ? <Widget>[
-                  Scaffold(
-                    body:Center(
-                      child: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Center(
-                                child: _showCircularProgress(name==null),
-                              )
-                          ],)
-                        ),
+                    Scaffold(
+                      body: Center(
+                        child: Container(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Center(
+                              child: _showCircularProgress(name == null),
+                            )
+                          ],
+                        )),
+                      ),
                     ),
-                  ),
                   ]
                 : <Widget>[
-                    _profile_container(context,name,widget.picture),
+                    _profile_container(context, name, widget.picture),
                     _treeandstat(context, widget.user, widget.tree, widget.picture),
                     _treelist(widget.tree, widget.level),
                   ],
-
           ),
         ),
       ),
@@ -94,18 +92,17 @@ class ProfileState extends State<Profile> {
 
 }
 
-
-Widget _profile_container(context, name, picture){
+Widget _profile_container(context, name, picture) {
   return Container(
-    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
     height: 180.0,
     child: ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-         _btn_edit(context,name,picture),
-         _profile(picture),
-         //_name(name),
+        _btn_edit(context, name, picture),
+        _profile(picture),
+        //_name(name),
       ],
     ),
   );
@@ -116,11 +113,14 @@ Widget _profile(String a) {
     tag: 'profile',
     child: Padding(
       padding: EdgeInsets.all(0),
-      child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 60.0,
-        child: ClipOval(
-          child: Image.network(a),
+      child: Container(
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 60,
+          // backgroundImage: NetworkImage(a),
+          child: ClipOval(
+            child: Image.network(a, width: 120, height: 120, fit: BoxFit.cover),
+          ),
         ),
       ),
     ),
@@ -152,7 +152,7 @@ Widget _name(name) {
 
 Widget _treeandstat(context, user, tree, picture){
   return Container(
-    padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
+    padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
     child: Row(
       children: <Widget>[
         _tree(tree),
@@ -164,7 +164,7 @@ Widget _treeandstat(context, user, tree, picture){
 
 Widget _tree(tree) {
   return Padding(
-    padding: EdgeInsets.fromLTRB(20, 0, 35, 0),
+    padding: EdgeInsets.fromLTRB(30, 0, 40, 0),
     child: Text('จำนวนต้นไม้ $tree ต้น'),
   );
 }
@@ -225,8 +225,8 @@ Widget _btn_edit(context, user, picture) {
 
 List<Widget> _loopTree(amount, level) {
   List<Widget> items = List();
-  for (int i = 0; i < amount+1; i++){
-    if (i==0) {
+  for (int i = 0; i < amount + 1; i++) {
+    if (i == 0) {
       items.add(_treestage(level));
     } else {
       items.add(_treestage(5));
@@ -235,12 +235,11 @@ List<Widget> _loopTree(amount, level) {
   return items;
 }
 
-Widget _treelist(amount, level){
+Widget _treelist(amount, level) {
   return Container(
-    child: Wrap(
-      children: _loopTree(amount, level),
-    )
-  );
+      child: Wrap(
+    children: _loopTree(amount, level),
+  ));
 }
 
 Widget _treestage(int _lvl) {
@@ -253,10 +252,12 @@ Widget _treestage(int _lvl) {
       ));
 }
 
-
-  Widget _showCircularProgress(load){
-    if (load) {
-      return Center(child: CircularProgressIndicator());
-    } return Container(height: 0.0, width: 0.0,);
-
+Widget _showCircularProgress(load) {
+  if (load) {
+    return Center(child: CircularProgressIndicator());
   }
+  return Container(
+    height: 0.0,
+    width: 0.0,
+  );
+}
