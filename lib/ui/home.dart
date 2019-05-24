@@ -7,6 +7,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login_demo/models/guest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/guest.dart';
 import 'first.dart';
@@ -50,10 +53,24 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
 
   Firestore _store = Firestore.instance;
+  String date = new DateFormat.yMMMd().format(new DateTime.now());
   String _plantImage = "assets/maintree/LV0.png";
   int _fullPerLvl = 1000;
   // GuestProvider gp = GuestProvider();
   Guest updateRecord = Guest();
+
+//=================================StreamLocation==================================
+  var location = new Location();
+  double latitude = 0;
+  double longitude = 0;
+
+  Future _sendLocat(position) async {
+    await _store.collection('register2').document(widget.user).collection('date').document(date).setData({
+      'date': date,
+      'position': position,
+    });
+    print('Sent to firestore');
+  }
   
 //=================================pedometer part==================================
   String _km = globals.guest[0]['km']; //"0.0" distance 
@@ -123,7 +140,7 @@ class HomeState extends State<Home> {
     });
   }
 
-  
+
   @override
   Widget build(BuildContext context) {
     if (widget.user!=null) {
@@ -132,6 +149,7 @@ class HomeState extends State<Home> {
       name = 'Guest';
     }
 
+    _getLocation();
     return Scaffold(
       appBar: AppBar(
         title: Text("Yume Garden"),
@@ -166,13 +184,6 @@ class HomeState extends State<Home> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(user: name, picture: url, tree: _plants, totalKm: _totalKm, level: _lvl)));
               },
               
-            ),
-            ListTile(
-              title: Text('Create Polyline'),
-              trailing: Icon(Icons.linear_scale),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(user: name)));
-              },
             ),
             ListTile(
               title: Text("Setting"),
@@ -413,6 +424,47 @@ List<Map<dynamic, dynamic>> makeModifiableResults(List<Map<dynamic, dynamic>> re
     }
     this._plantImage = "assets/maintree/LV$_lvl.png";
   }
+
+// จัดการ location ================================================================================
+  void _getLocation() {
+    // location.changeSettings(distanceFilter: 10);
+    location.onLocationChanged().listen((Map<String,double> currentLocation) {
+      double _latitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
+      double _longitude = double.parse(currentLocation['latitude'].toStringAsFixed(4));
+      if (latitude == 0 && longitude == 0){
+        _addLocations(_latitude, _longitude);
+        print("Lat: $_latitude Lng: $_longitude");
+      } else {
+        if (_latitude != latitude || _longitude != longitude) {
+          _addLocations(_latitude, _longitude);
+          print("Lat: ${currentLocation['latitude']} Lng: ${currentLocation['longitude']}");
+        }
+      }
+    });
+  }
+
+  // เพิ่มจุดใน list polyline
+  void _addLocations(_latitude, _longitude) async {
+    _store.collection('register2').document(widget.user).collection('date').document(date).get().then((snapshot) {
+      List list = snapshot.data['position'];
+      list.add(_latitude);
+      list.add(_longitude);
+      _sendLocat(list);
+    });
+    setState(() {
+      latitude = double.parse(_latitude.toStringAsFixed(4));
+      longitude = double.parse(_longitude.toStringAsFixed(4));
+    });
+    print('added latlong into list.');
+  }
+
+  // ลบค่าใน list polyline
+  // void _onEnabled() async {
+  //   setState(() {
+  //     _polyline.clear();
+  //   });
+  //   print("Cleared Location List");
+  // }
 //=================================pedometer part================================== 
 Widget _newtree(int level) {
   level == 5? visible = true: visible = false;

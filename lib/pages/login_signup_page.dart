@@ -23,6 +23,8 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   String _password;
   String _errorMessage;
   int type = 0;
+  var pass1 = '';
+  var pass2 = '';
 
 
   // Initial form is login form
@@ -102,6 +104,11 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     }
   }
 
+
+
+
+
+
   @override
   void initState() {
     _errorMessage = "";
@@ -138,7 +145,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
       body: Stack(
         children: <Widget>[
           _showBody(),
-          _showCircularProgress(),
+          // _showCircularProgress(),
         ],
       )
     );
@@ -269,23 +276,92 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   Widget _showPasswordInput() {
+    if(_formMode != FormMode.LOGIN){
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-      child: new TextFormField(
-        maxLines: 1,
-        obscureText: true,
-        autofocus: false,
-        decoration: new InputDecoration(
-            hintText: 'Password',
-            icon: new Icon(
-              Icons.lock,
-              color: Colors.grey,
-            )),
-        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-        onSaved: (value) => _password = value,
-      ),
-    );
-  }
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            maxLines: 1,
+            obscureText: true,
+            autofocus: false,
+            decoration: new InputDecoration(
+                hintText: 'Password',
+                icon: new Icon(
+                  Icons.lock,
+                  color: Colors.grey,
+                )),
+            // validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+            onSaved: (value) => _password = value,
+            validator: (value){
+                    this.pass1 = value;
+                  if (value.isEmpty) {
+                      return "กรุณาระบุข้อมูลให้ครบถ้วน";
+                  }
+              },
+          ),          
+          TextFormField(
+            maxLines: 1,
+            obscureText: true,
+            autofocus: false,
+            decoration: new InputDecoration(
+                hintText: 'Password',
+                icon: new Icon(
+                  Icons.lock,
+                  color: Colors.grey,
+                )),
+            // validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+            onSaved: (value) => _password = value,
+            validator: (value){
+                    this.pass2 = value;
+                  if (value.isEmpty) {
+                      return "กรุณาระบุข้อมูลให้ครบถ้วน";
+                  }
+                if(pass1 != pass2){
+                  return 'รหัสผ่านต่างกัน';
+                }
+              },
+          ),
+
+
+
+        ],
+      )
+    );}
+    else{
+      return Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            maxLines: 1,
+            obscureText: true,
+            autofocus: false,
+            decoration: new InputDecoration(
+                hintText: 'Password',
+                icon: new Icon(
+                  Icons.lock,
+                  color: Colors.grey,
+                )),
+            // validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+            onSaved: (value) => _password = value,
+            validator: (value){
+                    this.pass1 = value;
+                  if (value.isEmpty) {
+                      return "กรุณาระบุข้อมูลให้ครบถ้วน";
+                  }
+              },
+          )]
+      )
+      );
+    }
+      
+    }
+
+
+
+
+
   // Show ปุ่มว่าจะเป็น create account หรือ Have an account? Sign in
   Widget _showSecondaryButton() {
     return new FlatButton(

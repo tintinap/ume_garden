@@ -10,8 +10,9 @@ import 'package:http/http.dart' as http;
 
 class StatProfile extends StatefulWidget {
   final String user;
+  final String picture;
 
-  StatProfile({Key key, this.user}): super(key: key);
+  StatProfile({Key key, this.user, this.picture}): super(key: key);
   @override
   StatProfileState createState() {
     return StatProfileState();
@@ -79,7 +80,7 @@ class StatProfileState extends State<StatProfile> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _profile_container(context, widget.user),
+              _profile_container(context, widget.user, widget.picture),
               _tree(value, totalKm, name),
               allDate.length==0 ?
               Center(child: Text('No data...'))
@@ -101,33 +102,40 @@ class StatProfileState extends State<StatProfile> {
   }
 }
 
-Widget _profile_container(context, name){
+Widget _profile_container(context, name, picture){
   return Container(
-    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     color: Colors.teal,
-    height: 130.0,
+    height: 150.0,
     child: ListView(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-         _profile(),
+         _profile(picture),
          _name(name),
       ],
     ),
   );
 }
 
-Widget _profile(){
-  return new Hero(
+
+Widget _profile(String a) {
+  return Hero(
     tag: 'profile',
-    child: Container(
-      child: CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: 40,
-        child: Image.asset('assets/guest.png'),
+    child: Padding(
+      padding: EdgeInsets.fromLTRB(0,0,0,8),
+      child: Container(
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 50,
+          // backgroundImage: NetworkImage(a),
+          child: ClipOval(
+            child: Image.network(a, width: 100, height: 100, fit: BoxFit.cover),
+          ),
+        ),
       ),
     ),
-  ); 
+  );
 }
 
 Widget _name(name){
@@ -146,7 +154,7 @@ Widget _name(name){
 
 Widget _tree(value, km, checkName){
   return Container(
-    padding: EdgeInsets.all(30.0),
+    padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -203,7 +211,7 @@ Widget _btn_stat(context){
 
 Widget _card(BuildContext context, allDate, index, user) {
   return Container(
-    margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
+    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
     child: Card(
       child: InkWell(
         onTap: () {
@@ -212,7 +220,7 @@ Widget _card(BuildContext context, allDate, index, user) {
             print('tabbed');
         },
         child: ListTile(
-          contentPadding: EdgeInsets.all(20.0),
+          contentPadding: EdgeInsets.all(10.0),
           title: Text(allDate[index],
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)
