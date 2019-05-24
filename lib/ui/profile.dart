@@ -47,7 +47,7 @@ class ProfileState extends State<Profile> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+        padding: EdgeInsets.fromLTRB(25, 5, 25, 0),
         child: SingleChildScrollView(
           child: Column(
             children: name == null
@@ -94,7 +94,7 @@ class ProfileState extends State<Profile> {
 
 Widget _profile_container(context, name, picture) {
   return Container(
-    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+    padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
     height: 180.0,
     child: ListView(
       physics: const NeverScrollableScrollPhysics(),
@@ -152,7 +152,7 @@ Widget _name(name) {
 
 Widget _treeandstat(context, user, tree, picture){
   return Container(
-    padding: EdgeInsets.fromLTRB(25, 0, 20, 15),
+    padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
     child: Row(
       children: <Widget>[
         _tree(tree),
