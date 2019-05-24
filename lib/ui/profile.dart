@@ -87,13 +87,14 @@ Widget _profile_container(context, name, picture){
 
  
 Widget _profile(String a){
+
   return Hero(
     tag: 'profile',
     child: Padding(
       padding: EdgeInsets.all(0),
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
-        radius: 50.0,
+        radius: 60.0,
         child: ClipOval(
           child: Image.network(a),
         ),
@@ -209,6 +210,7 @@ List<Widget> _loopTree(amount, level){
 
 Widget _treelist(amount, level){
   return Container(
+    mainAxisAlignment: MainAxisAlignment.start,
     child: Wrap(
       children: _loopTree(amount, level),
     )
